@@ -1,42 +1,43 @@
 <script setup lang="ts">
-import { defineProps, withDefaults, defineEmits } from 'vue'
+import { ref, watch } from 'vue'
 
-// forward the native click event
-const emit = defineEmits<{
-  (e: 'click', event: MouseEvent): void
+// Props
+const props = defineProps<{
+  namen: string
+  modelValue: string
 }>()
 
-const handleClick = (event: MouseEvent) => {
-  emit('click', event) // emit the native click event
-}
+// Emits
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
+}>()
 
-const props = withDefaults(defineProps<{
-  text: string
-  disabled?: boolean
-}>(), {
-  disabled: false
+// Lokalna vrednost inputa
+const text = ref(props.modelValue)
+
+// Ko se lokalno polje spremeni, pošlji spremembo staršu
+watch(text, (val) => {
+  emit('update:modelValue', val)
 })
 </script>
 
 <template>
-  <button type="button" @click="handleClick" :disabled="disabled">{{ props.text }}</button>
+  <div class="input-field">
+    <label :for="props.namen">{{ props.namen }}</label>
+    <input v-model="text" :id="props.namen" :placeholder="props.namen" method="POST" >
+  </div>
 </template>
 
 <style scoped>
-button {
-  padding: 8px 12px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-button:not(:disabled):hover {
-  background-color: #45a049;
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
-button:disabled {
-  background-color: grey;
+.input-field input {
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 6px;
 }
 </style>

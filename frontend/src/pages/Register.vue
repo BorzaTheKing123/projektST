@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import axios from 'axios'
-import InputComponent from '../inputComponent.vue'
-import ButtonComponent from '../buttonComponent.vue'
+import InputComponent from '../components/inputComponent.vue'
+import ButtonComponent from '../components/buttonComponent.vue'
 
 const name = ref('')
 const email = ref('')

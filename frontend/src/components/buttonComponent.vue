@@ -1,142 +1,42 @@
 <script setup lang="ts">
-// Vsa vaša obstoječa <script> koda ostane nespremenjena
-import { ref } from 'vue'
-import axios from 'axios'
-import ButtonComponent from '../buttonComponent.vue'
+import { defineProps, withDefaults, defineEmits } from 'vue'
 
-const props = defineProps({
-  id: {
-    type: [Number, String],
-    required: true
-  }
-})
-  
-const name = ref('')
-const email = ref('')
-const phone = ref('')
-const dejavnost = ref('')
-const error = ref<string | null>(null)
-const izpis = ref(false)
-const napaka = ref('') 
+// forward the native click event
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void
+}>()
 
-const addCustomer = async () => {
-  console.log("hi")
-  error.value = null
-  if (!name.value || !email.value) {
-    error.value = "Polji Ime in Email sta obvezni."
-    return
-  }
-  const url = `/${props.id}/stranke/dodaj`
-  try {
-    const res = await axios.post(url, {
-      name: name.value,
-      email: email.value,
-      phone: phone.value,
-      dejavnost: dejavnost.value,
-      user_id: props.id
-    })
-    console.log(res.data)
-    window.location.href = `/${props.id}/stranke`;
-    alert('Stranka je bila uspešno dodana!')
-  } catch (err) {
-    console.error("Napaka pri dodajanju stranke:", err)
-    error.value = "Prišlo je do napake pri shranjevanju. Prosimo, preverite podatke."
-    setTimeout(() => {
-  izpis.value = false;
-  napaka.value = '';
-}, 5000); 
-  }
+const handleClick = (event: MouseEvent) => {
+  emit('click', event) // emit the native click event
 }
+
+const props = withDefaults(defineProps<{
+  text: string
+  disabled?: boolean
+}>(), {
+  disabled: false
+})
 </script>
 
 <template>
-  <div class="form-card">
-    <h1 class="title">Dodaj stranko</h1>
-
-    <div v-if="error" class="error-message">
-      {{ error }}
-    </div>
-
-    <div class="form-group">
-      <input v-model="name" type="text" placeholder="Ime:"/>
-      <input v-model="email" type="email" placeholder="Email:" />
-      <input v-model="phone" type="text" placeholder="Telefonska številka:" />
-      <input v-model="dejavnost" type="text" placeholder="Dejavnost:" />
-    </div>
-    <ButtonComponent 
-      text="Shrani" 
-      @click.stop.prevent="addCustomer" 
-      class="submit-btn"/>
-  </div>
+  <button type="button" @click="handleClick" :disabled="disabled">{{ props.text }}</button>
 </template>
 
 <style scoped>
-/* 5. Vsi spodnji stili so novi ali posodobljeni, da ustrezajo vaši želeni podobi */
-.form-card {
-  background-color: white;
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  max-width: 450px; /* Malo širše za daljše vnose */
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin: 2rem auto; /* Dodano za centriranje, če je komponenta na svoji strani */
-}
-
-.title {
-  text-align: center;
-  font-size: 2rem;
-  color: #333;
-  margin: 0; /* Odstranimo privzeto obnašanje */
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem; /* Razmak med vnosnimi polji */
-}
-
-input {
-  padding: 0.85rem; /* Malo večje za boljši izgled */
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-}
-
-input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
-}
-
-.submit-btn {
-  background-color: #13b52e;
+button {
+  padding: 8px 12px;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 0.85rem 1rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%; /* Gumb naj se razteza čez celo širino */
+  font-size: 16px;
+}
+button:not(:disabled):hover {
+  background-color: #45a049;
 }
 
-.submit-btn:hover {
-  background-color: #069335;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.error-message {
-  color: #e74c3c;
-  background-color: #fbe2e2;
-  border: 1px solid #e74c3c;
-  padding: 0.75rem;
-  border-radius: 6px;
-  text-align: center;
+button:disabled {
+  background-color: grey;
 }
 </style>
