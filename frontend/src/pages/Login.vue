@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 import InputComponent from '../components/inputComponent.vue'
 import ButtonComponent from '../components/buttonComponent.vue'
+import { onMounted } from 'vue'
 
 const email = ref('')
 const password = ref('')
@@ -31,16 +32,19 @@ const submitForm = async () => {
   napaka.value = '';
 }, 5000); 
 
-}
 
-    
-    // Pokaži sporočilo o napaki uporabniku
-    const errorElement = document.getElementById('error-message');
-    if (errorElement) {
-        errorElement.textContent = 'Napačno uporabniško ime ali geslo.';
-    }
-  }
+const event = ref(null)
+  onMounted (()=>{
+    axios
+    .get('/login')
+    .then((response) => {
 
+      event.value = response.data
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  })
 
 </script>
 
