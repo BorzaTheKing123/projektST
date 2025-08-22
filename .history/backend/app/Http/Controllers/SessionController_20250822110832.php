@@ -13,7 +13,7 @@ class SessionController extends Controller
         $user = Auth::user();
 
         $data = [
-            'appName' => config('app.projektST'),
+            'appName' => config('app.name'),
             'welcomeMessage' => 'Dobrodošli na naši platformi!',
             'stats' => [
                 'registeredUsers' => 1052,

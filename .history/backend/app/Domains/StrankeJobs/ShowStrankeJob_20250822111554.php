@@ -19,7 +19,7 @@ class ShowStrankeJob
     public function handle()
     {
         $stranke = DB::table('stranke')->get();
-        return response()->json($stranke);;
+        return Inertia::render('Stranke', ['id' => $this->id, 'stranke' => $stranke]);
     }
         
 }

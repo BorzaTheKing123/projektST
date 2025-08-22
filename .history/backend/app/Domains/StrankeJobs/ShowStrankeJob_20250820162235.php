@@ -2,6 +2,8 @@
 
 namespace App\Domains\StrankeJobs;
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ShowStrankeJob
@@ -19,7 +21,7 @@ class ShowStrankeJob
     public function handle()
     {
         $stranke = DB::table('stranke')->get();
-        return response()->json($stranke);;
+        return Inertia::render('Stranke', ['id' => $this->id, 'stranke' => $stranke]);
     }
         
 }

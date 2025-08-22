@@ -20,5 +20,6 @@ class EditStrankaJob
     {
         $data = DB::table('stranke')->where('name', $this->stranka)->first();
         return response()->json($data);
+        // return Inertia::render('UrejanjeStranke', ['stranka' => $info, 'id' => Auth::id()]);
     }
 }

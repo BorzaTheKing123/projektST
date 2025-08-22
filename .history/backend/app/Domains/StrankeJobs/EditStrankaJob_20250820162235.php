@@ -2,6 +2,8 @@
 
 namespace App\Domains\StrankeJobs;
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EditStrankaJob
@@ -18,7 +20,7 @@ class EditStrankaJob
      */
     public function handle()
     {
-        $data = DB::table('stranke')->where('name', $this->stranka)->first();
-        return response()->json($data);
+        $info = DB::table('stranke')->where('name', $this->stranka)->first();
+        return Inertia::render('UrejanjeStranke', ['stranka' => $info, 'id' => Auth::id()]);
     }
 }
