@@ -1,8 +1,7 @@
 <script setup lang="ts">
-// Vsa vaša obstoječa <script> koda ostane nespremenjena
 import { ref } from 'vue'
 import axios from 'axios'
-import ButtonComponent from '../buttonComponent.vue'
+import ButtonComponent from '../components/buttonComponent.vue'
 
 const props = defineProps({
   id: {

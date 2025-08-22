@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import ButtonComponent from '../buttonComponent.vue'
+import ButtonComponent from '../components/buttonComponent.vue'
 
 // Props od Inertia/Laravel strani
 interface Customer {

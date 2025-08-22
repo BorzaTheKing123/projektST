@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ButtonComponent from '../buttonComponent.vue'
+import ButtonComponent from '../components/buttonComponent.vue'
 
 const goToRegister = () => {
   window.location.href = '/register'
@@ -20,6 +20,10 @@ const goToLogin = () => {
     <h1 class="napis">Login</h1>
     <ButtonComponent @click="goToLogin" text="Logiraj se" />
   </div>
+
+  <RouterLink to="/login">Login</RouterLink>
+  <RouterLink to="/register">Register</RouterLink>
+
 </template>
 
 <style scoped>
