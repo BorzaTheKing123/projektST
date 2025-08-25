@@ -1,13 +1,11 @@
 <script setup lang="ts">
-
-import InputComponent from '../components/inputComponent.vue'
-import ButtonComponent from '../components/buttonComponent.vue'
-import { onMounted } from 'vue'
-
-
 import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import InputComponent from '../components/inputComponent.vue'
+import ButtonComponent from '../components/buttonComponent.vue'
+
+
 
 const name = ref('')
 const email = ref('')
@@ -29,7 +27,7 @@ const submitForm = () => {
   // Pridobi CSRF piškotek
   axios.get('/sanctum/csrf-cookie').then(() => {
     // Pošlji podatke za registracijo
-    axios.post('/register', {
+    axios.post('http://localhost:8000/register', {
       name: name.value,
       email: email.value,
       password: password.value

@@ -13,6 +13,15 @@ export default {
     getRegister(){
         return apiClients.get('/register')
     },
+    //getLogin(){
+       // return apiClients.get('/login')
+   // },
+    getLogin(email, password){
+        return apiClients.post('/login')
+    },
+    getStranke(name){
+        return apiClients.get('/login' + name)
+    },
 
 
 

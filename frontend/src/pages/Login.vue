@@ -1,59 +1,56 @@
-
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import InputComponent from '../components/inputComponent.vue'
 import ButtonComponent from '../components/buttonComponent.vue'
-
-
-
-
-
-
-
-import { ref } from 'vue'
-import axios from 'axios'
+import EventServices from '@/router/services/EventServices'
 
 const email = ref('')
 const password = ref('')
-const user = ref('')
 const napaka = ref('')
 const izpis = ref(false)
+const user = ref(null)
+const router = useRouter()
 
 const submitForm = () => {
-  axios.get('/sanctum/csrf-cookie').then(() => {
-    axios.post('/login', {
-      email: email.value,
-      password: password.value
-    })
+  if (!email.value || !password.value) {
+    napaka.value = 'Prosimo, izpolnite vsa polja.'
+    izpis.value = true
+    return
+  }
+
+  EventServices.getLogin({
+    email: email.value,
+    password: password.value
+  })
     .then((response) => {
       user.value = response.data
       izpis.value = false
+      router.push('/stranke') // ali kamor želiš
     })
     .catch((error) => {
       napaka.value = 'Napaka pri prijavi'
       izpis.value = true
-      console.log(error)
       setTimeout(() => {
-      izpis.value = false;
-      napaka.value = '';
-      }, 4000); 
+        izpis.value = false
+        napaka.value = ''
+      }, 4000)
     })
-  })
 }
 </script>
-
-
 
 <template>
   <div class="login">
     <h1>Login</h1>
   </div>
   <div class="input">
-    <InputComponent v-model="email" namen="email"></InputComponent>
-    <InputComponent v-model="password" namen="password"></InputComponent>
-    <ButtonComponent text="Logiraj se" @click="submitForm"></ButtonComponent>
-        <p v-if="izpis" class="error-message">{{ napaka }}</p>
+    <InputComponent v-model="email" namen="email" />
+    <InputComponent v-model="password" namen="password" />
+    <ButtonComponent text="Logiraj se" @click="submitForm" />
+    <p v-if="izpis" class="error-message">{{ napaka }}</p>
   </div>
 </template>
+
  
 <style scoped>
 .login {
@@ -71,18 +68,4 @@ const submitForm = () => {
   flex-direction: column;
 
 }
-
-button {
-  padding: 8px;
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
-}
 </style>
-
