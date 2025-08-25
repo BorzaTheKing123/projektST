@@ -19,6 +19,7 @@ class LoginUserJob
 
     public function handle()
     {   
+        return response()->json(['test' => 'Hello world'], 200);
         $credentials = Validator::make($this->request->all(), [
             'email' => ['required', 'email'],
             'password' => ['required'],

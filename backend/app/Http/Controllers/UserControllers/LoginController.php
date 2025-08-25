@@ -11,7 +11,7 @@ class LoginController extends Controller
 
     public function edit()
     {
-        return response()->json(['test' => 'Hello world'], 200);
+        return response()->json(200);
     }
 
 	public function login(Request $request)
