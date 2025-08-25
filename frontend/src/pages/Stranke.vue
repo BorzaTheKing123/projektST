@@ -15,7 +15,7 @@ const props = defineProps({
   }
 })
 const pojdiNaUrejanje = (customer: Customer) => {
-  window.location.href = `/${props.id}/stranke/${customer.name}`
+  window.location.href = `/stranke/${customer.name}`
 }
 
 // Tip za stranko za boljšo preglednost kode
@@ -35,7 +35,7 @@ const error = ref<string | null>(null)    // Napaka, če pride do nje
 
 // GET request ob mountu
 onMounted(() => {
-  const url = `/${props.id}/stranke`
+  const url = `http://localhost:8000/stranke`
   console.log(`Pošiljam GET zahtevek na: ${url}`)
   console.log(props.stranke)
 

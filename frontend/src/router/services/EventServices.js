@@ -38,7 +38,15 @@ export default {
     getLogin(){
         return apiClients.get('/sanctum/csrf-cookie')
     },
-    getStranke(){
-        return apiClients.get('/stranke')
+    getStranke(id, stranke){
+        return apiClients.get('/stranke',{
+            params: {id, stranke}
+        })
     },
+    dodajStranke(id){
+    return apiClients.get('/stranke/dodajs', {
+        params: { id }
+    })
+}
+
 }

@@ -41,8 +41,8 @@ const router = createRouter({
       component: UrejanjeStrankPage,
   },
   {
-      path: URL + '/stranke/{name}/dodaj',
-      name:'DodajanjeStrank',
+      path: URL + '/stranke/dodaj',
+      name:'AddClients',
       props: true,
       component: AddClientsPage,
   },

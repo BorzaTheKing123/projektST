@@ -26,17 +26,17 @@ const addCustomer = async () => {
     error.value = "Polji Ime in Email sta obvezni."
     return
   }
-  const url = `/${props.id}/stranke/dodaj`
+  const url = `/stranke/dodaj`
   try {
     const res = await axios.post(url, {
       name: name.value,
       email: email.value,
       phone: phone.value,
       dejavnost: dejavnost.value,
-      user_id: props.id
+      id: props.id
     })
     console.log(res.data)
-    window.location.href = `/${props.id}/stranke`;
+    window.location.href = `/stranke`;
     alert('Stranka je bila uspešno dodana!')
   } catch (err) {
     console.error("Napaka pri dodajanju stranke:", err)
