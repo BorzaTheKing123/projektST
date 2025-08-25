@@ -19,7 +19,7 @@ const submitForm = () => {
     return
   }
 
-  EventServices.getLogin({
+  EventServices.login({
     email: email.value,
     password: password.value
   })

@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const apiClients = axios.create({
-    baseURL: 'http://projektst.test/',
-    withCredentials: false,
+    baseURL: 'http://127.0.0.1:8000/',
+    withCredentials: true,
     headers:{
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -13,16 +13,16 @@ export default {
     getRegister(){
         return apiClients.get('/register')
     },
-    //getLogin(){
-       // return apiClients.get('/login')
-   // },
-    getLogin(email, password){
-        return apiClients.post('/login')
+    login(email , password ) {
+        return apiClients.post('/login', {
+        email,
+        password
+        })
     },
-    getStranke(name){
-        return apiClients.get('/login' + name)
+    getLogin(){
+        return apiClients.get('/login')
     },
-
-
-
+    getStranke(){
+        return apiClients.get('/stranke')
+    },
 }
