@@ -15,10 +15,10 @@ Route::get('/register', [RegisterController::class, 'create']);
 Route::post('/register', [RegisterController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/{id}/stranke', [StrankeController::class, 'index'])->name('stranke.index');
-    Route::get('/{id}/stranke/dodaj', [StrankeController::class, 'create']);
-    Route::post('/{id}/stranke/dodaj', [StrankeController::class, 'store']);
-    Route::get('/{id}/stranke/{stranka}', [StrankeController::class, 'edit']);
-    Route::put('/{id}/stranke/{stranka}', [StrankeController::class, 'update']);
-    Route::delete('/{id}/stranke/{stranka}', [StrankeController::class, 'destroy']);
+    Route::get('/stranke', [StrankeController::class, 'index'])->name('stranke.index');
+    Route::get('/stranke/dodaj', [StrankeController::class, 'create']);
+    Route::post('/stranke/dodaj', [StrankeController::class, 'store']);
+    Route::get('/stranke/{stranka}', [StrankeController::class, 'edit']);
+    Route::put('/stranke/{stranka}', [StrankeController::class, 'update']);
+    Route::delete('/stranke/{stranka}', [StrankeController::class, 'destroy']);
 });

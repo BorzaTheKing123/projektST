@@ -45,8 +45,8 @@ const submitForm = async () => {
     <h1>Login</h1>
   </div>
   <div class="input">
-    <InputComponent v-model="email" namen="email" />
-    <InputComponent v-model="password" namen="password" />
+    <InputComponent v-model="email" namen="email" type="email"/>
+    <InputComponent v-model="password" namen="password" type="Password"/>
     <ButtonComponent text="Logiraj se" @click="submitForm" />
     <p v-if="izpis" class="error-message">{{ napaka }}</p>
   </div>

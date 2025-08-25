@@ -26,17 +26,17 @@ class StrankeController extends Controller
         return (new StoreNewStrankaFeature($request))->handle();
     }
 
-    public function edit(Int $id, String $stranka) // $id je samo zato da sprejme id od userja, ker sta podana 2 parametra
+    public function edit(String $stranka) // $id je samo zato da sprejme id od userja, ker sta podana 2 parametra
     {   
         return new EditStrankaFeature($stranka)->handle();
     }
 
-    public function update(Int $id, String $stranka, Request $request)
+    public function update(String $stranka, Request $request)
     {
         return new UpdateStrankaFeature($stranka, $request)->handle();
     }
 
-    public function destroy(Int $id, String $stranka)
+    public function destroy(String $stranka)
     {
         return new DeleteStrankaFeature($stranka)->handle();
     }

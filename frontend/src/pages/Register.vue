@@ -58,9 +58,9 @@ const submitForm = async () => {
     <h1>Registracija</h1>
   </div>
   <div class="input">
-    <InputComponent v-model="name" namen="name"></InputComponent>
-    <InputComponent v-model="email" namen="email"></InputComponent>
-    <InputComponent v-model="password" namen="password"></InputComponent>
+    <InputComponent v-model="name" namen="name" type="name"></InputComponent>
+    <InputComponent v-model="email" namen="email" type="email"></InputComponent>
+    <InputComponent v-model="password" namen="password" type="password"></InputComponent>
     <ButtonComponent text="Registriraj se" @click="submitForm"></ButtonComponent>
 
     <!-- izpišemo napako, če obstaja -->

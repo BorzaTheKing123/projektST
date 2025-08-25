@@ -5,6 +5,7 @@ import { ref, watch } from 'vue'
 const props = defineProps<{
   namen: string
   modelValue: string
+  type: string
 }>()
 
 // Emits
@@ -24,7 +25,7 @@ watch(text, (val) => {
 <template>
   <div class="input-field">
     <label :for="props.namen">{{ props.namen }}</label>
-    <input v-model="text" :id="props.namen" :placeholder="props.namen" method="POST" >
+    <input v-model="text" :id="props.namen" :placeholder="props.namen" method="POST" :type="props.type" >
   </div>
 </template>
 
