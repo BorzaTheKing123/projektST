@@ -19,26 +19,31 @@ const router = createRouter({
   {
       path: URL + '/register',
       name:'Register',
+      props: true,
       component: Register,
   },
   {
       path: URL + '/login',
       name:'Login',
+      props: true,
       component: LoginPage,
   },
   {
       path: URL + '/stranke',
       name:'Stranke',
+      props: true,
       component: StrankePage,
   },
   {
       path: URL + '/stranke/{name}',
       name:'UrejanjeStrank',
+      props: true,
       component: UrejanjeStrankPage,
   },
   {
       path: URL + '/stranke/{name}/dodaj',
       name:'DodajanjeStrank',
+      props: true,
       component: AddClientsPage,
   },
 

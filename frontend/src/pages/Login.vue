@@ -1,57 +1,50 @@
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import axios from 'axios'
 import InputComponent from '../components/inputComponent.vue'
 import ButtonComponent from '../components/buttonComponent.vue'
-import { onMounted } from 'vue'
+
+
+
+
+
+
+
+import { ref } from 'vue'
+import axios from 'axios'
 
 const email = ref('')
 const password = ref('')
+const user = ref('')
+const napaka = ref('')
 const izpis = ref(false)
-const napaka = ref('') 
 
-const submitForm = async () => {
-  try {
-    // 'await' počaka, da se axios klic konča
-    const response = await axios.post("/login", {
+const submitForm = () => {
+  axios.get('/sanctum/csrf-cookie').then(() => {
+    axios.post('/login', {
       email: email.value,
-      password: password.value,
-    });
-
-    // Ta koda se izvede samo, če je bila prijava uspešna
-    console.log("Prijava uspešna!", response.data);
-    window.location.href = `${response.data}/stranke`; // Preusmeri
-
-  }catch (err) {
-  console.error("Napaka pri prijavi:", err.response?.data);
-  napaka.value = "Napačno uporabniško ime ali geslo.";
-  izpis.value = true;
-  setTimeout(() => {
-  izpis.value = false;
-  napaka.value = '';
-}, 5000); 
-  }}
-
-const event = ref(null)
-  onMounted (()=>{
-    axios
-    .get('/login')
-    .then((response) => {
-
-      event.value = response.data
+      password: password.value
     })
-    .catch((error)=>{
+    .then((response) => {
+      user.value = response.data
+      izpis.value = false
+    })
+    .catch((error) => {
+      napaka.value = 'Napaka pri prijavi'
+      izpis.value = true
       console.log(error)
+      setTimeout(() => {
+      izpis.value = false;
+      napaka.value = '';
+      }, 4000); 
     })
   })
-
+}
 </script>
+
 
 
 <template>
   <div class="login">
-    <RouterView></RouterView>
     <h1>Login</h1>
   </div>
   <div class="input">

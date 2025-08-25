@@ -1,44 +1,59 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import axios from 'axios'
+
 import InputComponent from '../components/inputComponent.vue'
 import ButtonComponent from '../components/buttonComponent.vue'
+import { onMounted } from 'vue'
+
+
+import { ref } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
-
-// reaktivna spremenljivka za izpis napake
+const napaka = ref('')
 const izpis = ref(false)
-const napaka = ref('') // tu bomo shranili sporočilo napake
+const user = ref(null)
 
-const submitForm = async () => {
-  try {
-    const res = await axios.post("/register", {
+const router = useRouter()
+
+const submitForm = () => {
+  // Preveri, da so vsa polja izpolnjena
+  if (!name.value || !email.value || !password.value) {
+    napaka.value = 'Prosimo, izpolnite vsa polja.'
+    izpis.value = true
+    return
+  }
+
+  // Pridobi CSRF piškotek
+  axios.get('/sanctum/csrf-cookie').then(() => {
+    // Pošlji podatke za registracijo
+    axios.post('/register', {
       name: name.value,
       email: email.value,
-      password: password.value,
+      password: password.value
     })
-    if (res.data == true){
-      window.location.href = '/login'
+    .then((response) => {
+      user.value = response.data
+      izpis.value = false
+
+      // 🔁 Redirect na login stran
+      router.push('/login')
+    })
+    .catch((error) => {
+      napaka.value = error.response?.data?.message || 'Napaka pri registraciji.'
       izpis.value = true
-    } else {
-      napaka.value = res.data
-      izpis.value = true
-      console.log(napaka)
-    }
-      
-  } catch (err) {
-   // console.error(err)
-    napaka.value = "Prišlo je do napake pri registraciji."
-    izpis.value = true
-    setTimeout(() => {
-  izpis.value = false;
-  napaka.value = '';
-}, 5000); 
-  }
+      console.error('Napaka:', error)
+      setTimeout(() => {
+      izpis.value = false;
+      napaka.value = '';
+      }, 4000); 
+    })
+  })
 }
 </script>
+
 
 <template>
   <div class="register">
