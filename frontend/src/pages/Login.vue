@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import InputComponent from '../components/inputComponent.vue'
 import ButtonComponent from '../components/buttonComponent.vue'
 import EventServices from '@/router/services/EventServices'
+import axios from 'axios'
 
 const email = ref('')
 const password = ref('')
@@ -12,21 +13,19 @@ const izpis = ref(false)
 const user = ref(null)
 const router = useRouter()
 
-const submitForm = () => {
-  if (!email.value || !password.value) {
-    napaka.value = 'Prosimo, izpolnite vsa polja.'
-    izpis.value = true
-    return
-  }
-
-  EventServices.login({
-    email: email.value,
-    password: password.value
+onMounted(()=> {
+  axios.get('http://localhost:8000/sanctum/csrf-cookie', {
+    withCredentials: true
   })
+}
+)
+
+const submitForm = async () => {
+  EventServices.login(email.value, password.value)
     .then((response) => {
       user.value = response.data
       izpis.value = false
-      router.push('/stranke') // ali kamor želiš
+      router.push('/stranke') 
     })
     .catch((error) => {
       napaka.value = 'Napaka pri prijavi'

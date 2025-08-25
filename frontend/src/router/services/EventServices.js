@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClients = axios.create({
-    baseURL: 'http://127.0.0.1:8000/',
+    baseURL: 'http://localhost:8000/',
     withCredentials: true,
     headers:{
         Accept: 'application/json',
@@ -13,6 +13,10 @@ export default {
     getRegister(){
         return apiClients.get('/register')
     },
+    register(name, email, phone){
+        return apiClients.post('/register')
+
+    },
     login(email , password ) {
         return apiClients.post('/login', {
         email,
@@ -20,7 +24,7 @@ export default {
         })
     },
     getLogin(){
-        return apiClients.get('/login')
+        return apiClients.get('/sanctum/csrf-cookie')
     },
     getStranke(){
         return apiClients.get('/stranke')
