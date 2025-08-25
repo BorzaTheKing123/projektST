@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AppPage from '../App.vue'
-import RegisterPage from '../pages/Register.vue'
+import HomePage from '../pages/Home.vue'
+import Register from '../pages/Register.vue'
 import LoginPage from '../pages/Login.vue'
 import StrankePage from '../pages/Stranke.vue'
 import UrejanjeStrankPage from '../pages/UrejanjeStranke.vue'
@@ -14,12 +14,12 @@ const router = createRouter({
   {
       path: URL + '/',
       name:'Home',
-      component: AppPage,
+      component: HomePage,
   },
   {
       path: URL + '/register',
       name:'Register',
-      component: RegisterPage,
+      component: Register,
   },
   {
       path: URL + '/login',

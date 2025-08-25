@@ -31,7 +31,7 @@ const submitForm = async () => {
   izpis.value = false;
   napaka.value = '';
 }, 5000); 
-
+  }}
 
 const event = ref(null)
   onMounted (()=>{
@@ -51,6 +51,7 @@ const event = ref(null)
 
 <template>
   <div class="login">
+    <RouterView></RouterView>
     <h1>Login</h1>
   </div>
   <div class="input">

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClients = axios.create({
-    baseURL: 'http://127.0.0.1:8000/',
+    baseURL: 'http://projektst.test/',
     withCredentials: false,
     headers:{
         Accept: 'application/json',
@@ -10,6 +10,9 @@ const apiClients = axios.create({
 })
 
 export default {
+    getRegister(){
+        return apiClients.get('/register')
+    },
 
 
 
