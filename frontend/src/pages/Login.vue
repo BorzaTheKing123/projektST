@@ -22,7 +22,8 @@ onMounted(()=> {
 )
 
 const submitForm = async () => {
-  EventServices.login(email.value, password.value, device_name.valueOf)
+  EventServices.login(email.value, password.value, device_name
+  )
     .then((response) => {
       user.value = response.data
       izpis.value = false
