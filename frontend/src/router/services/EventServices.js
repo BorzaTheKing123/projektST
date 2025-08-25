@@ -1,8 +1,15 @@
 import axios from 'axios'
 
+// To bo omogočilo, da Axios pošilja piškotke s vsako zahtevo
+axios.defaults.withCredentials = true;
+
+// To bo omogočilo, da Axios samodejno pretvori piškotek v glavo
+axios.defaults.withXSRFToken = true; 
+
 const apiClients = axios.create({
     baseURL: 'http://localhost:8000/',
     withCredentials: true,
+    withXSRFToken: true,
     headers:{
         Accept: 'application/json',
         'Content-Type': 'application/json',
