@@ -5,7 +5,6 @@ namespace App\Domains\UserJobs;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class LoginUserJob
 {
@@ -40,6 +39,16 @@ class LoginUserJob
             ]);
         }
 
-        return $user->createToken($this->request->device_name)->plainTextToken;
+        return $user->createToken($request->device_name)->plainTextToken;
+ 
+        // if (Auth::attempt($credentials)) {
+        //     $this->request->session()->regenerate();
+        //     // Naredi drugače
+        //     return Auth::id();
+        // }
+
+        return response()->json([
+            'message' => 'Uporabnik ne obstaja!',
+        ], 409);
     }
 }

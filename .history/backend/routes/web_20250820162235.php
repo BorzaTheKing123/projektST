@@ -14,7 +14,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'create']);
 Route::post('/register', [RegisterController::class, 'store']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/{id}/stranke', [StrankeController::class, 'index'])->name('stranke.index');
     Route::get('/{id}/stranke/dodaj', [StrankeController::class, 'create']);
     Route::post('/{id}/stranke/dodaj', [StrankeController::class, 'store']);
