@@ -7,6 +7,7 @@ import EventServices from '@/router/services/EventServices'
 import axios from 'axios'
 
 const email = ref('')
+const device_name = navigator.userAgent
 const password = ref('')
 const napaka = ref('')
 const izpis = ref(false)
@@ -21,7 +22,7 @@ onMounted(()=> {
 )
 
 const submitForm = async () => {
-  EventServices.login(email.value, password.value)
+  EventServices.login(email.value, password.value, device_name.valueOf)
     .then((response) => {
       user.value = response.data
       izpis.value = false

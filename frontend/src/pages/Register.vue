@@ -16,7 +16,7 @@ const user = ref(null)
 
 const router = useRouter()
 
-const submitForm = () => {
+const submitForm = async () => {
   // Preveri, da so vsa polja izpolnjena
   if (!name.value || !email.value || !password.value) {
     napaka.value = 'Prosimo, izpolnite vsa polja.'

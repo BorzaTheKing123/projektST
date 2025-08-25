@@ -14,13 +14,18 @@ export default {
         return apiClients.get('/register')
     },
     register(name, email, phone){
-        return apiClients.post('/register')
+        return apiClients.post('/register',{
+            name,
+            email,
+            phone
+        })
 
     },
-    login(email , password ) {
+    login(email , password , device_name) {
         return apiClients.post('/login', {
         email,
-        password
+        password,
+        device_name
         })
     },
     getLogin(){
