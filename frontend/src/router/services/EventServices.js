@@ -16,7 +16,7 @@ const apiClients = axios.create({
     }
 })
 
-export default {
+export default { 
     getRegister(){
         return apiClients.get('/register')
     },
@@ -43,10 +43,8 @@ export default {
             params: {id, stranke}
         })
     },
-    dodajStranke(id){
-    return apiClients.get('/stranke/dodajs', {
-        params: { id }
-    })
+   dodajStranke(data){
+  return apiClients.post('/stranke/dodaj', data)
 }
 
 }
