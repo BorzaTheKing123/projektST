@@ -4,15 +4,15 @@ import axios from 'axios'
 axios.defaults.withCredentials = true;
 
 // To bo omogočilo, da Axios samodejno pretvori piškotek v glavo
-axios.defaults.withXSRFToken = true; 
+//axios.defaults.withXSRFToken = true; 
 
 const apiClients = axios.create({
-    baseURL: 'http://localhost:8000/',
+    baseURL: 'http://localhost:8000/api/',
     withCredentials: true,
-    withXSRFToken: true,
+    //withXSRFToken: true,
     headers:{
         Accept: 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
     }
 })
 
@@ -28,19 +28,22 @@ export default {
         })
 
     },
-    login(email , password , device_name) {
+    login(email , password ) {
         return apiClients.post('/login', {
         email,
         password,
-        device_name
         })
     },
     getLogin(){
         return apiClients.get('/sanctum/csrf-cookie')
     },
-    getStranke(id, stranke){
+    getStranka(id, stranke){
+        return apiClients.get('/stranke/'+id,{
+            params: {stranke}
+        })
+    },
+    getStranke(){
         return apiClients.get('/stranke',{
-            params: {id, stranke}
         })
     },
    dodajStranke(data){

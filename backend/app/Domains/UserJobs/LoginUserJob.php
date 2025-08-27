@@ -22,7 +22,7 @@ class LoginUserJob
         $credentials = Validator::make($this->request->all(), [
             'email' => ['required', 'email'],
             'password' => ['required'],
-            'device_name' => 'required',
+//            'device_name' => 'required',
         ]);
 
         if ($credentials->fails()) {
@@ -40,6 +40,7 @@ class LoginUserJob
             ]);
         }
 
-        return $user->createToken($this->request->device_name)->plainTextToken;
+//        return $user->createToken($this->request->device_name)->plainTextToken;
+                return $user->createToken('default')->plainTextToken;
     }
 }

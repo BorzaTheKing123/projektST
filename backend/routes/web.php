@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/stranke', [StrankeController::class, 'index'])->name('stranke.index');
     Route::get('/stranke/dodaj', [StrankeController::class, 'create']);
     Route::post('/stranke/dodaj', [StrankeController::class, 'store']);
-    Route::get('/stranke/{stranka}', [StrankeController::class, 'edit']);
+//    Route::get('/stranke/{stranka}/edit', [StrankeController::class, 'edit']);
     Route::put('/stranke/{stranka}', [StrankeController::class, 'update']);
     Route::delete('/stranke/{stranka}', [StrankeController::class, 'destroy']);
 });

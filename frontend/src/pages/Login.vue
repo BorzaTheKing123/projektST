@@ -16,16 +16,19 @@ const router = useRouter()
 
 onMounted(()=> {
   axios.get('http://localhost:8000/sanctum/csrf-cookie', {
-    withCredentials: true
+    withCredentials: true,
+    
   })
 }
 )
 
 const submitForm = async () => {
-  EventServices.login(email.value, password.value, device_name
+
+ await EventServices.login(email.value, password.value
   )
     .then((response) => {
-      user.value = response.data
+localStorage.setItem('authToken', response.data)
+     // console.log(user.value)
       izpis.value = false
       router.push('/stranke') 
     })

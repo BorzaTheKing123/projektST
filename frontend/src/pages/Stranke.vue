@@ -2,6 +2,7 @@
 import ButtonComponent from '../components/buttonComponent.vue'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import EventServices from '@/router/services/EventServices'
 
 // Sprejem 'id' props-a, ki ga pošlje Laravel/Inertia
 const props = defineProps({
@@ -34,12 +35,13 @@ const error = ref<string | null>(null)    // Napaka, če pride do nje
 
 
 // GET request ob mountu
-onMounted(() => {
-  const url = `http://localhost:8000/stranke`
-  console.log(`Pošiljam GET zahtevek na: ${url}`)
-  console.log(props.stranke)
+onMounted(async () => {
+//  const url = `http://localhost:8000/stranke`
+//  console.log(`Pošiljam GET zahtevek na: ${url}`)
+// console.log(props.stranke)
 
-  axios.get(url)
+ await  EventServices.getStranke()
+
     .then(response => {
       customers.value = props.stranke
     })

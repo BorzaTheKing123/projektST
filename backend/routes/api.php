@@ -1,8 +1,31 @@
 <?php
 
+use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\StrankeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+
+
+
+
+Route::middleware('api')->group(function () {
+    Route::get('/login', [LoginController::class, 'edit'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+
+    Route::get('/register', [RegisterController::class, 'create']);
+    Route::post('/register', [RegisterController::class, 'store']);
+
+    Route::middleware('auth:api')->get('/stranke', [StrankeController::class, 'index'])->name('stranke.index');
+    Route::middleware('auth:api')->get('/stranke/dodaj', [StrankeController::class, 'create']);
+    Route::middleware('auth:api')->post('/stranke/dodaj', [StrankeController::class, 'store']);
+//    Route::get('/stranke/{stranka}/edit', [StrankeController::class, 'edit']);
+    Route::middleware('auth:api')->put('/stranke/{stranka}', [StrankeController::class, 'update']);
+    Route::middleware('auth:api')->delete('/stranke/{stranka}', [StrankeController::class, 'destroy']);
+});
