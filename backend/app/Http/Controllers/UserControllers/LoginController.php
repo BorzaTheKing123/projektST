@@ -17,8 +17,6 @@ class LoginController extends Controller
 	public function login(Request $request)
     
     {
-        dd('testlogin');
-
         return new LoginUserFeature($request)->handle();
     }
 }

@@ -12,7 +12,7 @@ class LoginController extends Controller
 
 	public function login()
     {
-        //dd('test');
+
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
