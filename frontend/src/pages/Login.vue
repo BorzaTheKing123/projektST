@@ -14,13 +14,6 @@ const izpis = ref(false)
 const user = ref(null)
 const router = useRouter()
 
-onMounted(()=> {
-  axios.get('http://localhost:8000/sanctum/csrf-cookie', {
-    withCredentials: true,
-    
-  })
-}
-)
 
 const submitForm = async () => {
 

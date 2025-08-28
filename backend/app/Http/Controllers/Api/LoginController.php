@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\UserControllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,6 +12,7 @@ class LoginController extends Controller
 
 	public function login()
     {
+        //dd('test');
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {

@@ -25,7 +25,7 @@ const submitForm = async () => {
   }
 
   // Pridobi CSRF piškotek
-  axios.get('/sanctum/csrf-cookie').then(() => {
+  axios.get('http://localhost:8000/sanctum/csrf-cookie').then(() => {
     // Pošlji podatke za registracijo
     axios.post('http://localhost:8000/register', {
       name: name.value,

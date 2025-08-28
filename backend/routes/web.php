@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
-use App\Http\Controllers\UserControllers\LoginController;
+use App\Http\Controllers\Api\LoginController; //tukaj sem začasno zamenjal UserControllers z Api @MaksT 28.8.
 use App\Http\Controllers\UserControllers\RegisterController;
 use App\Http\Controllers\StrankeController;
 

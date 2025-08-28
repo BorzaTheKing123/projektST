@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\UserControllers;
+namespace App\Http\Controllers\Api;
 
 use App\Features\UserFeatures\RegisterUserFeature;
 use Illuminate\Http\Request;
