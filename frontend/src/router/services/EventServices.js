@@ -1,81 +1,68 @@
 import axios from 'axios'
 
-// Axios bo pošiljal piškotke z vsako zahtevo
-axios.defaults.withCredentials = true
-
+// Axios instanca za API klice
 const apiClients = axios.create({
-    baseURL: 'http://localhost:8000/api/',
-    withCredentials: true,
-    headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-    }
+  baseURL: 'http://localhost:8000/api/',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
 })
 
-// Funkcija za nastavitev Authorization glave po prijavi
-function loadAuthToken() {
-    const savedToken = localStorage.getItem('auth_token')
-    if (savedToken) {
-     apiClients.defaults.headers.common['Authorization'] = `Bearer ${token}`
-}}
+// 🔐 Nastavi Authorization header, če je token v localStorage
+export function loadAuthToken() {
+  const savedToken = localStorage.getItem('auth_token')
+  if (savedToken) {
+    apiClients.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`
+  }
+}
 
+// 🔧 Pokliči ob zagonu aplikacije
 loadAuthToken()
 
-export default {
-    getRegister() {
-        return apiClients.get('/register')
-    },
-
-    register(name, email, phone) {
-        return apiClients.post('/register', {
-            name,
-            email,
-            phone
-        })
-    },
-
-    // 🔐 Prijava z avtomatskim CSRF klicem
-    async login(email, password) {
-        // Najprej pridobi CSRF piškotek
-       // await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
-        //    withCredentials: true
-       // })
-   
-
-
-        // Nato pošlji prijavo
-        const response = await apiClients.post('/login', {
-            email,
-            password
-        })
-
-        // Shrani token in nastavi glavo
+// 📦 API metode
+const EventServices = {
+  login(email, password) {
+    return apiClients.post('/login', { email, password })
+      .then(response => {
         const token = response.data.token
-    localStorage.setItem('auth_token', token)
-    loadAuthToken()
+        localStorage.setItem('auth_token', token)
+        loadAuthToken()
+        return response
+      })
+  },
 
-    return response
+  getStranke() {
+    return apiClients.get('/stranke')
+  },
 
-    },
+  logout() {
+    return apiClients.post('/logout').then(() => {
+      localStorage.removeItem('auth_token')
+      delete apiClients.defaults.headers.common['Authorization']
+    })
+  },
+  
+  getRegister() {
+    return apiClients.get('/register')
+  },
 
-    getStranka(id, stranke) {
-        return apiClients.get(`/stranke/${id}`, {
-            params: { stranke }
-        })
-    },
+  register(name, email, phone) {
+    return apiClients.post('/register', {
+      name,
+      email,
+      phone
+    })
+  },
 
-    getStranke() {
-        return apiClients.get('/stranke')
-    },
 
-    dodajStranke(data) {
-        return apiClients.post('/stranke/dodaj', data)
-    },
-
-    logout() {
-        return apiClients.post('/logout').then(() => {
-            localStorage.removeItem('auth_token')
-            delete apiClients.defaults.headers.common['Authorization']
-        })
-    }
+  // Dodaj po potrebi: register, getStranka, dodajStranke ...
 }
+
+export default EventServices
+export { apiClients }
+
+
+
+
+

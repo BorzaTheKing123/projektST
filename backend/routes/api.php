@@ -11,7 +11,18 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
+
+
+//za testiranje
+Route::middleware('auth:api')->get('/me', function () {
+    return response()->json(auth()->user());
+});
+
+Route::options('/{any}', function () {
+    return response('', 204);
+})->where('any', '.*');
 
 
 

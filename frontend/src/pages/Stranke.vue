@@ -1,65 +1,46 @@
 <script setup lang="ts">
 import ButtonComponent from '../components/buttonComponent.vue'
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import EventServices from '@/router/services/EventServices'
-
-// Sprejem 'id' props-a, ki ga pošlje Laravel/Inertia
-const props = defineProps({
-  id: {
-    type: [Number, String], // Tip je lahko število ali niz
-    required: true
-  },
-  stranke: {
-    type: Array as () => Customer[], // Ta del specificira da bodo oblike kot je Customer
-    default: () => [] // <--- The fix: provide a default empty array
-  }
-})
-const pojdiNaUrejanje = (customer: Customer) => {
-  window.location.href = `/stranke/${customer.name}`
-}
 
 // Tip za stranko za boljšo preglednost kode
 interface Customer {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  dejavnost: string;
+  id: number
+  name: string
+  email: string
+  phone: string
+  dejavnost: string
 }
 
-// --- NOVE REAKTIVNE SPREMENLJIVKE ---
-const customers = ref<Customer[]>([])      // Seznam strank z uporabo vmesnika Customer
-const isLoading = ref(true)               // Status nalaganja
-const error = ref<string | null>(null)    // Napaka, če pride do nje
-
+// --- Reaktivne spremenljivke ---
+const customers = ref<Customer[]>([])
+const isLoading = ref(true)
+const error = ref<string | null>(null)
 
 // GET request ob mountu
 onMounted(async () => {
-//  const url = `http://localhost:8000/stranke`
-//  console.log(`Pošiljam GET zahtevek na: ${url}`)
-// console.log(props.stranke)
-
- await  EventServices.getStranke()
-
-    .then(response => {
-      customers.value = props.stranke
-    })
-    .catch(err => {
-      console.error("Prišlo je do napake:", err)
-      error.value = "Ni bilo mogoče naložiti podatkov."
-    })
-    .finally(() => {
-      isLoading.value = false
-    })
+  try {
+    const response = await EventServices.getStranke()
+    customers.value = response.data // ← tukaj zdaj dejansko uporabimo podatke iz API-ja
+  } catch (err) {
+    console.error("Prišlo je do napake:", err)
+    error.value = "Ni bilo mogoče naložiti podatkov."
+  } finally {
+    isLoading.value = false
+  }
 })
 
-const dodajStranko = () => {
-  window.location.href = `${window.location.pathname}/dodaj`
+// Preusmeritev na urejanje stranke
+const pojdiNaUrejanje = (customer: Customer) => {
+  window.location.href = `/stranke/${customer.id}`
 }
 
-
+// Preusmeritev na dodajanje stranke
+const dodajStranko = () => {
+  window.location.href = `/stranke/dodaj`
+}
 </script>
+
 
 <template>
   <div class="napis">
