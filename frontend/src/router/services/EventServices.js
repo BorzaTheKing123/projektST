@@ -33,12 +33,12 @@ const EventServices = {
   },
 
   getStranke() {
-    return apiClients.get('/stranke')
+    return apiClients.get('/stranke')//nevem ce se uporablja
   },
 
   logout() {
     return apiClients.post('/logout').then(() => {
-      localStorage.removeItem('auth_token')
+      localStorage.removeItem('auth_token')//se sigurno se ne uporablja
       delete apiClients.defaults.headers.common['Authorization']
     })
   },
@@ -47,21 +47,29 @@ const EventServices = {
     return apiClients.get('/register')
   },
 
-  register(name, email, phone) {
+  register(name, email, password) {
     return apiClients.post('/register', {
       name,
       email,
-      phone
+      password
     })
   },
 
   addStranka(data) {
     return apiClients.post('stranke/dodaj', data)
   },
+  getStranka(id) {
+  return apiClients.get(`stranke/${id}`)
+  },
 
+  updateStranka(id, data) {
+    return apiClients.put(`stranke/${id}`, data)
+  },
 
+  deleteStranka(id) {
+    return apiClients.delete(`stranke/${id}`)
+  },
 
-  // Dodaj po potrebi: register, getStranka, dodajStranke ...
 }
 
 export default EventServices

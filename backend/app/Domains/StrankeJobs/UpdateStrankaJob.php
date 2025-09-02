@@ -7,23 +7,26 @@ use App\Models\Stranka;
 
 class UpdateStrankaJob
 {
-    public function __construct(private $stranka, private $request, private $info)
+    public function __construct(private Stranka $stranka, private $request, private $info)
     {
-
     }
 
     public function handle()
     {
-        //$info = Stranka::where('name', $this->stranka)->where('user_id', Auth::id())->first();
-        $info = $this->request->input();
-        $data = Stranka::where('name', $this->stranka)->where('user_id', Auth::id())->update($info);
-        if ($data > 0) 
-        {
-            return response()->json($data);
+        // Preverimo, ali je trenutni uporabnik lastnik stranke
+        if ($this->stranka->user_id !== Auth::id()) {
+            return response()->json([
+                'message' => 'Nimaš dovoljenja za urejanje te stranke.'
+            ], 403);
         }
 
+        // Posodobimo stranko z validiranimi podatki
+        $this->stranka->update($this->info);
+
         return response()->json([
-            'message' => 'Nimaš dovoljenja ali stranka ne obstaja!'
-        ], 409);
+            'message' => 'Stranka uspešno posodobljena.',
+            'stranka' => $this->stranka
+        ]);
     }
 }
+

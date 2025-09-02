@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Features\StrankeFeatures\EditStrankaFeature;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Stranka;
+use App\Features\StrankeFeatures\EditStrankaFeature;
 use App\Features\StrankeFeatures\StoreNewStrankaFeature;
 use App\Features\StrankeFeatures\ShowStrankeFeature;
 use App\Features\StrankeFeatures\UpdateStrankaFeature;
@@ -14,10 +15,8 @@ class StrankeController extends Controller
 {
     public function index(Request $request)
     {
-        // 🔍 Logiranje Authorization headerja za test
         \Log::info('Authorization header: ' . $request->header('Authorization'));
 
-        // ✅ Po želji lahko header pošlješ nazaj v response (če frontend mora videti)
         return response()->json((new ShowStrankeFeature())->handle())
                          ->header('Authorization', $request->header('Authorization'));
     }
@@ -34,17 +33,23 @@ class StrankeController extends Controller
 
     public function edit(String $stranka)
     {
-        return new EditStrankaFeature($stranka)->handle();
+        return (new EditStrankaFeature($stranka))->handle();
     }
 
-    public function update(String $stranka, Request $request)
+    public function update(Stranka $stranka, Request $request)
     {
-        return new UpdateStrankaFeature($stranka, $request)->handle();
+        return (new UpdateStrankaFeature($stranka, $request))->handle();
     }
 
     public function destroy(String $stranka)
     {
-        return new DeleteStrankaFeature($stranka)->handle();
+        return (new DeleteStrankaFeature($stranka))->handle();
+    }
+
+    public function show($id)
+    {
+        $stranka = Stranka::findOrFail($id);
+        return response()->json($stranka);
     }
 }
 

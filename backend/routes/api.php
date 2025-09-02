@@ -35,6 +35,7 @@ Route::middleware('api')->group(function () {
 
     Route::middleware('auth:api')->get('/stranke', [StrankeController::class, 'index'])->name('stranke.index');
     Route::middleware('auth:api')->get('/stranke/dodaj', [StrankeController::class, 'create']);
+    Route::middleware('auth:api')->get('/stranke/{id}', [StrankeController::class, 'show']);
     Route::middleware('auth:api')->post('/stranke/dodaj', [StrankeController::class, 'store']);
 //    Route::get('/stranke/{stranka}/edit', [StrankeController::class, 'edit']);
     Route::middleware('auth:api')->put('/stranke/{stranka}', [StrankeController::class, 'update']);

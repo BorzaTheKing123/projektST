@@ -34,11 +34,10 @@ const router = createRouter({
       props: true,
       component: StrankePage,
   },
-  {
-      path: URL + '/stranke/{name}',
-      name:'UrejanjeStrank',
-      props: true,
-      component: UrejanjeStrankPage,
+  { 
+    path: '/stranke/:id',
+    name: 'UrejanjeStrank',
+    component: UrejanjeStrankPage
   },
   {
       path: URL + '/stranke/dodaj',
