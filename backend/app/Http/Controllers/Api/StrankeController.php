@@ -41,7 +41,7 @@ class StrankeController extends Controller
         return (new UpdateStrankaFeature($stranka, $request))->handle();
     }
 
-    public function destroy(String $stranka)
+    public function destroy(Stranka $stranka)
     {
         return (new DeleteStrankaFeature($stranka))->handle();
     }
