@@ -15,7 +15,7 @@ interface Customer {
 
 const route = useRoute()
 const router = useRouter()
-const customerId = ref(Number(route.params.id)) // ✅ pretvori v številko
+const customerId = ref(Number(route.params.id))
 
 const name = ref('')
 const email = ref('')
@@ -24,9 +24,16 @@ const dejavnost = ref('')
 const error = ref<string | null>(null)
 const isLoading = ref(true)
 const isDeleting = ref(false)
+const isOwner = ref(false)
+const authUserId = ref<number | null>(null)
 
 onMounted(async () => {
   try {
+    // 1. Pridobi prijavljenega uporabnika
+    const userResponse = await EventServices.getCurrentUser()
+    authUserId.value = userResponse.data.id
+
+    // 2. Pridobi stranko
     const response = await EventServices.getStranka(customerId.value)
     const stranka: Customer = response.data
 
@@ -34,6 +41,9 @@ onMounted(async () => {
     email.value = stranka.email
     phone.value = stranka.phone
     dejavnost.value = stranka.dejavnost
+
+    // 3. Preveri lastništvo
+    isOwner.value = stranka.user_id === authUserId.value
   } catch (err) {
     error.value = 'Napaka pri nalaganju stranke.'
     console.error(err)
@@ -43,17 +53,10 @@ onMounted(async () => {
 })
 
 const updateCustomer = async () => {
-  const id = customerId.value
+  if (!isOwner.value) return
+
   try {
     await EventServices.updateStranka(customerId.value, {
-      id: customerId.value,
-      name: name.value,
-      email: email.value,
-      phone: phone.value,
-      dejavnost: dejavnost.value
-    })
-    console.log('ID:', customerId.value)
-    console.log('Payload:', {
       id: customerId.value,
       name: name.value,
       email: email.value,
@@ -70,7 +73,7 @@ const updateCustomer = async () => {
 }
 
 const deleteCustomer = async () => {
-  if (isDeleting.value) return
+  if (!isOwner.value || isDeleting.value) return
   const confirmed = confirm(`Ali res želite izbrisati stranko ${name.value}?`)
   if (!confirmed) return
 
@@ -88,22 +91,23 @@ const deleteCustomer = async () => {
 }
 </script>
 
+
 <template>
   <div class="form-card">
     <h1 class="title">Uredi stranko</h1>
 
     <div v-if="isLoading">Nalaganje...</div>
     <div v-else>
-      <div v-if="error" class="error-message">{{ error }}</div>
+      <div v-if="error" class="error-message">{{ error }}</div><br>
 
       <div class="form-group">
-        <input v-model="name" type="text" placeholder="Ime" />
-        <input v-model="email" type="email" placeholder="Email" />
-        <input v-model="phone" type="text" placeholder="Telefon" />
-        <input v-model="dejavnost" type="text" placeholder="Dejavnost" />
+        <input v-model="name" type="text" placeholder="Ime" :disabled="!isOwner" />
+        <input v-model="email" type="email" placeholder="Email" :disabled="!isOwner" />
+        <input v-model="phone" type="text" placeholder="Telefon" :disabled="!isOwner" />
+        <input v-model="dejavnost" type="text" placeholder="Dejavnost" :disabled="!isOwner" />
       </div>
 
-      <div class="actions">
+      <div class="actions" v-if="isOwner">
         <ButtonComponent text="Shrani spremembe" @click="updateCustomer" class="update-btn" />
         <ButtonComponent text="Izbriši" @click="deleteCustomer" class="delete-btn" />
       </div>
@@ -112,6 +116,22 @@ const deleteCustomer = async () => {
 </template>
 
 <style scoped>
+input:disabled {
+  background-color: #edf2f7;
+  color: #718096;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #e53e3e;
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
 .form-card {
   max-width: 600px;
   margin: 40px auto;

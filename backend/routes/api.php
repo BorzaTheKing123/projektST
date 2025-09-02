@@ -24,6 +24,11 @@ Route::options('/{any}', function () {
     return response('', 204);
 })->where('any', '.*');
 
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
 
 
 Route::middleware('api')->group(function () {

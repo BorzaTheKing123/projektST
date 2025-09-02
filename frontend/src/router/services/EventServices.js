@@ -69,6 +69,10 @@ const EventServices = {
   deleteStranka(id) {
     return apiClients.delete(`stranke/${id}`)
   },
+  getCurrentUser() {
+    return apiClients.get('user')
+  },
+
 
 }
 
