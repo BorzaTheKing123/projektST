@@ -21,7 +21,10 @@ const error = ref<string | null>(null)
 onMounted(async () => {
   try {
     const response = await EventServices.getStranke()
-    customers.value = response.data // ← tukaj zdaj dejansko uporabimo podatke iz API-ja
+    customers.value = response.data.original
+    console.log('Response:', response)
+
+ // ← tukaj zdaj dejansko uporabimo podatke iz API-ja
   } catch (err) {
     console.error("Prišlo je do napake:", err)
     error.value = "Ni bilo mogoče naložiti podatkov."

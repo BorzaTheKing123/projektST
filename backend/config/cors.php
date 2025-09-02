@@ -2,20 +2,13 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure your settings for cross-origin resource sharing
-    | or "CORS". This determines what cross-origin operations may execute
-    | in web browsers. You are free to adjust these settings as needed.
-    |
-    | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-    |
-    */
-
-    'paths' => ['api/*', 'login', 'register', 'broadcasting/auth', 'stranke*', ],
+    'paths' => [
+        'api/*',
+        'login',
+        'register',
+        'broadcasting/auth',
+        'stranke*',
+    ],
 
     'allowed_methods' => ['*'],
 
@@ -23,11 +16,14 @@ return [
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['Authorization', 'Content-Type'],
+    'allowed_headers' => ['Authorization', 'Content-Type', 'Accept', 'X-Requested-With'],
 
-    'exposed_headers' => [],
+
+    // 🔥 Izpostavi Authorization header, da ga frontend vidi v response-u
+    'exposed_headers' => ['Authorization'],
 
     'max_age' => 0,
 
+    // ❌ Cookieji niso uporabljeni, zato naj bo false
     'supports_credentials' => false,
 ];

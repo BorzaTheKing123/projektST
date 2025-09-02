@@ -4,15 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Features\UserFeatures\LoginUserFeature;
 
 class LoginController extends Controller
 {
-
-
-	public function login()
+    public function login()
     {
-
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
@@ -21,4 +17,15 @@ class LoginController extends Controller
 
         return $this->respondWithToken($token);
     }
+
+    // 🔧 Dodaj to metodo spodaj
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
 }
+

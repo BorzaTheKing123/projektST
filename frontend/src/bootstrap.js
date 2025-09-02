@@ -9,7 +9,7 @@ import axios from 'axios';
 window.Pusher = Pusher;
 window.axios = axios;
 
-window.axios.defaults.withCredentials = true;
+window.axios.defaults.withCredentials = false;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.Echo = new Echo({
@@ -25,7 +25,7 @@ window.Echo = new Echo({
                     socket_id: socketId,
                     channel_name: channel.name
                 }, {
-                    withCredentials: true
+                    withCredentials: false
                 })
                 .then(response => {
                     callback(false, response.data);

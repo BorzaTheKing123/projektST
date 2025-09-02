@@ -1,50 +1,43 @@
 <script setup lang="ts">
-
 import { ref } from 'vue'
-import axios from 'axios'
+import EventServices from '@/router/services/EventServices'
 import ButtonComponent from '../components/buttonComponent.vue'
 
-const props = defineProps({
-  id: {
-    type: [Number, String],
-    required: true
-  }
-})
-  
 const name = ref('')
 const email = ref('')
 const phone = ref('')
 const dejavnost = ref('')
 const error = ref<string | null>(null)
 const izpis = ref(false)
-const napaka = ref('') 
+const napaka = ref('')
 
 const addCustomer = async () => {
-  console.log("hi")
   error.value = null
+
   if (!name.value || !email.value) {
-    error.value = "Polji Ime in Email sta obvezni."
+    error.value = 'Polji Ime in Email sta obvezni.'
     return
   }
-  const url = `/stranke/dodaj`
+
+  const payload = {
+    name: name.value,
+    email: email.value,
+    phone: phone.value,
+    dejavnost: dejavnost.value
+  }
+
   try {
-    const res = await axios.post(url, {
-      name: name.value,
-      email: email.value,
-      phone: phone.value,
-      dejavnost: dejavnost.value,
-      id: props.id
-    })
+    const res = await EventServices.addStranka(payload)
     console.log(res.data)
-    window.location.href = `/stranke`;
     alert('Stranka je bila uspešno dodana!')
+    window.location.href = '/stranke'
   } catch (err) {
-    console.error("Napaka pri dodajanju stranke:", err)
-    error.value = "Prišlo je do napake pri shranjevanju. Prosimo, preverite podatke."
+    console.error('Napaka pri dodajanju stranke:', err)
+    error.value = 'Prišlo je do napake pri shranjevanju. Prosimo, preverite podatke.'
     setTimeout(() => {
-  izpis.value = false;
-  napaka.value = '';
-}, 5000); 
+      izpis.value = false
+      napaka.value = ''
+    }, 5000)
   }
 }
 </script>
@@ -58,17 +51,20 @@ const addCustomer = async () => {
     </div>
 
     <div class="form-group">
-      <input v-model="name" type="text" placeholder="Ime:"/>
+      <input v-model="name" type="text" placeholder="Ime:" />
       <input v-model="email" type="email" placeholder="Email:" />
       <input v-model="phone" type="text" placeholder="Telefonska številka:" />
       <input v-model="dejavnost" type="text" placeholder="Dejavnost:" />
     </div>
-    <ButtonComponent 
-      text="Shrani" 
-      @click.stop.prevent="addCustomer" 
-      class="submit-btn"/>
+
+    <ButtonComponent
+      text="Shrani"
+      @click.stop.prevent="addCustomer"
+      class="submit-btn"
+    />
   </div>
 </template>
+
 
 <style scoped>
 /* 5. Vsi spodnji stili so novi ali posodobljeni, da ustrezajo vaši želeni podobi */

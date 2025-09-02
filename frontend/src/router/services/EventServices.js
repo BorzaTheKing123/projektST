@@ -55,6 +55,11 @@ const EventServices = {
     })
   },
 
+  addStranka(data) {
+    return apiClients.post('stranke/dodaj', data)
+  },
+
+
 
   // Dodaj po potrebi: register, getStranka, dodajStranke ...
 }

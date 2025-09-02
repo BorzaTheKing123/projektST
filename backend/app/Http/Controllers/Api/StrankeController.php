@@ -12,9 +12,14 @@ use App\Features\StrankeFeatures\DeleteStrankaFeature;
 
 class StrankeController extends Controller
 {
-    public function index()
-    {   
-        return new ShowStrankeFeature()->handle();
+    public function index(Request $request)
+    {
+        // 🔍 Logiranje Authorization headerja za test
+        \Log::info('Authorization header: ' . $request->header('Authorization'));
+
+        // ✅ Po želji lahko header pošlješ nazaj v response (če frontend mora videti)
+        return response()->json((new ShowStrankeFeature())->handle())
+                         ->header('Authorization', $request->header('Authorization'));
     }
 
     public function create()
@@ -27,8 +32,8 @@ class StrankeController extends Controller
         return (new StoreNewStrankaFeature($request))->handle();
     }
 
-    public function edit(String $stranka) // $id je samo zato da sprejme id od userja, ker sta podana 2 parametra
-    {   
+    public function edit(String $stranka)
+    {
         return new EditStrankaFeature($stranka)->handle();
     }
 
@@ -42,3 +47,4 @@ class StrankeController extends Controller
         return new DeleteStrankaFeature($stranka)->handle();
     }
 }
+
