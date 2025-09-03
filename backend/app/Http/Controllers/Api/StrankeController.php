@@ -17,8 +17,7 @@ class StrankeController extends Controller
     {
         \Log::info('Authorization header: ' . $request->header('Authorization'));
 
-        return response()->json((new ShowStrankeFeature())->handle())
-                         ->header('Authorization', $request->header('Authorization'));
+        return response()->json((new ShowStrankeFeature())->handle())->header('Authorization', $request->header('Authorization'));
     }
 
     public function create()

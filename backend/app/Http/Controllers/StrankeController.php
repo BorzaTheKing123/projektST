@@ -26,7 +26,7 @@ class StrankeController extends Controller
         return (new StoreNewStrankaFeature($request))->handle();
     }
 
-    public function edit(String $stranka) // $id je samo zato da sprejme id od userja, ker sta podana 2 parametra
+    public function edit(String $stranka)
     {   
         return new EditStrankaFeature($stranka)->handle();
     }

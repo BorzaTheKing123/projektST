@@ -14,8 +14,6 @@ const router = useRouter()
 const submitForm = async () => {
   try {
     const response = await EventServices.login(email.value, password.value)
-
-    // ✅ Token je shranjen in header nastavljen
     izpis.value = false
     router.push('/stranke')
   } catch (error) {

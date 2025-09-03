@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView} from 'vue-router'
 import { loadAuthToken } from '@/router/services/EventServices'
 onMounted(() =>{
-
+// da imas stalno token tudi ce refreshas
 loadAuthToken() 
 
 })
