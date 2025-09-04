@@ -19,5 +19,10 @@ class Stranka extends Model
     {
         return $this->hasMany(Tveganje::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
 }

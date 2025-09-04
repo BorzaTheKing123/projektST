@@ -8,13 +8,26 @@ use App\Features\StrankeFeatures\StoreNewStrankaFeature;
 use App\Features\StrankeFeatures\ShowStrankeFeature;
 use App\Features\StrankeFeatures\UpdateStrankaFeature;
 use App\Features\StrankeFeatures\DeleteStrankaFeature;
+use App\Models\Stranka;
+
 
 class StrankeController extends Controller
 {
-    public function index()
-    {   
-        return new ShowStrankeFeature()->handle();
+public function index(Request $request)
+{
+
+    $user = $request->user();
+
+    if (!$user) {
+        return response()->json(['error' => 'Uporabnik ni prijavljen'], 401);
     }
+
+    $stranke = Stranka::where('user_id', $user->id)->get();
+
+    return response()->json($stranke);
+}
+
+
 
     public function create()
     {
@@ -23,6 +36,9 @@ class StrankeController extends Controller
 
     public function store(Request $request)
     {
+        $validated['user_id'] = $request->user()->id;
+        $stranka = Stranka::create($validated);
+
         return (new StoreNewStrankaFeature($request))->handle();
     }
 

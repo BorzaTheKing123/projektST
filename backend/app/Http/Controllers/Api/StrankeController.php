@@ -30,7 +30,8 @@ class StrankeController extends Controller
         return (new StoreNewStrankaFeature($request))->handle();
     }
 
-    public function edit(String $stranka)
+
+    public function edit(Stranka $stranka)
     {
         return (new EditStrankaFeature($stranka))->handle();
     }
@@ -44,6 +45,7 @@ class StrankeController extends Controller
     {
         return (new DeleteStrankaFeature($stranka))->handle();
     }
+
 
     public function show($id)
     {

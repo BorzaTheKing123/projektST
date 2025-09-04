@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import EventServices from '@/router/services/EventServices'
+import { ref , onMounted } from 'vue'
+import EventServices, { loadAuthToken } from '@/router/services/EventServices'
 import ButtonComponent from '../components/buttonComponent.vue'
 
 const ime = ref('')
@@ -9,6 +9,19 @@ const ukrepi = ref('')
 const error = ref<string | null>(null)
 const izpis = ref(false)
 const napaka = ref('')
+const stranke = ref<{ id: number; name: string }[]>([])
+const selectedStrankaId = ref<number | null>(null)
+
+onMounted(async () => {
+    loadAuthToken()
+  try {
+    const res = await EventServices.getStranke()
+    stranke.value = res.data.original
+  } catch (err) {
+    console.error('Napaka pri nalaganju strank:', err)
+  }
+})
+
 
 const addTveganje = async () => {
   error.value = null
@@ -19,10 +32,11 @@ const addTveganje = async () => {
   }
 
   const payload = {
-    ime: ime.value,
-    stranka_id: strankaId.value,
-    ukrepi: ukrepi.value
-  }
+  ime: ime.value,
+  stranka_id: selectedStrankaId.value,
+  ukrepi: ukrepi.value
+}
+
 
   try {
     const res = await EventServices.createTveganje(payload)
@@ -50,7 +64,13 @@ const addTveganje = async () => {
 
     <div class="form-group">
       <input v-model="ime" type="text" placeholder="Ime tveganja:" />
-      <input v-model="strankaId" type="number" placeholder="ID stranke:" />
+      <select v-model="selectedStrankaId">
+  <option disabled value="">Izberi stranko</option>
+  <option v-for="stranka in stranke" :key="stranka.id" :value="stranka.id">
+    {{ stranka.name }}
+  </option>
+</select>
+
       <textarea v-model="ukrepi" placeholder="Ukrepi:" rows="4" />
     </div>
 
@@ -60,6 +80,11 @@ const addTveganje = async () => {
       class="submit-btn"
     />
   </div>
+  <pre>{{ ime }}</pre>
+<pre>{{ ukrepi }}</pre>
+<pre>{{ selectedStrankaId }}</pre>
+
+
 </template>
 
 <style scoped>
@@ -132,4 +157,20 @@ textarea:focus {
   border-radius: 6px;
   text-align: center;
 }
+select {
+  padding: 0.85rem;
+  border: 1px solid #ccc; /* rahlo siv rob */
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #2d3748;
+  transition: border-color 0.2s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: #667eea; /* modra ob fokusu */
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+}
+
 </style>

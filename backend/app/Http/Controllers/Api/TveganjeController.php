@@ -28,6 +28,7 @@ class TveganjeController extends Controller
     // ✅ Shrani novo tveganje
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'ime' => 'required|string|max:255',
             'stranka_id' => 'required|exists:stranke,id',
