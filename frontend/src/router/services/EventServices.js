@@ -1,3 +1,4 @@
+
 import axios from 'axios'
 
 // Axios instanca za API klice
@@ -22,6 +23,7 @@ loadAuthToken()
 
 // 📦 API metode
 const EventServices = {
+  // Prijava
   login(email, password) {
     return apiClients.post('/login', { email, password })
       .then(response => {
@@ -32,17 +34,15 @@ const EventServices = {
       })
   },
 
-  getStranke() {
-    return apiClients.get('/stranke')//nevem ce se uporablja
-  },
-
+  // Odjava
   logout() {
     return apiClients.post('/logout').then(() => {
-      localStorage.removeItem('auth_token')//se sigurno se ne uporablja
+      localStorage.removeItem('auth_token')
       delete apiClients.defaults.headers.common['Authorization']
     })
   },
-  
+
+  // Registracija
   getRegister() {
     return apiClients.get('/register')
   },
@@ -55,11 +55,17 @@ const EventServices = {
     })
   },
 
+  // Stranke
+  getStranke() {
+    return apiClients.get('/stranke')
+  },
+
+  getStranka(id) {
+    return apiClients.get(`stranke/${id}`)
+  },
+
   addStranka(data) {
     return apiClients.post('stranke/dodaj', data)
-  },
-  getStranka(id) {
-  return apiClients.get(`stranke/${id}`)
   },
 
   updateStranka(id, data) {
@@ -69,11 +75,32 @@ const EventServices = {
   deleteStranka(id) {
     return apiClients.delete(`stranke/${id}`)
   },
-  getCurrentUser() {
-    return apiClients.get('user')
+
+  // Tveganja
+  getTveganja() {
+    return apiClients.get('tveganja')
   },
 
+  getTveganje(id) {
+    return apiClients.get(`tveganja/${id}`)
+  },
 
+  createTveganje(data) {
+    return apiClients.post('tveganja', data)
+  },
+
+  updateTveganje(id, payload) {
+    return apiClients.put(`tveganja/${id}`, payload)
+  },
+
+  deleteTveganje(id) {
+    return apiClients.delete(`tveganja/${id}`)
+  },
+
+  // Uporabnik
+  getCurrentUser() {
+    return apiClients.get('user')
+  }
 }
 
 export default EventServices

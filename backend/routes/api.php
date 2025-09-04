@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\StrankeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\TveganjeController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -45,4 +46,11 @@ Route::middleware('api')->group(function () {
 //    Route::get('/stranke/{stranka}/edit', [StrankeController::class, 'edit']);
     Route::middleware('auth:api')->put('/stranke/{stranka}', [StrankeController::class, 'update']);
     Route::middleware('auth:api')->delete('/stranke/{stranka}', [StrankeController::class, 'destroy']);
+    
+    Route::apiResource('tveganja', TveganjeController::class);
+    Route::get('/tveganja/{id}', [TveganjeController::class, 'show']);
+    Route::post('/tveganja', [TveganjeController::class, 'store']);
+    Route::put('/tveganja/{id}', [TveganjeController::class, 'update']);
+
+
 });

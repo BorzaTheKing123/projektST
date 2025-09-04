@@ -15,4 +15,9 @@ class Stranka extends Model
         'phone',
         'dejavnost'
     ];
+    public function tveganje()
+    {
+        return $this->hasMany(Tveganje::class);
+    }
+
 }

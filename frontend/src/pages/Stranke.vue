@@ -84,6 +84,14 @@ const dodajStranko = () => {
       <ButtonComponent text="DODAJ STRANKE" @click="dodajStranko"  class="actions-container"></ButtonComponent>
     </div>
   </div>
+  <nav class="sidebar">
+    <h2 class="sidebar-title">SBR APLIKACIJA</h2>
+    <ul class="sidebar-links">
+      <li><router-link to="/stranke" active-class="active">STRANKE</router-link></li>
+      <li><router-link to="/tveganja" active-class="active">TVEGANJA</router-link></li>
+    </ul>
+  </nav>
+
 
 </template>
 
@@ -170,4 +178,48 @@ td {
 .clickable-row:hover {
   background-color: #edf2f7;
 }
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 220px;
+  background-color: #2d3748;
+  color: #fff;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  color: #f7fafc;
+}
+
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-links li {
+  margin-bottom: 1rem;
+}
+
+.sidebar-links a {
+  color: #cbd5e0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.sidebar-links a:hover {
+  color: #ffffff;
+}
+
+.active {
+  color: #ffffff;
+  font-weight: 700;
+}
+
 </style>

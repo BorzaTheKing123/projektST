@@ -5,6 +5,9 @@ import LoginPage from '../pages/Login.vue'
 import StrankePage from '../pages/Stranke.vue'
 import UrejanjeStrankPage from '../pages/UrejanjeStranke.vue'
 import AddClientsPage from '../pages/AddClients.vue'
+import TveganjaPage from '../pages/Tveganje.vue'
+import DodajTveganjePage from '../pages/DodajTveganje.vue'
+import UrediTveganjePage from '../pages/UrejanjeTveganje.vue'
 
 const URL = ''
 
@@ -45,6 +48,24 @@ const router = createRouter({
       props: true,
       component: AddClientsPage,
   },
+  { 
+        path: '/tveganja',
+        name: 'Tveganje',
+        component: TveganjaPage
+  },
+  {
+        path: '/tveganja/dodaj',
+        name: 'DodajTveganje',
+         component: DodajTveganjePage,
+},
+{
+        path: '/tveganja/:id',
+        name: 'UrediTveganje',
+        component: UrediTveganjePage,
+        props: true
+},
+
+
 
   ],
 })
