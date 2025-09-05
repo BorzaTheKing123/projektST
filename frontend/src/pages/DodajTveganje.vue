@@ -8,17 +8,13 @@ const ukrepi = ref('')
 const error = ref<string | null>(null)
 const izpis = ref(false)
 const napaka = ref('')
-const stranke = ref<{ id: number; name: string }[]>([])
+const stranke = ref<any[]>([])
 const selectedStrankaId = ref<number | null>(null)
 
 onMounted(async () => {
     loadAuthToken()
-  try {
-    const res = await EventServices.getStranke()
-    stranke.value = res.data.original
-  } catch (err) {
-    console.error('Napaka pri nalaganju strank:', err)
-  }
+  const res = await EventServices.getMojeStranke()
+  stranke.value = res.data
 })
 
 
@@ -64,11 +60,11 @@ const addTveganje = async () => {
     <div class="form-group">
       <input v-model="ime" type="text" placeholder="Ime tveganja:" />
       <select v-model="selectedStrankaId">
-  <option disabled value="">Izberi stranko</option>
   <option v-for="stranka in stranke" :key="stranka.id" :value="stranka.id">
     {{ stranka.name }}
   </option>
 </select>
+
 
       <textarea v-model="ukrepi" placeholder="Ukrepi:" rows="4" />
     </div>
