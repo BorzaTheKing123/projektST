@@ -52,5 +52,13 @@ class StrankeController extends Controller
         $stranka = Stranka::findOrFail($id);
         return response()->json($stranka);
     }
+    public function mojeStranke(Request $request)
+{
+    $user = $request->user();
+
+    $stranke = \App\Models\Stranka::where('user_id', $user->id)->get();
+
+    return response()->json($stranke);
+}
 }
 

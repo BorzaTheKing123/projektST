@@ -8,14 +8,14 @@ use App\Models\Tveganje;
 
 class ValidateTveganjeJob
 {
-    public function __construct(private Request $request, private ?Tveganje $tveganje = null)
+    public function __construct(private Request $request, private ?Tveganje $tveganja = null)
     {
     }
 
     public function handle()
     {
         // Pridobi ID stranke, če obstaja (pri urejanju)
-        $ignoreId = $this->tveganje?->id ?? '';
+        $ignoreId = $this->tveganja?->id ?? '';
 
         // Nastavi pravila
         $rules = [

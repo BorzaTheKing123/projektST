@@ -7,16 +7,16 @@ use App\Domains\TveganjeJobs\ValidateTveganjeJob;
 
 class UpdateTveganjeFeature
 {
-    public function __construct(private $tveganje, private $request)
+    public function __construct(private $tveganja, private $request)
     {
     }
 
     public function handle()
     {
         // Validacija z dostopom do stranke (zaradi email izjeme)
-        $info = (new ValidateTveganjeJob($this->request, $this->tveganje))->handle();
+        $info = (new ValidateTveganjeJob($this->request, $this->tveganja))->handle();
 
         // Posodobitev stranke
-        return (new UpdateTveganjeJob($this->tveganje, $this->request, $info))->handle();
+        return (new UpdateTveganjeJob($this->tveganja, $this->request, $info))->handle();
     }
 }

@@ -15,7 +15,7 @@ class Tveganje extends Model
         'ukrepi'       // opis ukrepov
     ];
 
-    // Relacija: tveganje pripada eni stranki
+    // Relacija: tveganja pripada eni stranki
     public function stranka()
     {
         return $this->belongsTo(Stranka::class);

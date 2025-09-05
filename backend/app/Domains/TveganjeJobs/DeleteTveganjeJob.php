@@ -7,21 +7,21 @@ use App\Models\Tveganje;
 
 class DeleteTveganjeJob
 {
-    public function __construct(private Tveganje $tveganje)
+    public function __construct(private Tveganje $tveganja)
     {
     }
 
     public function handle()
     {
         // Preverimo, ali je trenutni uporabnik lastnik tveganja
-        if ($this->tveganje->user_id !== Auth::id()) {
+        if ($this->tveganja->user_id !== Auth::id()) {
             return response()->json([
                 'message' => 'Nimaš dovoljenja za brisanje tega tveganja.'
             ], 403);
         }
 
-        // Izbrišemo tveganje prek modela
-        $this->tveganje->delete();
+        // Izbrišemo tveganja prek modela
+        $this->tveganja->delete();
 
         return response()->json([
             'message' => 'Tveganje uspešno izbrisano.'

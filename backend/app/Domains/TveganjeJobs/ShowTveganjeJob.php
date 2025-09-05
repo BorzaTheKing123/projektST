@@ -18,8 +18,8 @@ class ShowTveganjeJob
      */
     public function handle()
     {
-        $tveganje = DB::table('tveganje')->get();
-        return response()->json($tveganje);;
+        $tveganja = DB::table('tveganja')->get();
+        return response()->json($tveganja);;
     }
         
 }

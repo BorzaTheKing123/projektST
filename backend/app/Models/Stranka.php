@@ -15,7 +15,7 @@ class Stranka extends Model
         'phone',
         'dejavnost'
     ];
-    public function tveganje()
+    public function tveganja()
     {
         return $this->hasMany(Tveganje::class);
     }

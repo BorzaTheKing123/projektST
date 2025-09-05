@@ -100,6 +100,9 @@ const EventServices = {
   // Uporabnik
   getCurrentUser() {
     return apiClients.get('user')
+  },
+  getMojeStranke() {
+    return apiClients.get('/moje-stranke')
   }
 }
 

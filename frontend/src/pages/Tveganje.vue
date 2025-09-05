@@ -7,6 +7,7 @@ interface Tveganje {
   id: number
   ime: string
   ukrepi: string
+  stranka_id: number
   stranka: {
     name: string
   }
@@ -32,8 +33,8 @@ const dodajTveganje = () => {
   window.location.href = '/tveganja/dodaj'
 }
 
-const pojdiNaUrejanje = (tveganje: Tveganje) => {
-  window.location.href = `/tveganja/${tveganje.id}`
+const pojdiNaUrejanje = (tveganja: Tveganje) => {
+  window.location.href = `/tveganja/${tveganja.id}`
 }
 </script>
 
@@ -69,14 +70,14 @@ const pojdiNaUrejanje = (tveganje: Tveganje) => {
           </thead>
           <tbody>
             <tr
-              v-for="tveganje in tveganja"
-              :key="tveganje.id"
-              @click="pojdiNaUrejanje(tveganje)"
+              v-for="tveganja in tveganja"
+              :key="tveganja.id"
+              @click="pojdiNaUrejanje(tveganja)"
               class="clickable-row"
             >
-              <td>{{ tveganje.ime }}</td>
-              <td>{{ tveganje.stranka?.name || '—' }}</td>
-              <td>{{ tveganje.ukrepi }}</td>
+              <td>{{ tveganja.ime }}</td>
+              <td>{{ tveganja.stranka?.name || '—' }}</td>
+              <td>{{ tveganja.ukrepi }}</td>
             </tr>
           </tbody>
         </table>

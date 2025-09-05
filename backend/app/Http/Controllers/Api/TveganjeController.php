@@ -17,15 +17,15 @@ class TveganjeController extends Controller
         return response()->json($tveganja);
     }
 
-    // ✅ Pridobi eno tveganje za urejanje
+    // ✅ Pridobi eno tveganja za urejanje
     public function show($id)
     {
-        $tveganje = Tveganje::with('stranka')->findOrFail($id);
+        $tveganja = Tveganje::with('stranka')->findOrFail($id);
 
-        return response()->json($tveganje);
+        return response()->json($tveganja);
     }
 
-    // ✅ Shrani novo tveganje
+    // ✅ Shrani novo tveganja
     public function store(Request $request)
     {
 
@@ -35,35 +35,50 @@ class TveganjeController extends Controller
             'ukrepi' => 'required|string'
         ]);
 
-        $tveganje = Tveganje::create($validated);
+        $tveganja = Tveganje::create($validated);
 
         return response()->json([
             'message' => 'Tveganje uspešno dodano.',
-            'data' => $tveganje
+            'data' => $tveganja
         ], 201);
     }
 
-    // ✅ Posodobi obstoječe tveganje
-    public function update(Request $request, Tveganje $tveganje)
-    {
-        $validated = $request->validate([
-            'ime' => 'required|string|max:255',
-            'stranka_id' => 'required|exists:stranke,id',
-            'ukrepi' => 'required|string'
-        ]);
+    // ✅ Posodobi obstoječe tveganja
+    public function update(Request $request, Tveganje $tveganja)
+{
+    $validated = $request->validate([
+        'ime' => 'required|string|max:255',
+        'stranka_id' => 'required|exists:stranke,id',
+        'ukrepi' => 'required|string'
+    ]);
 
-        $tveganje->update($validated);
+    \Log::info('Prejemam za posodobitev:', $validated);
 
+    $user = $request->user();
+    $stranka = \App\Models\Stranka::where('id', $validated['stranka_id'])
+        ->where('user_id', $user->id)
+        ->first();
+
+    if (!$stranka) {
         return response()->json([
-            'message' => 'Tveganje uspešno posodobljeno.',
-            'data' => $tveganje
-        ]);
+            'message' => 'Ne moreš posodobiti tveganja za stranko, ki ni tvoja.'
+        ], 403);
     }
 
-    // ✅ Izbriši tveganje
-    public function destroy(Tveganje $tveganje)
+    $updated = $tveganja->update($validated);
+    \Log::info('Ali je posodobitev uspela?', ['status' => $updated]);
+
+    $tveganja->refresh();
+
+    return response()->json([
+        'message' => 'Tveganje uspešno posodobljeno.',
+        'data' => $tveganja
+    ]);
+}
+    // ✅ Izbriši tveganja
+    public function destroy(Tveganje $tveganja)
     {
-        $tveganje->delete();
+        $tveganja->delete();
 
         return response()->json([
             'message' => 'Tveganje uspešno izbrisano.'

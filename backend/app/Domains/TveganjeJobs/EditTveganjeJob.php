@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class EditTveganjeJob
 {
-    public function __construct(private $tveganje)
+    public function __construct(private $tveganja)
     {
         
     }
@@ -18,7 +18,7 @@ class EditTveganjeJob
      */
     public function handle()
     {
-        $data = DB::table('tveganje')->where('name', $this->tveganje)->first();
+        $data = DB::table('tveganja')->where('name', $this->tveganja)->first();
         return response()->json($data);
     }
 }

@@ -29,7 +29,7 @@ Route::options('/{any}', function () {
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::middleware('auth:api')->get('/moje-stranke', [StrankeController::class, 'mojeStranke']);
 // 📦 Glavna API skupina
 Route::middleware('api')->group(function () {
 
@@ -51,8 +51,8 @@ Route::middleware('api')->group(function () {
 
         // 📁 TVEGANJA (REST + dodatne rute)
         Route::apiResource('tveganja', TveganjeController::class);
-        Route::get('/tveganja/{id}', [TveganjeController::class, 'show']);
+        Route::get('/tveganja/{tveganja}', [TveganjeController::class, 'show']);
         Route::post('/tveganja', [TveganjeController::class, 'store']);
-        Route::put('/tveganja/{id}', [TveganjeController::class, 'update']);
+        Route::put('/tveganja/{tveganja}', [TveganjeController::class, 'update']);
     });
 });

@@ -6,33 +6,46 @@ import ButtonComponent from '../components/buttonComponent.vue'
 
 interface Tveganje {
   id: number
-  stranka_id: number
   ime: string
   ukrepi: string
   stranka: {
+    id: number
     name: string
+    user_id: number
   }
 }
 
 const route = useRoute()
 const router = useRouter()
-const tveganjeId = ref(Number(route.params.id))
+const tveganjaId = ref(Number(route.params.id))
 
 const ime = ref('')
 const ukrepi = ref('')
 const strankaName = ref('')
+const strankaId = ref<number | null>(null)
 const error = ref<string | null>(null)
 const isLoading = ref(true)
 const isDeleting = ref(false)
+const isOwner = ref(false)
+const authUserId = ref<number | null>(null)
 
 onMounted(async () => {
   try {
-    const response = await EventServices.getTveganje(tveganjeId.value)
-    const tveganje: Tveganje = response.data
+    // 1. Pridobi prijavljenega uporabnika
+    const userResponse = await EventServices.getCurrentUser()
+    authUserId.value = userResponse.data.id
 
-    ime.value = tveganje.ime
-    ukrepi.value = tveganje.ukrepi
-    strankaName.value = tveganje.stranka.name
+    // 2. Pridobi tveganja
+    const response = await EventServices.getTveganje(tveganjaId.value)
+    const tveganja: Tveganje = response.data
+
+    ime.value = tveganja.ime
+    ukrepi.value = tveganja.ukrepi
+    strankaName.value = tveganja.stranka.name
+    strankaId.value = tveganja.stranka.id
+
+    // 3. Preveri lastništvo stranke
+    isOwner.value = tveganja.stranka.user_id === authUserId.value
   } catch (err) {
     error.value = 'Napaka pri nalaganju tveganja.'
     console.error(err)
@@ -42,11 +55,13 @@ onMounted(async () => {
 })
 
 const updateTveganje = async () => {
+  if (!isOwner.value) return
+
   try {
-    await EventServices.updateTveganje(tveganjeId.value, {
+    await EventServices.updateTveganje(tveganjaId.value, {
       ime: ime.value,
       ukrepi: ukrepi.value,
-      stranka_id: tveganjeId.value // če je potrebno, sicer odstrani
+      stranka_id: strankaId.value
     })
 
     alert('Tveganje je bilo uspešno posodobljeno!')
@@ -58,13 +73,13 @@ const updateTveganje = async () => {
 }
 
 const deleteTveganje = async () => {
-  if (isDeleting.value) return
-  const confirmed = confirm(`Ali res želite izbrisati tveganje "${ime.value}"?`)
+  if (!isOwner.value || isDeleting.value) return
+  const confirmed = confirm(`Ali res želite izbrisati tveganja "${ime.value}"?`)
   if (!confirmed) return
 
   isDeleting.value = true
   try {
-    await EventServices.deleteTveganje(tveganjeId.value)
+    await EventServices.deleteTveganje(tveganjaId.value)
     alert('Tveganje je bilo uspešno izbrisano!')
     router.push('/tveganja')
   } catch (err) {
@@ -78,19 +93,19 @@ const deleteTveganje = async () => {
 
 <template>
   <div class="form-card">
-    <h1 class="title">Uredi tveganje</h1>
+    <h1 class="title">Uredi tveganja</h1>
 
     <div v-if="isLoading">Nalaganje...</div>
     <div v-else>
       <div v-if="error" class="error-message">{{ error }}</div><br>
 
       <div class="form-group">
-        <input v-model="ime" type="text" placeholder="Ime tveganja" />
+        <input v-model="ime" type="text" placeholder="Ime tveganja" :disabled="!isOwner" />
         <input v-model="strankaName" type="text" placeholder="Ime stranke" disabled />
-        <textarea v-model="ukrepi" placeholder="Ukrepi" rows="4" />
+        <textarea v-model="ukrepi" placeholder="Ukrepi" rows="4" :disabled="!isOwner" />
       </div>
 
-      <div class="actions">
+      <div class="actions" v-if="isOwner">
         <ButtonComponent text="Shrani spremembe" @click="updateTveganje" class="update-btn" />
         <ButtonComponent text="Izbriši" @click="deleteTveganje" class="delete-btn" />
       </div>

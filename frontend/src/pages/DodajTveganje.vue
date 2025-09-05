@@ -4,7 +4,6 @@ import EventServices, { loadAuthToken } from '@/router/services/EventServices'
 import ButtonComponent from '../components/buttonComponent.vue'
 
 const ime = ref('')
-const strankaId = ref<number | null>(null)
 const ukrepi = ref('')
 const error = ref<string | null>(null)
 const izpis = ref(false)
@@ -26,7 +25,7 @@ onMounted(async () => {
 const addTveganje = async () => {
   error.value = null
 
-  if (!ime.value || !strankaId.value || !ukrepi.value) {
+  if (!ime.value || !selectedStrankaId.value || !ukrepi.value) {
     error.value = 'Vsa polja so obvezna.'
     return
   }
@@ -56,7 +55,7 @@ const addTveganje = async () => {
 
 <template>
   <div class="form-card">
-    <h1 class="title">Dodaj tveganje</h1>
+    <h1 class="title">Dodaj tveganja</h1>
 
     <div v-if="error" class="error-message">
       {{ error }}
