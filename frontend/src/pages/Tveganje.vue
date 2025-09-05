@@ -87,8 +87,8 @@ const pojdiNaUrejanje = (tveganja: Tveganje) => {
         <p>Trenutno ni dodanih tveganj.</p>
       </div>
 
-      <div class="actions-container">
-        <ButtonComponent text="DODAJ TVEGANJE" @click="dodajTveganje" />
+      <div>
+        <ButtonComponent text="DODAJ TVEGANJE" @click="dodajTveganje" class="actions-container"/>
       </div>
     </div>
   </div>
@@ -157,6 +157,14 @@ td {
   display: flex;
   justify-content: flex-end;
   margin-top: 2rem;
+}
+.actions-container:hover {
+  display: flex;
+  margin-top: 2rem;
+  background-color: forestgreen;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+
 }
 
 .sidebar {

@@ -102,7 +102,8 @@ const deleteTveganje = async () => {
       <div class="form-group">
         <input v-model="ime" type="text" placeholder="Ime tveganja" :disabled="!isOwner" />
         <input v-model="strankaName" type="text" placeholder="Ime stranke" disabled />
-        <textarea v-model="ukrepi" placeholder="Ukrepi" rows="4" :disabled="!isOwner" />
+        <textarea v-model="ukrepi" placeholder="Ukrepi" rows="4" :disabled="!isOwner":class="{ blurred: !isOwner }"
+ ></textarea>
       </div>
 
       <div class="actions" v-if="isOwner">
@@ -172,12 +173,12 @@ input {
 }
 
 .update-btn {
-  background: #249236;
+  background: #1e9e33;
   color: white;
 }
 
 .update-btn:hover {
-  background-color: #0f6815;
+  background-color: #054f09;
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
@@ -185,11 +186,32 @@ input {
 .delete-btn {
   background: #e53e3e;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  transition: background-color 0.2s ease;
 }
 
 .delete-btn:hover {
-  background-color: #b12929;
+  background-color: #b70e27;
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
+button.delete-btn:hover {
+  background: #ab0b23;
+}
+button.update-btn:hover {
+  background: #176d0c;
+}
+.blurred {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #edf2f7;
+  color: #718096;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+}
+
+
+
 </style>
