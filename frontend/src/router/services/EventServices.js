@@ -103,7 +103,14 @@ const EventServices = {
   },
   getMojeStranke() {
     return apiClients.get('/moje-stranke')
-  }
+  },
+  getTveganjaZaStranko(strankaId) {
+  console.log('Nalagam tveganja za stranko:', strankaId.value)
+
+  return apiClients.get(`/stranke/${strankaId}/tveganja`)
+  
+ },
+
 }
 
 export default EventServices

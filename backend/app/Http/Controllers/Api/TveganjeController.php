@@ -45,7 +45,7 @@ class TveganjeController extends Controller
 
     // ✅ Posodobi obstoječe tveganja
     public function update(Request $request, Tveganje $tveganja)
-{
+    {
     $validated = $request->validate([
         'ime' => 'required|string|max:255',
         'stranka_id' => 'required|exists:stranke,id',
@@ -74,7 +74,7 @@ class TveganjeController extends Controller
         'message' => 'Tveganje uspešno posodobljeno.',
         'data' => $tveganja
     ]);
-}
+    }
     // ✅ Izbriši tveganja
     public function destroy(Tveganje $tveganja)
     {
@@ -84,5 +84,13 @@ class TveganjeController extends Controller
             'message' => 'Tveganje uspešno izbrisano.'
         ]);
     }
+    public function zaStranko($strankaId)
+    {
+
+        $tveganja = \App\Models\Tveganje::where('stranka_id', $strankaId)->get();
+
+        return response()->json($tveganja);
+    }
+
 }
 

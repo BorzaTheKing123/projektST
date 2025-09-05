@@ -16,6 +16,7 @@ interface Customer {
 const route = useRoute()
 const router = useRouter()
 const customerId = ref(Number(route.params.id))
+const tveganja = ref<any[]>([])
 
 const name = ref('')
 const email = ref('')
@@ -41,12 +42,18 @@ onMounted(async () => {
     email.value = stranka.email
     phone.value = stranka.phone
     dejavnost.value = stranka.dejavnost
-
-    // 3. Preveri lastništvo
     isOwner.value = stranka.user_id === authUserId.value
   } catch (err) {
     error.value = 'Napaka pri nalaganju stranke.'
-    console.error(err)
+    console.error('Napaka pri nalaganju stranke:', err)
+  }
+
+  try {
+    // 3. Pridobi tveganja za to stranko
+    const tveganjaRes = await EventServices.getTveganjaZaStranko(customerId.value)
+    tveganja.value = tveganjaRes.data
+  } catch (err) {
+    console.error('Napaka pri nalaganju tveganj:', err)
   } finally {
     isLoading.value = false
   }
@@ -111,6 +118,19 @@ const deleteCustomer = async () => {
         <ButtonComponent text="Shrani spremembe" @click="updateCustomer" class="update-btn" />
         <ButtonComponent text="Izbriši" @click="deleteCustomer" class="delete-btn" />
       </div>
+      <div class="tveganja-section">
+  <h2>Tveganja za to stranko</h2>
+
+
+  <div v-if="tveganja.length === 0">Ni tveganj za to stranko.</div>
+
+  <ul v-else>
+    <li v-for="tveganje in tveganja" :key="tveganje.id" class="tveganje-card">
+      <strong>{{ tveganje.ime }}</strong><br>
+      <em>{{ tveganje.ukrepi }}</em>
+    </li>
+  </ul>
+</div>
     </div>
   </div>
 </template>
@@ -179,4 +199,19 @@ input {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
+.tveganja-section {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.tveganje-card {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-left: 4px solid #3498db;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
 </style>

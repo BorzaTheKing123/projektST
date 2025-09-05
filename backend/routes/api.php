@@ -50,6 +50,10 @@ Route::middleware('api')->group(function () {
         Route::delete('/stranke/{stranka}', [StrankeController::class, 'destroy']);
 
         // 📁 TVEGANJA (REST + dodatne rute)
+        
+        Route::get('/stranke/{strankaId}/tveganja', [TveganjeController::class, 'zaStranko']);
+
+
         Route::apiResource('tveganja', TveganjeController::class);
         Route::get('/tveganja/{tveganja}', [TveganjeController::class, 'show']);
         Route::post('/tveganja', [TveganjeController::class, 'store']);
