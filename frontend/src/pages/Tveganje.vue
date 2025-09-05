@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import EventServices from '@/router/services/EventServices'
 import ButtonComponent from '../components/buttonComponent.vue'
 
@@ -17,10 +18,50 @@ const tveganja = ref<Tveganje[]>([])
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 
+const router = useRouter()
+
+// AI modal
+const showAiModal = ref(false)
+const izbranoTveganje = ref<Tveganje | null>(null)
+const navodilaZaAi = ref('')
+
+const odpriAiModal = (tveganje: Tveganje) => {
+  izbranoTveganje.value = tveganje
+  navodilaZaAi.value = ''
+  showAiModal.value = true
+}
+
+const zapriAiModal = () => {
+  showAiModal.value = false
+  izbranoTveganje.value = null
+  navodilaZaAi.value = ''
+}
+
+const posljiAiZahtevek = () => {
+  if (!izbranoTveganje.value) return
+
+  console.log('Pošiljam AI zahtevek za:', izbranoTveganje.value)
+  console.log('Navodila:', navodilaZaAi.value)
+
+  // Tu lahko dodaš klic na AI servis ali backend
+  alert('Zahtevek poslan AI-ju!')
+  zapriAiModal()
+}
+
+// Navigacija
+const pojdiNaUrejanje = (tveganje: Tveganje) => {
+  router.push(`/tveganja/${tveganje.id}`)
+}
+
+const dodajTveganje = () => {
+  router.push('/tveganja/dodaj')
+}
+
+// Nalaganje tveganj
 onMounted(async () => {
   try {
-    const response = await EventServices.getTveganja()
-    tveganja.value = response.data
+    const res = await EventServices.getTveganja()
+    tveganja.value = res.data
   } catch (err) {
     console.error('Napaka pri nalaganju tveganj:', err)
     error.value = 'Ni bilo mogoče naložiti tveganj.'
@@ -28,14 +69,6 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
-
-const dodajTveganje = () => {
-  window.location.href = '/tveganja/dodaj'
-}
-
-const pojdiNaUrejanje = (tveganja: Tveganje) => {
-  window.location.href = `/tveganja/${tveganja.id}`
-}
 </script>
 
 <template>
@@ -66,18 +99,21 @@ const pojdiNaUrejanje = (tveganja: Tveganje) => {
               <th>Ime tveganja</th>
               <th>Stranka</th>
               <th>Ukrepi</th>
+              <th>AI</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="tveganja in tveganja"
-              :key="tveganja.id"
-              @click="pojdiNaUrejanje(tveganja)"
+              v-for="tveganje in tveganja"
+              :key="tveganje.id"
               class="clickable-row"
             >
-              <td>{{ tveganja.ime }}</td>
-              <td>{{ tveganja.stranka?.name || '—' }}</td>
-              <td>{{ tveganja.ukrepi }}</td>
+              <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ime }}</td>
+              <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.stranka?.name || '—' }}</td>
+              <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ukrepi }}</td>
+              <td>
+                <button class="ai-btn" @click="odpriAiModal(tveganje)">AI</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -90,6 +126,23 @@ const pojdiNaUrejanje = (tveganja: Tveganje) => {
       <div>
         <ButtonComponent text="DODAJ TVEGANJE" @click="dodajTveganje" class="actions-container"/>
       </div>
+
+      <!-- AI Modal -->
+      <div v-if="showAiModal" class="modal-overlay" @click.self="zapriAiModal">
+  <div class="modal-content">
+    <button class="close-btn" @click="zapriAiModal">×</button>
+
+    <h3>AI analiza tveganja</h3>
+    <p><strong>Stranka:</strong> {{ izbranoTveganje?.stranka?.name || '—' }}</p>
+    <p><strong>Tveganje:</strong> {{ izbranoTveganje?.ime }}</p>
+
+    <h4>Dodatna navodila za AI</h4>
+    <textarea v-model="navodilaZaAi" placeholder="Vnesi dodatna navodila za AI..." rows="5"></textarea>
+
+    <button class="submit-btn" @click="posljiAiZahtevek">Submit</button>
+  </div>
+</div>
+
     </div>
   </div>
 </template>
@@ -228,5 +281,117 @@ td {
 .clickable-row:hover {
   background-color: #edf2f7;
 }
+.clickable-row td {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover td {
+  background-color: #f0f8ff;
+}
+
+.ai-btn {
+  background-color: #3f85da;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: box-shadow 0.2s ease;
+}
+
+.ai-btn:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+.modal-content textarea {
+  resize: vertical;
+  min-height: 100px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.modal-content button {
+  align-self: flex-end;
+  padding: 8px 16px;
+  background-color: #64b0ee;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-content button:hover {
+  background-color: #1b9ae3;
+}
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 600px;
+  max-width: 90%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+textarea {
+  resize: vertical;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.submit-btn {
+  align-self: flex-end;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:hover {
+  background-color: #2980b9;
+}
+
+
 
 </style>
