@@ -28,6 +28,7 @@ const isDeleting = ref(false)
 const isOwner = ref(false)
 const authUserId = ref<number | null>(null)
 
+
 onMounted(async () => {
   try {
     // 1. Pridobi prijavljenega uporabnika
@@ -58,6 +59,10 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
+
+const goToTveganje = (id: number) => {
+  router.push(`/tveganja/${id}`)
+}
 
 const updateCustomer = async () => {
   if (!isOwner.value) return
@@ -125,11 +130,18 @@ const deleteCustomer = async () => {
   <div v-if="tveganja.length === 0">Ni tveganj za to stranko.</div>
 
   <ul v-else>
-    <li v-for="tveganje in tveganja" :key="tveganje.id" class="tveganje-card">
-      <strong>{{ tveganje.ime }}</strong><br>
-      <em>{{ tveganje.ukrepi }}</em>
-    </li>
-  </ul>
+  <li
+    v-for="tveganje in tveganja"
+    :key="tveganje.id"
+    :class="['tveganje-card', { clickable: isOwner }]"
+    @click="isOwner ? goToTveganje(tveganje.id) : null"
+  >
+    <strong>{{ tveganje.ime }}</strong><br>
+    <em>{{ tveganje.ukrepi }}</em>
+    <span v-if="!isOwner" class="locked-note">Samo za ogled 🔒</span>
+  </li>
+</ul>
+
 </div>
     </div>
   </div>
@@ -199,19 +211,29 @@ input {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
-.tveganja-section {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 6px;
-}
-
 .tveganje-card {
   padding: 10px;
   margin-bottom: 10px;
   border-left: 4px solid #3498db;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.2s ease;
 }
+
+.tveganje-card.clickable {
+  cursor: pointer;
+}
+
+.tveganje-card.clickable:hover {
+  background-color: #eef6ff;
+}
+
+.locked-note {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #999;
+}
+
 
 </style>
