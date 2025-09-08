@@ -110,6 +110,13 @@ const EventServices = {
   return apiClients.get(`/stranke/${strankaId}/tveganja`)
   
  },
+ posljiAiZahtevek(tveganje, navodila) {
+  return apiClients.post('/ai/predlogi', {
+    tveganje,
+    navodila
+  })
+},
+
 
 }
 

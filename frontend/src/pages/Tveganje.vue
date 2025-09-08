@@ -20,6 +20,10 @@ const error = ref<string | null>(null)
 
 const router = useRouter()
 
+const aiOdgovor = ref('')
+const aiLoading = ref(false)
+
+
 // AI modal
 const showAiModal = ref(false)
 const izbranoTveganje = ref<Tveganje | null>(null)
@@ -37,16 +41,32 @@ const zapriAiModal = () => {
   navodilaZaAi.value = ''
 }
 
-const posljiAiZahtevek = () => {
+const posljiAiZahtevek = async () => {
   if (!izbranoTveganje.value) return
 
-  console.log('Pošiljam AI zahtevek za:', izbranoTveganje.value)
-  console.log('Navodila:', navodilaZaAi.value)
+  aiLoading.value = true
+  aiOdgovor.value = ''
 
-  // Tu lahko dodaš klic na AI servis ali backend
-  alert('Zahtevek poslan AI-ju!')
-  zapriAiModal()
+  try {
+    const res = await EventServices.posljiAiZahtevek(
+  izbranoTveganje.value.ime,
+  navodilaZaAi.value
+)
+
+const zdruzeniUkrepi = res.data.ukrepi
+aiOdgovor.value = res.data.predlogi
+
+// ✅ Samodejno zapiši v ukrepi
+izbranoTveganje.value.ukrepi = zdruzeniUkrepi
+
+  } catch (err) {
+    console.error('Napaka pri AI zahtevi:', err)
+    aiOdgovor.value = 'Napaka pri pridobivanju predlogov.'
+  } finally {
+    aiLoading.value = false
+  }
 }
+
 
 // Navigacija
 const pojdiNaUrejanje = (tveganje: Tveganje) => {
@@ -111,9 +131,9 @@ onMounted(async () => {
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ime }}</td>
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.stranka?.name || '—' }}</td>
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ukrepi }}</td>
-              <td>
-                <button class="ai-btn" @click="odpriAiModal(tveganje)">AI</button>
-              </td>
+          
+              <td class="ai-btn" @click="odpriAiModal(tveganje)">AI</td>
+              
             </tr>
           </tbody>
         </table>
@@ -138,6 +158,14 @@ onMounted(async () => {
 
     <h4>Dodatna navodila za AI</h4>
     <textarea v-model="navodilaZaAi" placeholder="Vnesi dodatna navodila za AI..." rows="5"></textarea>
+
+    <div v-if="aiLoading">Pridobivam predloge...</div>
+
+  <div v-else-if="aiOdgovor">
+    <h4>AI predlogi (samodejno zapisani v ukrepe):</h4>
+    <p>{{ izbranoTveganje?.ukrepi }}</p>
+  </div>
+
 
     <button class="submit-btn" @click="posljiAiZahtevek">Submit</button>
   </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\StrankeController;
 use App\Http\Controllers\Api\TveganjeController;
+use App\Http\Controllers\Api\AiController;
 
 // 🔐 Uporabnik prek Sanctum
 Route::get('/user', function (Request $request) {
@@ -58,5 +59,7 @@ Route::middleware('api')->group(function () {
         Route::get('/tveganja/{tveganja}', [TveganjeController::class, 'show']);
         Route::post('/tveganja', [TveganjeController::class, 'store']);
         Route::put('/tveganja/{tveganja}', [TveganjeController::class, 'update']);
+
+        Route::post('/ai/predlogi', [AiController::class, 'predlogi']);
     });
 });
