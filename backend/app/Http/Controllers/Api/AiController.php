@@ -12,6 +12,7 @@ class AiController extends Controller
 {
     public function predlogi(Request $request)
     {
+
         $tveganjeIme = $request->input('tveganje');
         $navodila = $request->input('navodila');
         $tveganjeId = $request->input('tveganje_id');
@@ -25,18 +26,26 @@ class AiController extends Controller
 
         $obstojeciUkrepi = $tveganjeModel->ukrepi ?? '';
 
-        $prompt = <<<EOT
-Si strokovnjak za varnost in tveganja. Na podlagi spodnjih podatkov napiši kratke, jedrnate predloge ukrepov.
+$prompt = <<<EOT
+Si strokovnjak za varnost in tveganja. Na podlagi spodnjih podatkov napiši **izključno** seznam kratkih, jedrnatih ukrepov.
 
 Tveganje: "$tveganjeIme"
 Navodila: "$navodila"
 
-Vrni samo seznam ukrepov, brez uvoda ali razlage. Vsak ukrep naj bo v svoji vrstici in naj se konča z vejico.
+⚠️ Pomembno:
+- Ne dodaj uvoda, razlage ali zaključka.
+- Vsak ukrep naj bo v svoji vrstici.
+- Vsak ukrep naj se konča z vejico.
+- Ne uporabljaj številk ali alinej.
+
 Primer:
 Gasilni aparat,
 Strelovod,
 Označene poti,
+
+Začni zdaj:
 EOT;
+
 
         Log::info('AI prompt:', ['prompt' => $prompt]);
 

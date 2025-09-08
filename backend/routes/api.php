@@ -60,6 +60,7 @@ Route::middleware('api')->group(function () {
         Route::post('/tveganja', [TveganjeController::class, 'store']);
         Route::put('/tveganja/{tveganja}', [TveganjeController::class, 'update']);
 
-        Route::post('/ai/predlogi', [AiController::class, 'predlogi']);
+        Route::post('/ai/predlogi', [AIController::class, 'predlogi']);
+
     });
 });

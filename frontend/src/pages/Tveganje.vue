@@ -23,7 +23,6 @@ const router = useRouter()
 const aiOdgovor = ref('')
 const aiLoading = ref(false)
 
-
 // AI modal
 const showAiModal = ref(false)
 const izbranoTveganje = ref<Tveganje | null>(null)
@@ -48,17 +47,16 @@ const posljiAiZahtevek = async () => {
   aiOdgovor.value = ''
 
   try {
-    const res = await EventServices.posljiAiZahtevek(
-  izbranoTveganje.value.ime,
-  navodilaZaAi.value
-)
+    const res = await EventServices.posljiAiZahtevek({
+      id: izbranoTveganje.value.id,
+      ime: izbranoTveganje.value.ime,
+      navodila: navodilaZaAi.value
+    })
 
-const zdruzeniUkrepi = res.data.ukrepi
-aiOdgovor.value = res.data.predlogi
+    const zdruzeniUkrepi = res.data.ukrepi
+    aiOdgovor.value = res.data.predlogi
 
-// ✅ Samodejno zapiši v ukrepi
-izbranoTveganje.value.ukrepi = zdruzeniUkrepi
-
+    izbranoTveganje.value.ukrepi = zdruzeniUkrepi
   } catch (err) {
     console.error('Napaka pri AI zahtevi:', err)
     aiOdgovor.value = 'Napaka pri pridobivanju predlogov.'
@@ -67,8 +65,6 @@ izbranoTveganje.value.ukrepi = zdruzeniUkrepi
   }
 }
 
-
-// Navigacija
 const pojdiNaUrejanje = (tveganje: Tveganje) => {
   router.push(`/tveganja/${tveganje.id}`)
 }
@@ -77,7 +73,6 @@ const dodajTveganje = () => {
   router.push('/tveganja/dodaj')
 }
 
-// Nalaganje tveganj
 onMounted(async () => {
   try {
     const res = await EventServices.getTveganja()
@@ -119,7 +114,7 @@ onMounted(async () => {
               <th>Ime tveganja</th>
               <th>Stranka</th>
               <th>Ukrepi</th>
-              <th>AI</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -131,9 +126,11 @@ onMounted(async () => {
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ime }}</td>
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.stranka?.name || '—' }}</td>
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ukrepi }}</td>
-          
-              <td class="ai-btn" @click="odpriAiModal(tveganje)">AI</td>
-              
+              <td>
+                <div class="ai-cell">
+                  <button class="ai-btn" @click.stop="odpriAiModal(tveganje)">AI</button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -149,31 +146,31 @@ onMounted(async () => {
 
       <!-- AI Modal -->
       <div v-if="showAiModal" class="modal-overlay" @click.self="zapriAiModal">
-  <div class="modal-content">
-    <button class="close-btn" @click="zapriAiModal">×</button>
+        <div class="modal-content">
+          <button class="close-btn" @click="zapriAiModal">×</button>
 
-    <h3>AI analiza tveganja</h3>
-    <p><strong>Stranka:</strong> {{ izbranoTveganje?.stranka?.name || '—' }}</p>
-    <p><strong>Tveganje:</strong> {{ izbranoTveganje?.ime }}</p>
+          <h3>AI analiza tveganja</h3>
+          <p><strong>Stranka:</strong> {{ izbranoTveganje?.stranka?.name || '—' }}</p>
+          <p><strong>Tveganje:</strong> {{ izbranoTveganje?.ime }}</p>
 
-    <h4>Dodatna navodila za AI</h4>
-    <textarea v-model="navodilaZaAi" placeholder="Vnesi dodatna navodila za AI..." rows="5"></textarea>
+          <h4>Dodatna navodila za AI</h4>
+          <textarea v-model="navodilaZaAi" placeholder="Vnesi dodatna navodila za AI..." rows="5"></textarea>
 
-    <div v-if="aiLoading">Pridobivam predloge...</div>
+          <div v-if="aiLoading">Pridobivam predloge...</div>
 
-  <div v-else-if="aiOdgovor">
-    <h4>AI predlogi (samodejno zapisani v ukrepe):</h4>
-    <p>{{ izbranoTveganje?.ukrepi }}</p>
-  </div>
+          <div v-else-if="aiOdgovor">
+            <h4>AI predlogi (samodejno zapisani v ukrepe):</h4>
+            <p>{{ izbranoTveganje?.ukrepi }}</p>
+          </div>
 
-
-    <button class="submit-btn" @click="posljiAiZahtevek">Submit</button>
-  </div>
-</div>
-
+          <button class="submit-btn" @click="posljiAiZahtevek">Submit</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
+
+
 
 <style scoped>
 .container {
@@ -419,7 +416,40 @@ textarea {
 .submit-btn:hover {
   background-color: #2980b9;
 }
+.clickable-row td {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
 
+.clickable-row:hover td {
+  background-color: #f0f8ff;
+}
 
+/* Izključi hover efekt za AI gumb */
+.clickable-row:hover .ai-btn {
+  background-color: #3f85da; /* ohrani originalno barvo */
+}
 
+/* AI gumb naj se odzove na svoj hover */
+.ai-cell {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.ai-btn {
+  background-color: #3f85da;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ai-btn:hover {
+  background-color: #2c6fc2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
 </style>

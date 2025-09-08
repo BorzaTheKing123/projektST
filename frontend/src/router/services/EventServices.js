@@ -1,4 +1,3 @@
-
 import axios from 'axios'
 
 // Axios instanca za API klice
@@ -101,29 +100,25 @@ const EventServices = {
   getCurrentUser() {
     return apiClients.get('user')
   },
+
   getMojeStranke() {
     return apiClients.get('/moje-stranke')
   },
+
   getTveganjaZaStranko(strankaId) {
-  console.log('Nalagam tveganja za stranko:', strankaId.value)
+    console.log('Nalagam tveganja za stranko:', strankaId.value)
+    return apiClients.get(`/stranke/${strankaId}/tveganja`)
+  },
 
-  return apiClients.get(`/stranke/${strankaId}/tveganja`)
-  
- },
- posljiAiZahtevek(tveganje, navodila) {
-  return apiClients.post('/ai/predlogi', {
-    tveganje,
-    navodila
-  })
-},
-
-
+  // ✅ AI zahtevek z vsemi podatki
+  posljiAiZahtevek({ id, ime, navodila }) {
+    return apiClients.post('/ai/predlogi', {
+      tveganje_id: id,
+      tveganje: ime,
+      navodila
+    })
+  }
 }
 
 export default EventServices
 export { apiClients }
-
-
-
-
-
