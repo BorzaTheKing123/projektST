@@ -40,7 +40,6 @@ class LoginUserJob
             ]);
         }
 
-//        return $user->createToken($this->request->device_name)->plainTextToken;
-                return $user->createToken('default')->plainTextToken;
+        return $user->createToken('default')->plainTextToken;
     }
 }

@@ -11,13 +11,13 @@ interface Tveganje {
   stranka_id: number
   stranka: {
     name: string
+    user_id: number
   }
 }
 
 const tveganja = ref<Tveganje[]>([])
 const isLoading = ref(true)
 const error = ref<string | null>(null)
-
 const router = useRouter()
 
 const aiOdgovor = ref('')
@@ -27,6 +27,9 @@ const aiLoading = ref(false)
 const showAiModal = ref(false)
 const izbranoTveganje = ref<Tveganje | null>(null)
 const navodilaZaAi = ref('')
+
+// ID trenutno prijavljenega uporabnika
+const authUserId = ref<number | null>(null)
 
 const odpriAiModal = (tveganje: Tveganje) => {
   izbranoTveganje.value = tveganje
@@ -75,11 +78,17 @@ const dodajTveganje = () => {
 
 onMounted(async () => {
   try {
+    // 1. Pridobi ID trenutnega uporabnika
+    const userResponse = await EventServices.getCurrentUser()
+    authUserId.value = userResponse.data.id
+
+    // 2. Pridobi vsa tveganja
     const res = await EventServices.getTveganja()
     tveganja.value = res.data
+
   } catch (err) {
-    console.error('Napaka pri nalaganju tveganj:', err)
-    error.value = 'Ni bilo mogoče naložiti tveganj.'
+    console.error('Napaka pri nalaganju podatkov:', err)
+    error.value = 'Ni bilo mogoče naložiti podatkov.'
   } finally {
     isLoading.value = false
   }
@@ -128,7 +137,7 @@ onMounted(async () => {
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ukrepi }}</td>
               <td>
                 <div class="ai-cell">
-                  <button class="ai-btn" @click.stop="odpriAiModal(tveganje)">AI</button>
+                  <button class="ai-btn" @click.stop="odpriAiModal(tveganje)" :disabled="tveganje.stranka.user_id !== authUserId">AI</button>
                 </div>
               </td>
             </tr>
@@ -426,11 +435,6 @@ textarea {
   background-color: #f0f8ff;
 }
 
-/* Izključi hover efekt za AI gumb */
-.clickable-row:hover .ai-btn {
-  background-color: #3f85da; /* ohrani originalno barvo */
-}
-
 /* AI gumb naj se odzove na svoj hover */
 .ai-cell {
   display: flex;
@@ -452,4 +456,12 @@ textarea {
   background-color: #2c6fc2;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
+
+.ai-btn:disabled,
+.ai-btn:disabled:hover {
+  background-color: #edf2f7;      /* Svetlejša barva besedila */
+  cursor: not-allowed;      /* Kazalec, ki označuje, da akcija ni dovoljena */
+  box-shadow: none;         /* Odstrani senco ob hoverju */
+}
+
 </style>

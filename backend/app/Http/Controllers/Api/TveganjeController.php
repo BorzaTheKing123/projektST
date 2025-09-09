@@ -52,8 +52,6 @@ class TveganjeController extends Controller
         'ukrepi' => 'required|string'
     ]);
 
-    \Log::info('Prejemam za posodobitev:', $validated);
-
     $user = $request->user();
     $stranka = \App\Models\Stranka::where('id', $validated['stranka_id'])
         ->where('user_id', $user->id)
@@ -66,7 +64,6 @@ class TveganjeController extends Controller
     }
 
     $updated = $tveganja->update($validated);
-    \Log::info('Ali je posodobitev uspela?', ['status' => $updated]);
 
     $tveganja->refresh();
 
@@ -87,7 +84,7 @@ class TveganjeController extends Controller
     public function zaStranko($strankaId)
     {
 
-        $tveganja = \App\Models\Tveganje::where('stranka_id', $strankaId)->get();
+        $tveganja = Tveganje::where('stranka_id', $strankaId)->get();
 
         return response()->json($tveganja);
     }
