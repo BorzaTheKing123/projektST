@@ -114,6 +114,7 @@ onMounted(async () => {
       <ul class="sidebar-links">
         <li><router-link to="/stranke" active-class="active">STRANKE</router-link></li>
         <li><router-link to="/tveganja" active-class="active">TVEGANJA</router-link></li>
+        <li><router-link to="/heatmap" active-class="active">HEATMAP</router-link></li>
       </ul>
     </nav>
 

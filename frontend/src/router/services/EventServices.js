@@ -117,7 +117,12 @@ const EventServices = {
       tveganje: ime,
       navodila
     })
-  }
+  },
+  // Heatmap podatki
+  getTopTveganja(limit = 10) {
+    return apiClients.get(`risks/top?limit=${limit}`)
+  },
+
 }
 
 export default EventServices

@@ -8,6 +8,7 @@ import AddClientsPage from '../pages/AddClients.vue'
 import TveganjaPage from '../pages/Tveganje.vue'
 import DodajTveganjePage from '../pages/DodajTveganje.vue'
 import UrediTveganjePage from '../pages/UrejanjeTveganje.vue'
+import HeatmapPage from '@/pages/Heatmap.vue'
 
 const URL = ''
 
@@ -64,6 +65,12 @@ const router = createRouter({
         component: UrediTveganjePage,
         props: true
 },
+{
+    path: '/heatmap',
+    name: 'Heatmap',
+    component: HeatmapPage,
+  },
+
 
 
 

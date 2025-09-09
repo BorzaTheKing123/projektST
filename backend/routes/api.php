@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\StrankeController;
 use App\Http\Controllers\Api\TveganjeController;
 use App\Http\Controllers\Api\AiController;
+use App\Http\Controllers\Api\HeatmapController;
 
 // 🔐 Uporabnik prek Sanctum
 Route::get('/user', function (Request $request) {
@@ -61,6 +62,16 @@ Route::middleware('api')->group(function () {
         Route::put('/tveganja/{tveganja}', [TveganjeController::class, 'update']);
 
         Route::post('/ai/predlogi', [AIController::class, 'predlogi']);
+
+        Route::apiResource('heatmap', HeatmapController::class);
+        
+
+        Route::get('/risks/top', [HeatmapController::class, 'top']);
+        Route::post('/articles/ingest', [HeatmapController::class, 'ingest']);
+        Route::post('/risks/sync-register', [HeatmapController::class, 'syncRegister']);
+        Route::post('/articles/analyze', [HeatmapController::class, 'analyze']);
+
+
 
     });
 });
