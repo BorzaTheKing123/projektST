@@ -456,12 +456,22 @@ textarea {
   background-color: #2c6fc2;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
+.modal-content .submit-btn {
+  background-color: #3498db !important;
+}
 
-.ai-btn:disabled,
-.ai-btn:disabled:hover {
-  background-color: #edf2f7;      /* Svetlejša barva besedila */
-  cursor: not-allowed;      /* Kazalec, ki označuje, da akcija ni dovoljena */
-  box-shadow: none;         /* Odstrani senco ob hoverju */
+.modal-content .submit-btn:hover {
+  background-color: #2980b9 !important;
+}
+
+.modal-content .close-btn {
+  background-color: #dc1717 !important;
+  color: white !important;
+}
+
+.modal-content .close-btn:hover {
+  background-color: #6d0505 !important;
+  color: white !important;
 }
 
 </style>
