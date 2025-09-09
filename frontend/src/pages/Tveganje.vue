@@ -387,11 +387,11 @@ td {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #666;
+  color: #dc1717;
 }
 
 .close-btn:hover {
-  color: #000;
+  color: #6d0505;
 }
 
 textarea {
@@ -452,4 +452,22 @@ textarea {
   background-color: #2c6fc2;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
+.modal-content .submit-btn {
+  background-color: #0a66a3 !important;
+}
+
+.modal-content .submit-btn:hover {
+  background-color: #0b3551 !important;
+}
+
+.modal-content .close-btn {
+  background-color: #dc1717 !important;
+  color: white !important;
+}
+
+.modal-content .close-btn:hover {
+  background-color: #6d0505 !important;
+  color: white !important;
+}
+
 </style>
