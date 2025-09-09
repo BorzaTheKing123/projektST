@@ -75,11 +75,6 @@ const addTveganje = async () => {
       class="submit-btn"
     />
   </div>
-  <pre>{{ ime }}</pre>
-<pre>{{ ukrepi }}</pre>
-<pre>{{ selectedStrankaId }}</pre>
-
-
 </template>
 
 <style scoped>
