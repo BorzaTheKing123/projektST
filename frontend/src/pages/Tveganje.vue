@@ -76,6 +76,14 @@ const dodajTveganje = () => {
   router.push('/tveganja/dodaj')
 }
 
+const razporediTveganje = (ukrepi: string) => {
+  // Dodamo preverbo, če so ukrepi morda prazni, da se izognemo napakam
+  if (!ukrepi || typeof ukrepi !== 'string') {
+    return []
+  }
+  return ukrepi.split(',')
+}
+
 onMounted(async () => {
   try {
     // 1. Pridobi ID trenutnega uporabnika
@@ -134,7 +142,11 @@ onMounted(async () => {
             >
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ime }}</td>
               <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.stranka?.name || '—' }}</td>
-              <td @click="pojdiNaUrejanje(tveganje)">{{ tveganje.ukrepi }}</td>
+              <td @click="pojdiNaUrejanje(tveganje)">
+                <div v-for="(ukrep, index) in razporediTveganje(tveganje.ukrepi)" :key="index">
+                  {{ ukrep }}
+                </div>
+              </td>
               <td>
                 <div class="ai-cell">
                   <button class="ai-btn" @click.stop="odpriAiModal(tveganje)" :disabled="tveganje.stranka.user_id !== authUserId">AI</button>
