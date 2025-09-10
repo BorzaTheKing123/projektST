@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\StrankeController;
 use App\Http\Controllers\Api\TveganjeController;
 use App\Http\Controllers\Api\AiController;
 use App\Http\Controllers\Api\HeatmapController;
+use App\Http\Controllers\Api\AnalyzeController;
+use App\Http\Controllers\Api\ScrapeController;
+
 
 // 🔐 Uporabnik prek Sanctum
 Route::get('/user', function (Request $request) {
@@ -70,6 +73,14 @@ Route::middleware('api')->group(function () {
         Route::post('/articles/ingest', [HeatmapController::class, 'ingest']);
         Route::post('/risks/sync-register', [HeatmapController::class, 'syncRegister']);
         Route::post('/articles/analyze', [HeatmapController::class, 'analyze']);
+
+        Route::post('/scrape-articles', [ScrapeController::class, 'scrape']);
+        Route::post('/articles/analyze', [AnalyzeController::class, 'handle']);
+        Route::post('/scrape-run', [ScrapeController::class, 'runScraper']);
+
+
+
+
 
 
 

@@ -3,11 +3,31 @@ import { computed, onMounted, ref, watch } from 'vue';
 import EventServices from '../router/services/EventServices' // prilagodi pot glede na strukturo
 
 
+
+
 type RiskItem = {
   key: string
   name: string
   count: number
 }
+
+const runScraper = async () => {
+  try {
+    // TypeScript misli, da runScraper ne vrača nič, zato mu ročno povemo da naj obravnava rezultat kot AxiosResponse
+    const res = await EventServices.runScraper() as any
+
+    // Tukaj varno dostopamo do podatkov
+    const count = res?.data?.output?.length ?? 0
+    alert(`✅ Scraper zagnan! Obdelanih člankov: ${count}`)
+  } catch (e) {
+    alert('❌ Napaka pri zagonu scraperja')
+    console.error(e)
+  }
+}
+
+
+
+
 
 const props = defineProps<{
   apiUrl?: string
@@ -134,6 +154,8 @@ function hexToRgb(hex: string) {
         <span class="legend__item"><span class="dot dot--warm"></span> toplo</span>
         <span class="legend__item"><span class="dot dot--hot"></span> vroče</span>
       </footer>
+      <button @click="runScraper">Zaženi Scraper</button>
+
     </div>
   </section>
 </template>
@@ -298,7 +320,5 @@ h2 {
   color: #ffffff;
   font-weight: 700;
 }
-.container {
 
-}
 </style>

@@ -2,8 +2,27 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import sys
+import socket
+socket.setdefaulttimeout(10)
+
 
 URL = "https://www.24ur.com"
+
+def send_to_backend(article: dict):
+    headers = {
+        "Authorization": f"Bearer EbEDMRb748ahv2tgLci4R09eK0S9ekv18qdrspIynMcbTjybk2SfMYQhfrYQ3Oji",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "link": article["link"],
+        "summary": article["summary"],
+        "text": article["text"]
+    }
+
+    response = requests.post("http://localhost:8000/api/articles/analyze", headers=headers, json=payload)
+    response.raise_for_status()
+
 
 # Funkcija, ki naredi request
 def req(url):
@@ -22,7 +41,7 @@ def req(url):
 
 # Postrga osnovno stran z tujimi novicami
 def scrape_24ur_tujina():
-    url = "https://www.24ur.com/novice/tujina"
+    url = "https://www.24ur.com/arhiv/novice/tujina"
     soup = req(url)
     scraped_articles = []
     articles = soup.find_all('a', attrs={'data-upscore-object-id': True})
@@ -62,4 +81,6 @@ def singleScrape(scraped_articles: list):
 
 
 if __name__ == '__main__':
-    scrape_24ur_tujina()
+    result=scrape_24ur_tujina()
+    print(result)
+
