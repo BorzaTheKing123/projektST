@@ -41,6 +41,7 @@ def req(url):
 
 # Postrga osnovno stran z tujimi novicami
 def scrape_24ur_tujina():
+<<<<<<< HEAD
     url = "https://www.24ur.com/arhiv/novice/tujina"
     soup = req(url)
     scraped_articles = []
@@ -56,8 +57,28 @@ def scrape_24ur_tujina():
             scraped_articles.append(article_data)
     
     result = singleScrape(scraped_articles)
+=======
+    result = []
+    for index in range(1, 21):
+        url = f"https://www.24ur.com/arhiv/novice/tujina/?p={index}"
+        soup = req(url)
+        scraped_articles = []
+        main = soup.find('main')
+        articles = main.find_all('a', class_='flex flex-col lg:flex-row wrap overflow-visible lg:overflow-hidden card-overlay pb-16 group') # type: ignore
+>>>>>>> origin/dev
 
-    # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
+        for article in articles:
+            
+            # Preverimo, ali obstajata naslov in href atribut.
+            if 'href' in article.attrs: # type: ignore
+                article_data = {
+                    'link': URL + article['href'] # type: ignore
+                }
+                scraped_articles.append(article_data)
+
+        result.append(singleScrape(scraped_articles))
+
+        # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
     res = json.dumps(result, indent=4, ensure_ascii=False)
     return res
 
@@ -68,7 +89,7 @@ def singleScrape(scraped_articles: list):
         print(link['link'])
         soup = req(link['link'])
         summary = soup.find('p', class_='text-article-summary')
-        body = soup.find('div', class_='article__body')
+        body = soup.find('div', class_='article__body').text # type: ignore
         text: list = str(body.find_all('p')).strip('[]') # type: ignore
 
         article_data = {
