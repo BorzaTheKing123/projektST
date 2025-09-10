@@ -60,7 +60,7 @@ def singleScrape(scraped_articles: list):
 
         for index, item in enumerate(text):
             text[index] = item.text
-        deli = ''
+        deli = '  '
         txt = deli.join(text) # type: ignore
 
         article_data = {
@@ -72,5 +72,4 @@ def singleScrape(scraped_articles: list):
     return articles
 
 
-if __name__ == '__main__':
-    scrape_24ur_tujina()
+scrape_24ur_tujina()

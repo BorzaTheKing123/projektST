@@ -66,13 +66,13 @@ def singleScrape(scraped_articles: list):
             body = soup.find_all('div', attrs={'data-component': 'text-block'})
             for index, item in enumerate(body):
                 body[index] = item.text
-            deli = ''
+            deli = ' '
             txt = deli.join(body) # type: ignore
         else:
             body = soup.find_all('p', class_='sc-9a00e533-0 hxuGS')
             for index, item in enumerate(body):
                 body[index] = item.text
-            deli = ''
+            deli = ' '
             txt = deli.join(body) # type: ignore
 
         article_data = {
@@ -83,6 +83,4 @@ def singleScrape(scraped_articles: list):
         articles.append(article_data)
     return articles
 
-
-if __name__ == '__main__':
-    scrape_BBC_world()
+scrape_BBC_world()
