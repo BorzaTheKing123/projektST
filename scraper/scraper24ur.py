@@ -42,7 +42,7 @@ def req(url):
 # Postrga osnovno stran z tujimi novicami
 def scrape_24ur_tujina():
     result = []
-    for index in range(1, 21):
+    for index in range(1, 2):
         url = f"https://www.24ur.com/arhiv/novice/tujina/?p={index}"
         soup = req(url)
         scraped_articles = []
@@ -73,9 +73,15 @@ def singleScrape(scraped_articles: list):
     for link in scraped_articles:
         print(link['link'])
         soup = req(link['link'])
-        summary = soup.find('p', class_='text-article-summary')
-        body = soup.find('div', class_='article__body').text # type: ignore
-        text: list = str(body.find_all('p')).strip('[]') # type: ignore
+        summary = soup.find('p', class_='text-article-summary').text # type: ignore
+
+        body = soup.find('div', class_='article__body') # type: ignore
+        text: list = body.find_all('p') # type: ignore
+
+        for index, item in enumerate(text):
+            text[index] = item.text
+        deli = ''
+        txt = deli.join(text) # type: ignore
 
         article_data = {
             'link': link['link'], # type: ignore
