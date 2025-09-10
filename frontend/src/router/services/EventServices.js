@@ -122,6 +122,20 @@ const EventServices = {
   getTopTveganja(limit = 10) {
     return apiClients.get(`risks/top?limit=${limit}`)
   },
+  runScraper() {
+  return apiClients.post("/scrape-run")
+    .then(res => {
+      console.log("Scraper output:", res.data.output)
+      alert("✅ Scraper uspešno zagnan!")
+    })
+    .catch(err => {
+      console.error("Napaka pri scraperju:", err)
+      alert("❌ Scraper ni uspel")
+    })
+  },
+  
+
+
 
 }
 

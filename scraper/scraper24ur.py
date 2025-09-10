@@ -2,8 +2,27 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import sys
+import socket
+socket.setdefaulttimeout(10)
+
 
 URL = "https://www.24ur.com"
+
+def send_to_backend(article: dict):
+    headers = {
+        "Authorization": f"Bearer EbEDMRb748ahv2tgLci4R09eK0S9ekv18qdrspIynMcbTjybk2SfMYQhfrYQ3Oji",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "link": article["link"],
+        "summary": article["summary"],
+        "text": article["text"]
+    }
+
+    response = requests.post("http://localhost:8000/api/articles/analyze", headers=headers, json=payload)
+    response.raise_for_status()
+
 
 # Funkcija, ki naredi request
 def req(url):
@@ -41,6 +60,7 @@ def scrape_24ur_tujina():
 
         result.append(singleScrape(scraped_articles))
 
+        # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
         # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
     res = json.dumps(result, indent=4, ensure_ascii=False)
 
