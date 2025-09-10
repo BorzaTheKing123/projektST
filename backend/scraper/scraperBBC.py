@@ -57,7 +57,6 @@ def scrape_BBC_world():
 def singleScrape(scraped_articles: list):
     articles = []
     for link in scraped_articles:
-        print(link)
         soup = req_article(link)
         summary = soup.find('h1').text # type: ignore
 

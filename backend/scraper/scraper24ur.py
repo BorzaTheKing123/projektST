@@ -60,18 +60,10 @@ def scrape_24ur_tujina():
 
         result.append(singleScrape(scraped_articles))
 
-        # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
-        # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
-    res = json.dumps(result, indent=4, ensure_ascii=False)
-
-    print(res)
-    return res
-
 
 def singleScrape(scraped_articles: list):
     articles = []
     for link in scraped_articles:
-        print(link['link'])
         soup = req(link['link'])
         summary = soup.find('p', class_='text-article-summary').text # type: ignore
 
@@ -89,7 +81,7 @@ def singleScrape(scraped_articles: list):
             'text': txt
         }
         articles.append(article_data)
-    return articles
+    print(json.dumps(articles, indent=4, ensure_ascii=False))
 
 
 scrape_24ur_tujina()
