@@ -41,23 +41,6 @@ def req(url):
 
 # Postrga osnovno stran z tujimi novicami
 def scrape_24ur_tujina():
-<<<<<<< HEAD
-    url = "https://www.24ur.com/arhiv/novice/tujina"
-    soup = req(url)
-    scraped_articles = []
-    articles = soup.find_all('a', attrs={'data-upscore-object-id': True})
-    
-    for article in articles:
-        
-        # Preverimo, ali obstajata naslov in href atribut.
-        if 'href' in article.attrs: # type: ignore
-            article_data = {
-                'link': URL + article['href'] # type: ignore
-            }
-            scraped_articles.append(article_data)
-    
-    result = singleScrape(scraped_articles)
-=======
     result = []
     for index in range(1, 2):
         url = f"https://www.24ur.com/arhiv/novice/tujina/?p={index}"
@@ -65,7 +48,6 @@ def scrape_24ur_tujina():
         scraped_articles = []
         main = soup.find('main')
         articles = main.find_all('a', class_='flex flex-col lg:flex-row wrap overflow-visible lg:overflow-hidden card-overlay pb-16 group') # type: ignore
->>>>>>> origin/dev
 
         for article in articles:
             
