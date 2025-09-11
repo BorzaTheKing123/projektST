@@ -2,106 +2,120 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\HeatmapModels\RiskMention;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\Models\HeatmapModels\Risk;
 
 
 class ScrapeToAiController extends Controller
 {
-    public function article(Request $request)
+    public function article($data)
     {
+        set_time_limit(600);
 
-        $link = $request->input('link');
-        $summary = $request->input('summary');
-        $text = $request->input('text');
-        $articleId = $request->input('article_id'); // pričakujemo iz frontenda
-        $riskId = $request->input('risk_id');       // pričakujemo iz frontenda
+        $link = $data["link"];
+        $summary = $data['summary'];
+        $text = $data['text'];
 
 
         $prompt = <<<EOT
-        Si strokovnjak za varnost in tveganja. Na podlagi spodnjih podatkov(povezavo, povzetek in besedilo) razvrsti vsako izmed tveganj v sledeče kategorije:
+        VLOGA:
+        Deluj kot visoko usposobljen strokovnjak za analizo varnostnih tveganj.
 
-        Podatki:
-        Link: {$link}
-        Povzetek: {$summary}
-        Besedilo: {$text}
+        CILJ:
+        Tvoja naloga je, da na podlagi posredovanih podatkov o novici (povezava, povzetek in besedilo) identificiraš **glavno oziroma prevladujoče tveganje**, opisano v vsebini, ga uvrstiš v eno izmed spodaj navedenih kategorij in pripraviš odgovor v strogo določenem formatu JSON.
 
-        Kategorije tveganj so:
+        ---
 
-        ##Geopolitična in Makroekonomska Tveganja
-        Politična tveganja: Spremembe vlad, politična nestabilnost, protekcionizem, politični konflikti.
+        VHODNI PODATKI:
+        * **Link:** {$link}
+        * **Povzetek:** {$summary}
+        * **Besedilo:** {$text}
 
-        Vojna in varnost: Oboroženi spopadi, terorizem, napadi na infrastrukturo.
+        ---
 
-        Makroekonomska tveganja: Recesija, inflacija, deflacija, spremembe obrestnih mer.
+        NAVODILA ZA ANALIZO:
+        1.  **Preberi in razumi vsebino:** Natančno preuči posredovano besedilo, da razumeš osrednji dogodek ali temo.
+        2.  **Identificiraj glavno tveganje:** Osredotoči se na **največ 3** najpomembnejša tveganja, ki izhajajo iz vsebine. Če je tveganj več, izberi tista 3, ki so najbolj poudarjena.
+        3.  **Dodeli kategorijo:** Izberi najustreznejše kategorije iz spodnjega seznama. Uporabiš lahko **samo eno** kategorijo na 1 JSON zapis.
 
-        Valutna tveganja: Nihanje tečajev in devalvacija valute.
+        ---
 
-        Regulativna tveganja: Nove zakonodaje, višji davki, strožji predpisi.
+        SEZNAM DOVOLJENIH KATEGORIJ Tveganj:
+        Uporabi **točno eno** izmed naslednjih vrednosti za ključ `category`. Ime kategorije mora biti zapisano z veliko začetnico, ostale črke pa z malo.
 
-        Tržna tveganja: Nihanje cen na trgu (npr. surovine, delnice).
+        * `Politična tveganja`
+        * `Vojna in varnost`
+        * `Makroekonomska tveganja`
+        * `Valutna tveganja`
+        * `Regulativna tveganja`
+        * `Tržna tveganja`
+        * `Operativna tveganja`
+        * `Tveganja dobavne verige`
+        * `Tehnološka tveganja`
+        * `Kibernetska tveganja`
+        * `Tveganja IT-infrastrukture`
+        * `Tveganja informacijske varnosti`
+        * `Okoljska tveganja`
+        * `Zdravstvena tveganja`
+        * `Družbena tveganja`
+        * `Tveganja ugleda`
+        * `Etična tveganja`
+        * `Kreditno tveganje`
+        * `Likvidnostno tveganje`
+        * `Tveganja skladnosti s predpisi`
+        * `Pravna tveganja`
+        * `Tveganja projekta`
+        * `Tveganja pomanjkanja znanja`
 
-        ##Operativna in Tehnološka Tveganja
-        Operativna tveganja: Napake v procesih, človeške napake, slab nadzor kakovosti.
+        ---
 
-        Tveganja dobavne verige: Zamude, pomanjkanje materialov, zanesljivost dobaviteljev.
+        ZAHTEVAN IZHODNI FORMAT (JSON):
+        Odgovor **mora biti** v formatu JSON in vsebovati seznam (list) z enim slovarjem (dictionary). Ne dodajaj nobenega dodatnega besedila ali pojasnil izven JSON strukture.
 
-        Tehnološka tveganja: Okvare strojev, izpadi programske opreme, zastarela tehnologija.
+        **Struktura slovarja:**
+        * `link` (string): Uporabi natančno vrednost, ki je bila posredovana v vhodnih podatkih.
+        * `category` (string): Ena izmed vrednosti iz zgoraj navedenega seznama dovoljenih kategorij.
+        * `summary` (string): Tvoj lasten, kratek povzetek osrednjega tveganja, dolg **največ 20 besed**.
+        * `confidence` (float): Decimalno število med **0.0 in 1.0**, ki predstavlja tvojo stopnjo zanesljivosti pri določanju kategorije (npr. 0.75, 0.9, 1.0).
 
-        Kibernetska tveganja: Vdori, izsiljevalski virusi, phishing, kraje podatkov.
+        ---
 
-        Tveganja IT-infrastrukture: Izpadi strežnikov, napake v omrežju.
-
-        Tveganja informacijske varnosti: Uhajanje zaupnih podatkov, nepooblaščen dostop.
-
-        ##Okoljska in Družbena Tveganja (ESG)
-        Okoljska tveganja: Naravne katastrofe (potresi, poplave), podnebne spremembe, onesnaženje, pomanjkanje virov.
-
-        Zdravstvena tveganja: Pandemije, izbruhi bolezni, zdravstvene krize.
-
-        Družbena tveganja: Delavski spori, družbeni nemiri, kršitve človekovih pravic.
-
-        Tveganja ugleda: Škandal, slab PR, izguba zaupanja strank in javnosti.
-
-        Etična tveganja: Neetično poslovanje, korupcija, prevare.
-
-        ##Finančna in Pravna Tveganja
-        Kreditno tveganje: Neplačila dolga s strani strank ali partnerjev.
-
-        Likvidnostno tveganje: Nezmožnost izpolnjevanja kratkoročnih finančnih obveznosti.
-
-        Tveganja skladnosti s predpisi: Neupoštevanje zakonov in regulativnih zahtev, kar vodi v kazni ali globe.
-
-        Pravna tveganja: Tožbe, spori, neizpolnjene pogodbe.
-
-        ##Tveganja na ravni projekta
-        Tveganja projekta: Preseganje proračuna, zamude, spremembe obsega projekta.
-
-        Tveganja pomanjkanja znanja: Nepravilno razporejeni viri, pomanjkanje usposobljenega kadra.
-
-        Odgovori v obliki JSON z naslednjo strukturo:
-        {
-            'link': "povezava ki sva ti jo dovedla",
-            'category': "ena izmed zgoraj navedenih kategorij",    
-            'summary': "tvoja obnova clanka dolga do 20 besed",
-            'confidence': "koliko si prepričan da je to prava kategorija",
-        }
-
-        Začni zdaj:
+        PRIMER ZAHTEVANEGA JSON ODGOVORA:
+        [
+            {
+                'link': 'https://www.24ur.com/novice/tujina/silovito-neurje-v-mostarju-na-reki-so-se-ulice-spremenile-v-hudournike.html',
+                'category': 'Okoljska tveganja',
+                'summary': 'Obilne padavine in neurja so povzročila obsežne poplave in materialno škodo v več regijah.',
+                'confidence': 1.0
+            },
+            {
+                'link': 'https://www.24ur.com/novice/tujina/silovito-neurje-v-mostarju-na-reki-so-se-ulice-spremenile-v-hudournike.html',
+                'category': 'Operativna tveganja',
+                'summary': 'Poplave in zemeljski plazovi otežujejo vožnjo in prekinjajo trajektne, katamaranske in ladijske linije.',
+                'confidence': 0.9
+            },
+            {
+                'link': 'https://www.24ur.com/novice/tujina/silovito-neurje-v-mostarju-na-reki-so-se-ulice-spremenile-v-hudournike.html',
+                'category': 'Tveganja projekta',
+                'summary': 'Nujne službe so imele zaradi poplavljenih cest in prostorov čez dan okoli 60 intervencij.',
+                'confidence': 0.8
+            }
+        ]
         EOT;
 
 
-         Log::info('AI prompt:', ['prompt' => $prompt]);
+        // Log::info('AI prompt:', ['prompt' => $prompt]);
 
         $openaiKey = config('app.openai_api_key');
 
         $aiResponse = Http::withHeaders([
             'Authorization' => 'Bearer ' . $openaiKey,
             'Content-Type' => 'application/json',
-        ])->post('https://api.openai.com/v1/chat/completions', [
+        ])->timeout(600)
+        ->post('https://api.openai.com/v1/chat/completions', [
             'model' => 'gpt-4',
             'messages' => [
                 ['role' => 'system', 'content' => 'Si strokovnjak za varnost in tveganja.'],
@@ -126,16 +140,21 @@ class ScrapeToAiController extends Controller
             return response()->json(['error' => 'Neveljaven AI JSON odgovor.']);
         }
 
-        $mention = RiskMention::create([
-            'article_id' => $articleId,
-            'risk_id'    => $riskId,
-            'confidence' => $parsed['confidence'] ?? null,
-            'spans'      => json_encode($parsed),
+        Log::info($parsed);
+
+        foreach ($parsed as $pars) {
+            $risk = Risk::where('category', $pars['category'])->first();
+
+            RiskMention::create([
+            'risk_id'    => $risk->id,
+            'confidence' => $pars['confidence'] ?? null,
+            'link' => $link,
+            'summary' => $pars['summary'] ?? null,
         ]);
+        }
 
         return response()->json([
-            'status' => 'success',
-            'risk_mention' => $mention
+            'status' => 'success'
         ]);
     }
 }

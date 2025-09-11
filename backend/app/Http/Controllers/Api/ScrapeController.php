@@ -20,7 +20,7 @@ class ScrapeController extends Controller
         // 1. Določite absolutno pot do Python izvajalca.
         // To je bolj zanesljivo kot uporaba samo 'python3'.
         // Uporabite env() za pot do virtualnega okolja.
-        $pythonPath = base_path("venv/bin/python");//env('PYTHON_PATH'); 
+        $pythonPath = base_path("venv/bin/python");
         
         // 2. Določite pravilno pot do skripte.
         // Predvidevamo, da je mapa 'scraper' v korenu projekta.
@@ -67,14 +67,18 @@ class ScrapeController extends Controller
         if (json_last_error() !== JSON_ERROR_NONE) {
             // To je ključno! Zajemite neveljaven JSON izpis in ga izpišite v log.
             // Verjetno je to vzrok za vašo napako 500.
-            Log::error('Neveljaven JSON izpis iz Python skripte: ' . $output);
+            Log::error('Neveljaven JSON izpis iz Python skripte: ' . $data);
             return response()->json([
                 'error' => 'Neveljaven JSON izpis',
                 'details' => 'Izpis Python skripte ni bil veljaven JSON.'
             ], 500);
         }
 
-        Log::info('Scraper output: ' . substr($output, 0, 500)); 
+        #Log::info('Scraper output: ' . substr($output, 0, 500));
+
+        foreach ($data as $article) {
+            new ScrapeToAiController()->article($article);
+        }
 
         return response()->json([
             'status' => 'Scraper zagnan',

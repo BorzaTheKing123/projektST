@@ -10,7 +10,7 @@ class RiskMention extends Model
     protected $table = 'risk_mentions';
 
     protected $fillable = [
-        'article_id', 'risk_id', 'confidence', 'spans'
+        'risk_id', 'confidence', 'link', 'summary'
     ];
 
     public function risk(): BelongsTo {
