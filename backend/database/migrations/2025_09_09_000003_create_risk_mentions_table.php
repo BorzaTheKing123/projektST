@@ -8,14 +8,13 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('risk_mentions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('article_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('risk_id')->constrained()->cascadeOnDelete();
+            $table->string('link');
+            $table->foreignId('risk_id')->constrained()->cascadeOnDelete(); //katera kategorija je to
             $table->float('confidence')->default(0); // 0..1 iz LLM
-            $table->json('spans')->nullable();       // opcijsko: indeks odstavkov, lokacije v besedilu
+            $table->string('summary'); 
             $table->timestamps();
 
-            $table->unique(['article_id', 'risk_id']); // ena povezava na članek na tveganje
-            $table->index(['risk_id', 'created_at']);
+           // $table->index(['risk_id', 'created_at']);
         });
     }
     public function down(): void {
