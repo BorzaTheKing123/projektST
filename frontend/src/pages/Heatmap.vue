@@ -49,6 +49,7 @@ const fetchData = async () => {
   try {
     const res = await EventServices.getTopTveganja(limit.value)
     data.value = Array.isArray(res.data) ? res.data : (res.data.data ?? [])
+    console.log(data.value)
   } catch (e: any) {
     error.value = e?.message ?? 'Neznana napaka'
   } finally {
@@ -135,7 +136,7 @@ function hexToRgb(hex: string) {
           <tr v-for="(item, idx) in top10" :key="item.key">
             <td>{{ idx + 1 }}</td>
             <td class="risk-name">{{ item.category }}</td>
-            <td class="count">{{ item.count.toLocaleString('sl-SI') }}</td>
+            <td class="count">{{ item.count }}</td>
             <td class="heat">
               <div class="bar">
                 <div

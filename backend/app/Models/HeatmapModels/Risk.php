@@ -10,7 +10,7 @@ class Risk extends Model
     protected $table = 'risks';
 
     protected $fillable = [
-        'category', 'article_count', 'opis',
+        'category', 'opis',
     ];
 
     public function mentions(): HasMany {
