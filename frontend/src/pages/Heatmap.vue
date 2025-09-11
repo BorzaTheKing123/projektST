@@ -245,8 +245,7 @@ h2 {
 .heat .bar {
   width: 100%;
   height: 12px;
-  background: #0f152b;
-  border: 1px solid #1f2a4d;
+  background: #d5d9e6; 
   border-radius: 6px;
   overflow: hidden;
 }
