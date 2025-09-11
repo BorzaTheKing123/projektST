@@ -17,14 +17,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// 📡 Broadcast (če uporabljaš real-time funkcije)
-Broadcast::routes(['middleware' => ['auth:sanctum']]);
-
-// 🧪 Testna JWT ruta
-Route::middleware('auth:api')->get('/me', function () {
-    return response()->json(auth()->user());
-});
-
 // 🌐 CORS preflight podpora
 Route::options('/{any}', function () {
     return response('', 204);
@@ -70,7 +62,6 @@ Route::middleware('api')->group(function () {
         
 
         Route::get('/risks/top', [HeatmapController::class, 'top']);
-        Route::post('/articles/ingest', [HeatmapController::class, 'ingest']);
         Route::post('/risks/sync-register', [HeatmapController::class, 'syncRegister']);
         Route::post('/articles/analyze', [HeatmapController::class, 'analyze']);
 

@@ -14,7 +14,7 @@ class RiskService
         return Risk::query()
             ->orderByDesc('mention_count')
             ->limit($limit)
-            ->get(['id as key', 'name', 'mention_count as count'])
+            ->get(['id as key', 'category', 'article_count as count'])
             ->toArray();
     }
 
@@ -26,14 +26,13 @@ class RiskService
 
             foreach ($llmRisks as $r) {
                 $slug = $r['slug'] ?? Str::slug(mb_strtolower($r['name']));
-                $risk = Risk::query()->firstOrCreate(
-                    ['slug' => $slug],
-                    ['name' => $r['name'], 'category' => $r['category'] ?? null]
+                $risk = Risk::query()->firstOrCreate([
+                    'category' => $r['category'] ?? null]
                 );
 
                 RiskMention::query()->updateOrCreate(
                     ['article_id' => $articleId, 'risk_id' => $risk->id],
-                    ['confidence' => $r['confidence'] ?? 0, 'spans' => $r['spans'] ?? null]
+                    ['confidence' => $r['confidence'] ?? 0]
                 );
 
                 $attachedRiskIds[] = $risk->id;
@@ -58,7 +57,6 @@ class RiskService
 
                 foreach ($uniqueRiskIds as $rid) {
                     Risk::query()->where('id', $rid)->update([
-                        'mention_count' => $mentionCounts[$rid] ?? 0,
                         'article_count' => $articleCounts[$rid] ?? 0,
                     ]);
                 }

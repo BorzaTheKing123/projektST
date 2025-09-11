@@ -1,8 +1,6 @@
-
 <?php
 
-namespace App\Features\HeatmapFeatures;// app/Features/SyncRiskRegisterFeature.php
-
+namespace app\Features\HeatmapFeatures;
 
 use App\Models\HeatmapModels\Risk;
 use Illuminate\Http\JsonResponse;
@@ -15,10 +13,8 @@ class SyncRiskRegisterFeature
     public function handle(): JsonResponse
     {
         foreach ($this->risks as $r) {
-            $slug = $r['slug'] ?? Str::slug(mb_strtolower($r['name']));
             Risk::query()->updateOrCreate(
-                ['slug' => $slug],
-                ['name' => $r['name'], 'category' => $r['category'] ?? null]
+                ['category' => $r['category'] ?? null]
             );
         }
 

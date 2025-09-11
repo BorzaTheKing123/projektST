@@ -7,7 +7,7 @@ import EventServices from '../router/services/EventServices' // prilagodi pot gl
 
 type RiskItem = {
   key: string
-  name: string
+  category: string
   count: number
 }
 
@@ -134,14 +134,14 @@ function hexToRgb(hex: string) {
         <tbody>
           <tr v-for="(item, idx) in top10" :key="item.key">
             <td>{{ idx + 1 }}</td>
-            <td class="risk-name">{{ item.name }}</td>
+            <td class="risk-name">{{ item.category }}</td>
             <td class="count">{{ item.count.toLocaleString('sl-SI') }}</td>
             <td class="heat">
               <div class="bar">
                 <div
                   class="bar__fill"
                   :style="{ width: barWidth(item.count), backgroundColor: barColor(item.count) }"
-                  :aria-label="`Intenziteta za ${item.name}: ${item.count}`"
+                  :aria-label="`Intenziteta za ${item.category}: ${item.count}`"
                 ></div>
               </div>
             </td>
@@ -188,6 +188,7 @@ max-width: 900px;
 h2 {
   font-size: 1.1rem;
   margin: 0;
+  color: black;
 }
 
 .subtitle {
@@ -228,7 +229,7 @@ h2 {
 
 .table .risk-name {
   font-weight: 600;
-  color: #e9ecf8;
+  color: #878992;
 }
 
 .table .count {
