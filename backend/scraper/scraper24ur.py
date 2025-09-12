@@ -50,8 +50,9 @@ def req(url):
 # Postrga osnovno stran z tujimi novicami
 def scrape_24ur_tujina():
     result = []
-    storage = open(data_file_path, '+r')
+    storage = open(data_file_path, 'r')
     last_news = storage.readline()
+    storage.close()
 
     # 10 strani povezav pobere
     for index in range(1, 2):
@@ -68,13 +69,13 @@ def scrape_24ur_tujina():
                 if URL + article['href'] != last_news:
                     # Izpiše samo novico najbolj na vrhu, torej najnovejšo
                     if index == 0:
+                        storage = open(data_file_path, 'w')
                         storage.write(URL + article['href'])
+                        storage.close()
                     scraped_articles.append(URL + article['href'])
                 else:
                     break
         result += singleScrape(scraped_articles)
-    
-    storage.close()
     print(json.dumps(result, indent=4, ensure_ascii=False))
 
 # Fukncija, ki postrga članke iz interneta

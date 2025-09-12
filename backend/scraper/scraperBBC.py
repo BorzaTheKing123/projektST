@@ -45,19 +45,30 @@ def req_article(url):
 # Postrga osnovno stran z tujimi novicami
 def scrape_BBC_world():
     result = []
+    storage = open(data_file_path, 'r')
+    last_news = storage.readline()
+    storage.close()
+
     for index in range(0, 1):
         url = f"https://web-cdn.api.bbci.co.uk/xd/content-collection/07cedf01-f642-4b92-821f-d7b324b8ba73?country=si&page={index}&size=9&path=%2Fnews%2Fworld"
         soup = json.loads(req(url))['data']
         links = []
 
-        for link in soup:
-            links.append(URL + link['path'])
+        for index, link in enumerate(soup):
+            if URL + link['path'] != last_news:
+                # Izpiše samo novico najbolj na vrhu, torej najnovejšo
+                if index == 0:
+                    storage = open(data_file_path, 'w')
+                    storage.write(URL + link['path'])
+                    storage.close()
+                links.append(URL + link['path'])
+            else:
+                break
 
-        result+= singleScrape(links)
+        result += singleScrape(links)
 
         # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
     res = json.dumps(result, indent=4, ensure_ascii=False)
-
     print(res)
 
 # Postrga en članek

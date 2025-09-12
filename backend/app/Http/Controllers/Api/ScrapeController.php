@@ -20,11 +20,11 @@ class ScrapeController extends Controller
         // 1. Določite absolutno pot do Python izvajalca.
         // To je bolj zanesljivo kot uporaba samo 'python3'.
         // Uporabite env() za pot do virtualnega okolja.
-        $pythonPath = base_path(env('PYTHON_EXECUTABLE'));
+        $pythonPath = base_path('venv/bin/python');
         
         // 2. Določite pravilno pot do skripte.
         // Predvidevamo, da je mapa 'scraper' v korenu projekta.
-        $scriptPath = base_path('scraper\scraper24ur.py');
+        $scriptPath = base_path('scraper/scraper24ur.py');
 
         // Preverite, ali poti obstajajo.
         if (!file_exists($pythonPath)) {
@@ -72,13 +72,20 @@ class ScrapeController extends Controller
 
         Log::info('Scraper output: ' . substr($output, 0, 500));
 
-        foreach ($data as $article) {
-            new ScrapeToAiController()->article($article);
+        if (count($data) !== 0) {
+            foreach ($data as $article) {
+                new ScrapeToAiController()->article($article);
+            }
+
+            return response()->json([
+                'status' => 'Scraper zagnan',
+                'output' => $data
+            ]);
         }
 
         return response()->json([
             'status' => 'Scraper zagnan',
-            'output' => $data
+            'output' => 'Ni novih novic'
         ]);
     }
 }
