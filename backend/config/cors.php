@@ -8,6 +8,7 @@ return [
         'register',
         'broadcasting/auth',
         'stranke*',
+        'categories/*',
     ],
 
     'allowed_methods' => ['*'],

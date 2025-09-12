@@ -19,6 +19,20 @@ export function loadAuthToken() {
 
 // 🔧 Pokliči ob zagonu aplikacije
 loadAuthToken()
+ apiClients.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response && error.response.status === 401) {
+        alert('Prijava je potekla ali so podatki napačni.')
+        // Počisti token
+        localStorage.removeItem('auth_token')
+        delete apiClients.defaults.headers.common['Authorization']
+        // Preusmeri na login
+        window.location.href = '/login'
+      }
+      return Promise.reject(error)
+    }
+  )
 
 // 📦 API metode
 const EventServices = {
@@ -32,6 +46,8 @@ const EventServices = {
         return response
       })
   },
+  // 📌 Globalni interceptor za 401 napake
+ 
 
   // Odjava
   logout() {
@@ -119,7 +135,7 @@ const EventServices = {
     })
   },
   // Heatmap podatki
-  getTopTveganja(limit = 10) {
+  getTopTveganja(limit) {
     return apiClients.get(`risks/top?limit=${limit}`)
   },
   runScraper() {
@@ -132,6 +148,9 @@ const EventServices = {
       console.error("Napaka pri scraperju:", err)
       alert("❌ Scraper ni uspel")
     })
+  },
+  getCategory(id) {
+    return apiClients.get(`/categories/${id}`)
   },
   
 

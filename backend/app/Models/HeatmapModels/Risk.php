@@ -1,19 +1,15 @@
 <?php
-// app/Models/Risk.php
+
 namespace App\Models\HeatmapModels;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Risk extends Model
 {
-    protected $table = 'risks';
+    protected $fillable = ['category', 'opis', 'article_count'];
 
-    protected $fillable = [
-        'category', 'opis',
-    ];
-
-    public function mentions(): HasMany {
+    public function mentions()
+    {
         return $this->hasMany(RiskMention::class);
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\AiController;
 use App\Http\Controllers\Api\HeatmapController;
 use App\Http\Controllers\Api\AnalyzeController;
 use App\Http\Controllers\Api\ScrapeController;
+use App\Http\Controllers\Api\RiskCategoryController;
 
 
 // 🔐 Uporabnik prek Sanctum
@@ -68,6 +69,8 @@ Route::middleware('api')->group(function () {
     Route::post('/scrape-articles', [ScrapeController::class, 'scrape']);
     Route::post('/articles/analyze', [AnalyzeController::class, 'handle']);
     Route::post('/scrape-run', [ScrapeController::class, 'runScraper']);
+
+    Route::get('/categories/{id}', [RiskCategoryController::class, 'show']);
 
 
 

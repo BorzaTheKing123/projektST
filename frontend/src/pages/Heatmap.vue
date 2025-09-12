@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
-import EventServices from '../router/services/EventServices' // prilagodi pot glede na strukturo
-
-
-
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import EventServices from '../router/services/EventServices'
 
 type RiskItem = {
   key: string
@@ -24,19 +22,13 @@ const runScraper = async () => {
   }
 }
 
-
-
-
-
 const props = defineProps<{
   apiUrl?: string
   risks?: RiskItem[] | null
   limit?: number
 }>()
 
-const apiUrl = computed(() => props.apiUrl ?? 'http://localhost:8000/api/risks/top?limit=10')
 const limit = computed(() => props.limit ?? 10)
-
 const loading = ref(false)
 const error = ref<string | null>(null)
 const data = ref<RiskItem[]>(props.risks ?? [])
@@ -55,7 +47,6 @@ const fetchData = async () => {
     loading.value = false
   }
 }
-
 
 onMounted(fetchData)
 watch(() => props.risks, (val) => {
@@ -134,7 +125,11 @@ function hexToRgb(hex: string) {
         <tbody>
           <tr v-for="(item, idx) in top10" :key="item.key">
             <td>{{ idx + 1 }}</td>
-            <td class="risk-name">{{ item.category }}</td>
+            <td class="risk-name">
+              <router-link :to="`/categories/${item.key}`" class="risk-link">
+                {{ item.category }}
+              </router-link>
+            </td>
             <td class="count">{{ item.count }}</td>
             <td class="heat">
               <div class="bar">
@@ -154,8 +149,8 @@ function hexToRgb(hex: string) {
         <span class="legend__item"><span class="dot dot--warm"></span> toplo</span>
         <span class="legend__item"><span class="dot dot--hot"></span> vroče</span>
       </footer>
-      <button @click="runScraper">Zaženi Scraper</button>
 
+      <button @click="runScraper">Zaženi Scraper</button>
     </div>
   </section>
 </template>
@@ -320,5 +315,14 @@ h2 {
   color: #ffffff;
   font-weight: 700;
 }
+.risk-link {
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: 600;
+}
+.risk-link:hover {
+  text-decoration: underline;
+}
+
 
 </style>

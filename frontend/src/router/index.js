@@ -9,6 +9,7 @@ import TveganjaPage from '../pages/Tveganje.vue'
 import DodajTveganjePage from '../pages/DodajTveganje.vue'
 import UrediTveganjePage from '../pages/UrejanjeTveganje.vue'
 import HeatmapPage from '@/pages/Heatmap.vue'
+import HeatmapTveganjePage from '../pages/HeatmapCategory.vue'
 
 const URL = ''
 
@@ -70,6 +71,12 @@ const router = createRouter({
     name: 'Heatmap',
     component: HeatmapPage,
   },
+  {
+  path: '/categories/:id',
+  name: 'HeatmapCategory',
+  component: HeatmapTveganjePage,
+},
+
 
 
 
