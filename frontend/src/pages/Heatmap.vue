@@ -17,7 +17,7 @@ const runScraper = async () => {
     const res = await EventServices.runScraper() as any
 
     // Tukaj varno dostopamo do podatkov
-    const count = res?.data?.output?.length ?? 0
+    const count = Array.isArray(res) ? res .length : 0
     alert(`✅ Scraper zagnan! Obdelanih člankov: ${count}`)
   } catch (e) {
     alert('❌ Napaka pri zagonu scraperja')

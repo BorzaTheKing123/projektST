@@ -125,8 +125,8 @@ const EventServices = {
   runScraper() {
   return apiClients.post("/scrape-run")
     .then(res => {
-      console.log("Scraper output:", res.data.output)
       alert("✅ Scraper uspešno zagnan!")
+      return res.data.output
     })
     .catch(err => {
       console.error("Napaka pri scraperju:", err)
