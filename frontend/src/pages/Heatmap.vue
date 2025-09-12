@@ -14,12 +14,10 @@ type RiskItem = {
 const runScraper = async () => {
   try {
     // TypeScript misli, da runScraper ne vrača nič, zato mu ročno povemo da naj obravnava rezultat kot AxiosResponse
-    const res = await EventServices.runScraper() as any
-    console.log(res)
+    const res = await EventServices.runScraper() as Number
 
     // Tukaj varno dostopamo do podatkov
-    const count = Array.isArray(res) ? res .length : 0
-    alert(`✅ Scraper zagnan! Obdelanih člankov: ${count}`)
+    alert(`✅ Scraper zagnan! Obdelanih člankov: ${res}`)
   } catch (e) {
     alert('❌ Napaka pri zagonu scraperja')
     console.error(e)

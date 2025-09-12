@@ -26,6 +26,7 @@ class ScrapeController extends Controller
         // Predvidevamo, da je mapa 'scraper' v korenu projekta.
         //$scriptPath = base_path('scraper/scraper24ur.py');
         $paths = [base_path('scraper/scraperBBC.py'), base_path('scraper/scraper24ur.py')];
+        $output_count = 0;
 
         foreach ($paths as $scriptPath) {
             // Preverite, ali poti obstajajo.
@@ -67,8 +68,8 @@ class ScrapeController extends Controller
             if (json_last_error() !== JSON_ERROR_NONE) {
                 Log::error('Neveljaven JSON izpis iz Python skripte: ' . $output);
                 return response()->json([
-                'error' => 'Neveljaven JSON izpis',
-                'details' => 'Izpis Python skripte ni bil veljaven JSON.'
+                    'error' => 'Neveljaven JSON izpis',
+                    'details' => 'Izpis Python skripte ni bil veljaven JSON.'
                 ], 500);
             }
 
@@ -76,14 +77,15 @@ class ScrapeController extends Controller
 
             if (count($data) !== 0) {
                 foreach ($data as $article) {
+                    $output_count += 1;
                     new ScrapeToAiController()->article($article);
                 }
             }
         }
 
         return response()->json([
-            'error' => 'Ni python skript',
-            'details' => 'Ni pythonovih skript za strganje!'
-            ], 500);
+            'description' => 'Število predelanih novic',
+            'output' => $output_count
+        ]);
     }
 }
