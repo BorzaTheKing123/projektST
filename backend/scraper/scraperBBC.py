@@ -2,6 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import sys
+from pathlib import Path
+
+# Get the absolute path to the directory of the current script
+script_dir = Path(__file__).parent
+
+# Define a relative path to a file (e.g., a data file in a 'data' folder)
+data_file_path = script_dir / 'data' / 'lastBBCnews.txt'
 
 URL = "https://www.bbc.com"
 
@@ -15,7 +22,7 @@ def req(url):
     except requests.exceptions.RequestException as e:
         # V primeru napake (ni povezave, timeout, ...) izpiši napako na stderr
         # in končaj izvajanje.
-        print(json.dumps({"error": f"Napaka pri povezovanju: {e}"}), file=sys.stderr)
+        print(json.dumps([{"error": f"Napaka pri povezovanju: {e}"}]))
         quit()
 
     return response.content
@@ -30,7 +37,7 @@ def req_article(url):
     except requests.exceptions.RequestException as e:
         # V primeru napake (ni povezave, timeout, ...) izpiši napako na stderr
         # in končaj izvajanje.
-        print(json.dumps({"error": f"Napaka pri povezovanju: {e}"}), file=sys.stderr)
+        print(json.dumps([{"error": f"Napaka pri povezovanju: {e}"}]))
         quit()
 
     return BeautifulSoup(response.content, 'html.parser')
@@ -38,7 +45,7 @@ def req_article(url):
 # Postrga osnovno stran z tujimi novicami
 def scrape_BBC_world():
     result = []
-    for index in range(0, 10):
+    for index in range(0, 1):
         url = f"https://web-cdn.api.bbci.co.uk/xd/content-collection/07cedf01-f642-4b92-821f-d7b324b8ba73?country=si&page={index}&size=9&path=%2Fnews%2Fworld"
         soup = json.loads(req(url))['data']
         links = []
@@ -46,12 +53,12 @@ def scrape_BBC_world():
         for link in soup:
             links.append(URL + link['path'])
 
-        result.append(singleScrape(links))
+        result+= singleScrape(links)
 
         # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
     res = json.dumps(result, indent=4, ensure_ascii=False)
 
-    return res
+    print(res)
 
 # Postrga en članek
 def singleScrape(scraped_articles: list):
