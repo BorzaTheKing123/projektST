@@ -28,8 +28,6 @@ class ScrapeController extends Controller
         $paths = [base_path('scraper/scraperBBC.py'), base_path('scraper/scraper24ur.py')];
 
         foreach ($paths as $scriptPath) {
-        
-
             // Preverite, ali poti obstajajo.
             if (!file_exists($pythonPath)) {
                 Log::error("Python izvajalec ne obstaja na: " . $pythonPath);
@@ -80,17 +78,7 @@ class ScrapeController extends Controller
                 foreach ($data as $article) {
                     new ScrapeToAiController()->article($article);
                 }
-
-                return response()->json([
-                    'status' => 'Scraper zagnan',
-                    'output' => $data
-                ]);
             }
-
-            return response()->json([
-                'status' => 'Scraper zagnan',
-                'output' => 'Ni novih novic'
-            ]);
         }
 
         return response()->json([

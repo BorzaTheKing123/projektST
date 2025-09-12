@@ -15,6 +15,7 @@ const runScraper = async () => {
   try {
     // TypeScript misli, da runScraper ne vrača nič, zato mu ročno povemo da naj obravnava rezultat kot AxiosResponse
     const res = await EventServices.runScraper() as any
+    console.log(res)
 
     // Tukaj varno dostopamo do podatkov
     const count = Array.isArray(res) ? res .length : 0

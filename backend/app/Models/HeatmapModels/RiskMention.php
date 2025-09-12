@@ -30,5 +30,20 @@ class RiskMention extends Model
         static::creating(function () {
             static::where('created_at', '<', Carbon::now()->subWeeks(2))->delete();
         });
+        // Ko je članek ustvarjen
+        static::created(function ($risk) {
+            // Povečaj števec na povezani ključni besedi
+            if ($risk->risk_id) {
+                Risk::find($risk->risk_id)->increment('article_count');
+            }
+        });
+
+        // Ko je članek izbrisan
+        static::deleted(function ($risk) {
+            // Zmanjšaj števec na povezani ključni besedi
+            if ($risk->risk_id) {
+                Risk::find($risk->risk_id)->decrement('article_count');
+            }
+        });
     }
 }

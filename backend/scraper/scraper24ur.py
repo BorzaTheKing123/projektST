@@ -62,7 +62,6 @@ def scrape_24ur_tujina():
         scraped_articles = []
         main = soup.find('main')
         articles: list(str) = main.find_all('a', class_='flex flex-col lg:flex-row wrap overflow-visible lg:overflow-hidden card-overlay pb-16 group') # type: ignore
-
         for index, article in enumerate(articles):
             # Preverimo, ali obstajata naslov in href atribut.
             if 'href' in article.attrs: # type: ignore
