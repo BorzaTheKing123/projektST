@@ -78,7 +78,7 @@ const barColor = (count: number) => {
   const t = Math.min(1, count / maxCount.value)
   if (t < 0.5) {
     const p = t / 0.5
-    return mix('#4F46E5', '#F59E0B', p)
+    return mix('#0900a4', '#F59E0B', p)
   } else {
     const p = (t - 0.5) / 0.5
     return mix('#F59E0B', '#EF4444', p)

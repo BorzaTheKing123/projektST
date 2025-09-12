@@ -25,69 +25,77 @@ class ScrapeController extends Controller
         // 2. Določite pravilno pot do skripte.
         // Predvidevamo, da je mapa 'scraper' v korenu projekta.
         //$scriptPath = base_path('scraper/scraper24ur.py');
-        $scriptPath = base_path('scraper/scraperBBC.py');
+        $paths = [base_path('scraper/scraperBBC.py'), base_path('scraper/scraper24ur.py')];
+
+        foreach ($paths as $scriptPath) {
         
 
-        // Preverite, ali poti obstajajo.
-        if (!file_exists($pythonPath)) {
-            Log::error("Python izvajalec ne obstaja na: " . $pythonPath);
-            return response()->json([
-                'error' => 'Napaka strežnika',
-                'details' => 'Python izvajalec ni najden.'
-            ], 500);
-        }
+            // Preverite, ali poti obstajajo.
+            if (!file_exists($pythonPath)) {
+                Log::error("Python izvajalec ne obstaja na: " . $pythonPath);
+                return response()->json([
+                    'error' => 'Napaka strežnika',
+                    'details' => 'Python izvajalec ni najden.'
+                ], 500);
+            }
 
-        if (!file_exists($scriptPath)) {
-            Log::error("Scraper skripta ne obstaja na: " . $scriptPath);
-            return response()->json([
-                'error' => 'Napaka strežnika',
-                'details' => 'Scraper skripta ni najdena.'
-            ], 500);
-        }
+            if (!file_exists($scriptPath)) {
+                Log::error("Scraper skripta ne obstaja na: " . $scriptPath);
+                return response()->json([
+                    'error' => 'Napaka strežnika',
+                    'details' => 'Scraper skripta ni najdena.'
+                ], 500);
+            }
 
-        // 3. Uporabite Symfony Process za zanesljivo izvajanje.
-        $process = new Process([$pythonPath, $scriptPath]);
-        
-        // Izvedite proces in zajemite izpis.
-        try {
-            $process->mustRun();
-        } catch (ProcessFailedException $exception) {
-            // Zajemite napake iz Python skripte.
-            Log::error('Napaka pri izvajanju scraperja: ' . $exception->getMessage());
-            return response()->json([
-                'error' => 'Scraper ni uspel',
-                'details' => $process->getErrorOutput()
-            ], 500);
-        }
+            // 3. Uporabite Symfony Process za zanesljivo izvajanje.
+            $process = new Process([$pythonPath, $scriptPath]);
+            
+            // Izvedite proces in zajemite izpis.
+            try {
+                $process->mustRun();
+            } catch (ProcessFailedException $exception) {
+                // Zajemite napake iz Python skripte.
+                Log::error('Napaka pri izvajanju scraperja: ' . $exception->getMessage());
+                return response()->json([
+                    'error' => 'Scraper ni uspel',
+                    'details' => $process->getErrorOutput()
+                ], 500);
+            }
 
-        // 4. Zajemite izpis.
-        $output = trim($process->getOutput()); // trim odstrani prazne vrstice
-        $data = json_decode($output, true);
+            // 4. Zajemite izpis.
+            $output = trim($process->getOutput()); // trim odstrani prazne vrstice
+            $data = json_decode($output, true);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            Log::error('Neveljaven JSON izpis iz Python skripte: ' . $output);
-            return response()->json([
-            'error' => 'Neveljaven JSON izpis',
-            'details' => 'Izpis Python skripte ni bil veljaven JSON.'
-            ], 500);
-        }
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                Log::error('Neveljaven JSON izpis iz Python skripte: ' . $output);
+                return response()->json([
+                'error' => 'Neveljaven JSON izpis',
+                'details' => 'Izpis Python skripte ni bil veljaven JSON.'
+                ], 500);
+            }
 
-        Log::info('Scraper output: ' . substr($output, 0, 500));
+            Log::info('Scraper output: ' . substr($output, 0, 500));
 
-        if (count($data) !== 0) {
-            foreach ($data as $article) {
-                new ScrapeToAiController()->article($article);
+            if (count($data) !== 0) {
+                foreach ($data as $article) {
+                    new ScrapeToAiController()->article($article);
+                }
+
+                return response()->json([
+                    'status' => 'Scraper zagnan',
+                    'output' => $data
+                ]);
             }
 
             return response()->json([
                 'status' => 'Scraper zagnan',
-                'output' => $data
+                'output' => 'Ni novih novic'
             ]);
         }
 
         return response()->json([
-            'status' => 'Scraper zagnan',
-            'output' => 'Ni novih novic'
-        ]);
+            'error' => 'Ni python skript',
+            'details' => 'Ni pythonovih skript za strganje!'
+            ], 500);
     }
 }
