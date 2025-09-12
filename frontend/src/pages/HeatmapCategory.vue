@@ -80,7 +80,7 @@ onMounted(fetchCategoryData)
 
     <div v-else>
       <div class="article-list-header">
-        <span class="article-list-header__title">Naziv članka</span>
+        <span class="article-list-header__title">Obnova članka</span>
         <span class="article-list-header__intensity">Intenziteta</span>
       </div>
 

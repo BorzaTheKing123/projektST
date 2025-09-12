@@ -66,7 +66,7 @@ def scrape_BBC_world():
             else:
                 stop = True
                 break
-
+        
         result += singleScrape(links)
         if stop:
             break
