@@ -9,11 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class RiskService
 {
-    public function getTopRisks(int $limit = 10): array
+    public function getTopRisks(): array
     {
         return Risk::query()
             ->orderByDesc('mention_count')
-            ->limit($limit)
             ->get(['id as key', 'category', 'article_count as count'])
             ->toArray();
     }
@@ -25,7 +24,6 @@ class RiskService
             $attachedRiskIds = [];
 
             foreach ($llmRisks as $r) {
-                $slug = $r['slug'] ?? Str::slug(mb_strtolower($r['name']));
                 $risk = Risk::query()->firstOrCreate([
                     'category' => $r['category'] ?? null]
                 );
@@ -41,12 +39,6 @@ class RiskService
             // Rebuild counters for risks touched in this article
             if ($attachedRiskIds) {
                 $uniqueRiskIds = array_values(array_unique($attachedRiskIds));
-                $mentionCounts = RiskMention::query()
-                    ->selectRaw('risk_id, COUNT(*) as c, COUNT(DISTINCT article_id) as ac')
-                    ->whereIn('risk_id', $uniqueRiskIds)
-                    ->groupBy('risk_id')
-                    ->pluck('c', 'risk_id')
-                    ->toArray();
 
                 $articleCounts = RiskMention::query()
                     ->selectRaw('risk_id, COUNT(DISTINCT article_id) as ac')

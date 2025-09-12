@@ -7,16 +7,16 @@ use Illuminate\Http\JsonResponse;
 
 class GetTopRisksFeature
 {
-    protected int $limit;
+    //protected int $limit;
 
-    public function __construct(int $limit = 10)
+    public function __construct()
     {
-        $this->limit = $limit;
+        //$this->limit = $limit;
     }
 
     public function handle(): JsonResponse
     {
-        $risks = app(RiskService::class)->getTopRisks($this->limit);
+        $risks = app(RiskService::class)->getTopRisks();
 
         return response()->json($risks);
     }

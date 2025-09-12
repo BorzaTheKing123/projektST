@@ -26,8 +26,7 @@ class HeatmapController extends Controller
     }
 
     public function top(Request $request) {
-        $limit = $request->integer('limit', 10);
-        return (new GetTopRisksFeature($limit))->handle();
+        return (new GetTopRisksFeature())->handle();
     }
 
     public function syncRegister(Request $request) {
