@@ -24,7 +24,9 @@ class ScrapeController extends Controller
         
         // 2. Določite pravilno pot do skripte.
         // Predvidevamo, da je mapa 'scraper' v korenu projekta.
-        $scriptPath = base_path('scraper/scraper24ur.py');
+        //$scriptPath = base_path('scraper/scraper24ur.py');
+        $scriptPath = base_path('scraper/scraperBBC.py');
+        
 
         // Preverite, ali poti obstajajo.
         if (!file_exists($pythonPath)) {

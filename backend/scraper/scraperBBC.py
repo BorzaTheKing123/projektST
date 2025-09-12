@@ -48,8 +48,9 @@ def scrape_BBC_world():
     storage = open(data_file_path, 'r')
     last_news = storage.readline()
     storage.close()
+    stop = False
 
-    for index in range(0, 1):
+    for index in range(0, 10):
         url = f"https://web-cdn.api.bbci.co.uk/xd/content-collection/07cedf01-f642-4b92-821f-d7b324b8ba73?country=si&page={index}&size=9&path=%2Fnews%2Fworld"
         soup = json.loads(req(url))['data']
         links = []
@@ -63,10 +64,12 @@ def scrape_BBC_world():
                     storage.close()
                 links.append(URL + link['path'])
             else:
+                stop = True
                 break
 
         result += singleScrape(links)
-
+        if stop:
+            break
         # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
     res = json.dumps(result, indent=4, ensure_ascii=False)
     print(res)

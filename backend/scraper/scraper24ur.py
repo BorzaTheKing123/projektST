@@ -53,9 +53,10 @@ def scrape_24ur_tujina():
     storage = open(data_file_path, 'r')
     last_news = storage.readline()
     storage.close()
+    stop = False
 
     # 10 strani povezav pobere
-    for index in range(1, 2):
+    for index in range(1, 11):
         url = f"https://www.24ur.com/arhiv/novice/tujina/?p={index}"
         soup = req(url)
         scraped_articles = []
@@ -74,8 +75,11 @@ def scrape_24ur_tujina():
                         storage.close()
                     scraped_articles.append(URL + article['href'])
                 else:
+                    stop = True
                     break
         result += singleScrape(scraped_articles)
+        if stop:
+            break
     print(json.dumps(result, indent=4, ensure_ascii=False))
 
 # Fukncija, ki postrga članke iz interneta
