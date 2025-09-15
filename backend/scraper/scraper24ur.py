@@ -78,9 +78,9 @@ def scrape_24ur_tujina():
                 else:
                     stop = True
                     break
+        result += singleScrape(scraped_articles)
         if stop:
             break
-        result += singleScrape(scraped_articles)
     print(json.dumps(result, indent=4, ensure_ascii=False))
 
 # Fukncija, ki postrga članke iz interneta

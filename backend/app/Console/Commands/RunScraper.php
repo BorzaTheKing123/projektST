@@ -13,6 +13,8 @@ class RunScraper extends Command
 
     public function handle(): void
     {
+        set_time_limit(0);
+
         $this->info('🔁 Scraper loop se je začel. Vsakih 10 minut bo sprožen.');
 
         while (true) {
@@ -26,7 +28,7 @@ class RunScraper extends Command
     private function runScraperOnce(): void
 {
     try {
-        app()->call('App\Http\Controllers\ScraperController@runScraper');
+        app()->call('App\Http\Controllers\Api\ScrapeController@runScraper');
         $this->info('✅ Scraper uspešno zagnan prek ScraperController');
     } catch (\Throwable $e) {
         Log::error('❌ Napaka pri zagonu scraperja iz kontrolerja', ['error' => $e->getMessage()]);

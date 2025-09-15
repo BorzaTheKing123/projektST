@@ -69,10 +69,9 @@ def scrape_BBC_world():
             else:
                 stop = True
                 break
-        
+        result += singleScrape(links)
         if stop:
             break
-        result += singleScrape(links)
         # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
     res = json.dumps(result, indent=4, ensure_ascii=False)
     print(res)
