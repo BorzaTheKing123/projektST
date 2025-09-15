@@ -54,10 +54,11 @@ def scrape_24ur_tujina():
     last_news = storage.readline()
     storage.close()
     stop = False
+    first_news = True
 
     # 10 strani povezav pobere
-    for index in range(1, 11):
-        url = f"https://www.24ur.com/arhiv/novice/tujina/?p={index}"
+    for ind in range(1, 11):
+        url = f"https://www.24ur.com/arhiv/novice/tujina/?p={ind}"
         soup = req(url)
         scraped_articles = []
         main = soup.find('main')
@@ -68,17 +69,18 @@ def scrape_24ur_tujina():
                 #Preverimo katera je zadnja novica
                 if URL + article['href'] != last_news:
                     # Izpiše samo novico najbolj na vrhu, torej najnovejšo
-                    if index == 0:
+                    if first_news:
                         storage = open(data_file_path, 'w')
                         storage.write(URL + article['href'])
                         storage.close()
+                        first_news = False
                     scraped_articles.append(URL + article['href'])
                 else:
                     stop = True
                     break
-        result += singleScrape(scraped_articles)
         if stop:
             break
+        result += singleScrape(scraped_articles)
     print(json.dumps(result, indent=4, ensure_ascii=False))
 
 # Fukncija, ki postrga članke iz interneta

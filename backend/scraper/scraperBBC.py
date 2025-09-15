@@ -48,28 +48,31 @@ def scrape_BBC_world():
     storage = open(data_file_path, 'r')
     last_news = storage.readline()
     storage.close()
+    # stop konča za zadnjo in first_news skrbi da se zapiše samo prva
     stop = False
+    first_news = True
 
-    for index in range(0, 10):
-        url = f"https://web-cdn.api.bbci.co.uk/xd/content-collection/07cedf01-f642-4b92-821f-d7b324b8ba73?country=si&page={index}&size=9&path=%2Fnews%2Fworld"
+    for ind in range(0, 10):
+        url = f"https://web-cdn.api.bbci.co.uk/xd/content-collection/07cedf01-f642-4b92-821f-d7b324b8ba73?country=si&page={ind}&size=9&path=%2Fnews%2Fworld"
         soup = json.loads(req(url))['data']
         links = []
 
         for index, link in enumerate(soup):
             if URL + link['path'] != last_news:
                 # Izpiše samo novico najbolj na vrhu, torej najnovejšo
-                if index == 0:
+                if first_news:
                     storage = open(data_file_path, 'w')
                     storage.write(URL + link['path'])
                     storage.close()
+                    first_news = False
                 links.append(URL + link['path'])
             else:
                 stop = True
                 break
         
-        result += singleScrape(links)
         if stop:
             break
+        result += singleScrape(links)
         # Izpiši zbrane podatke v JSON formatu na standardni izhod (stdout).
     res = json.dumps(result, indent=4, ensure_ascii=False)
     print(res)
