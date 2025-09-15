@@ -149,8 +149,6 @@ function hexToRgb(hex: string) {
         <span class="legend__item"><span class="dot dot--warm"></span> toplo</span>
         <span class="legend__item"><span class="dot dot--hot"></span> vroče</span>
       </footer>
-
-      <button @click="runScraper">Zaženi Scraper</button>
     </div>
   </section>
 </template>
