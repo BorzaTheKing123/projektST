@@ -52,17 +52,31 @@ const fetchCategoryData = async () => {
 // Vhod: intensity (število med 0 in 100)
 // Izhod: CSS barvni niz (npr. 'rgb(255, 0, 0)' za rdečo, 'rgb(0, 255, 0)' za zeleno)
 const getIntensityColor = (intensity: number) => {
-  // Normaliziramo intenziteto na lestvico med 0 (rdeča) in 1 (zelena)
-  // Predpostavimo, da je 50 rdeča in 100 zelena.
-  // Če je intenziteta pod 50, naj bo rdeča.
-  const normalizedIntensity = Math.max(0, Math.min(1, (intensity - 50) / 50)); // Od 0 do 1
+  // Omejimo intenziteto med 60 in 100
+  const clamped = Math.max(60, Math.min(100, intensity));
+  const normalized = (clamped - 60) / 40; // 0 pri 60, 1 pri 100
 
-  const red = Math.round(255 * (1 - normalizedIntensity));
-  const green = Math.round(255 * normalizedIntensity);
-  const blue = 0; // Modre ni
+  let red = 0;
+  let green = 0;
+  let blue = 0;
+
+  if (normalized < 0.5) {
+    // Od rdeče (60) do rumene (80)
+    const ratio = normalized * 2; // 0 → 1
+    red = 255;
+    green = Math.round(255 * ratio); // 0 → 255
+    blue = 0;
+  } else {
+    // Od rumene (80) do temno zelene (100)
+    const ratio = (normalized - 0.5) * 2; // 0 → 1
+    red = Math.round(255 * (1 - ratio)); // 255 → 0
+    green = Math.round(255 * (1 - ratio * 0.6)); // 255 → ~100
+    blue = 0;
+  }
 
   return `rgb(${red}, ${green}, ${blue})`;
 };
+
 
 
 onMounted(fetchCategoryData)
@@ -71,7 +85,7 @@ onMounted(fetchCategoryData)
 <template>
   <section class="heatmap">
     <header class="heatmap__header">
-      <h2>Kategorija: {{ categoryName }}</h2>
+      <h2>Kategorija: <span class="highlighted-category">{{ categoryName }}</span></h2>
       <p class="subtitle">Število artiklov: {{ articleCount }}</p>
     </header>
 
@@ -96,18 +110,16 @@ onMounted(fetchCategoryData)
           </div>
         </li>
       </ul>
-
-      <footer class="legend">
-        <span class="legend__item"><span class="dot dot--cool"></span> hladno</span>
-        <span class="legend__item"><span class="dot dot--warm"></span> toplo</span>
-        <span class="legend__item"><span class="dot dot--hot"></span> vroče</span>
-      </footer>
     </div>
   </section>
 </template>
 
 
 <style scoped>
+  .highlighted-category {
+   font-weight: bold;
+   color: rgb(54, 11, 171);
+  }
   .heatmap {
     background-color: #ffffff;
     border-radius: 12px;
@@ -221,9 +233,6 @@ onMounted(fetchCategoryData)
     border: 1px solid #1f2a4d;
   }
 
-  .dot--cool { background: #4F46E5; }
-  .dot--warm { background: #F59E0B; }
-  .dot--hot  { background: #EF4444; }
   /* Vsi obstoječi stili ostanejo nespremenjeni, razen spodaj navedenih. */
 
   /* Stil za glavo seznama */
