@@ -24,6 +24,7 @@ class RiskCategoryController extends Controller
             'category' => $risk->category,
             'article_count' => $articles->count(),
             'articles' => $articles,
+            'summary' => $risk->opis,
         ]);
     }
 }

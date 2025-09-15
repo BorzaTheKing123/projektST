@@ -12,6 +12,7 @@ type CategoryResponse = {
   category: string
   article_count: number
   articles: Article[]
+  summary: string
 }
 
 
@@ -23,6 +24,7 @@ const error = ref<string | null>(null)
 const articles = ref<Article[]>([])
 const categoryName = ref('')
 const articleCount = ref(0)
+const categorySummary = ref('')
 
 const fetchCategoryData = async () => {
   if (!categoryId) {
@@ -39,6 +41,8 @@ const fetchCategoryData = async () => {
 
     categoryName.value = data.category
     articleCount.value = data.article_count
+    categorySummary.value = data.summary
+
     articles.value = Array.isArray(data.articles) ? data.articles : []
   } catch (e: any) {
     error.value = e?.message ?? 'Napaka pri nalaganju kategorije'
@@ -86,6 +90,7 @@ onMounted(fetchCategoryData)
   <section class="heatmap">
     <header class="heatmap__header">
       <h2>Kategorija: <span class="highlighted-category">{{ categoryName }}</span></h2>
+      <p class="summary">{{ categorySummary }}</p>
       <p class="subtitle">Število artiklov: {{ articleCount }}</p>
     </header>
 
@@ -116,6 +121,7 @@ onMounted(fetchCategoryData)
 
 
 <style scoped>
+
   .highlighted-category {
    font-weight: bold;
    color: rgb(54, 11, 171);
@@ -276,5 +282,9 @@ onMounted(fetchCategoryData)
     font-weight: 600;
     color: #333;
     justify-content: flex-end; /* Poravnajte elemente na desno */
+  }
+  .summary{
+    color: #4b4e53;
+    font-size: 1.1rem;
   }
 </style>
