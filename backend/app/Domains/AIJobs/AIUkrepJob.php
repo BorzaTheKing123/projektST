@@ -23,7 +23,7 @@ class AIUkrepJob
      */
     public function handle()
     {
-        Log::info('OpenAI response:', ['response' => $this->response->json()]);
+        Log::info('OpenAI response:', ['response' => $this->response]);
 
         $tveganjeId = $this->request->input('tveganje_id');
         $tveganjeModel = Tveganje::find($tveganjeId);
@@ -37,7 +37,7 @@ class AIUkrepJob
         $noviUkrepi = $this->response;
 
         if (!$noviUkrepi || trim($noviUkrepi) === '') {
-            Log::warning('AI vrnil prazen odgovor.', ['response' => $this->response->json()]);
+            Log::warning('AI vrnil prazen odgovor.', ['response' => $this->response]);
             return response()->json(['predlogi' => 'Ni predlogov.']);
         }
 

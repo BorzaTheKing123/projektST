@@ -42,5 +42,7 @@ class AIUkrepPromptJob
 
         Začni zdaj:
         EOT;
+
+        return $prompt;
     }
 }
