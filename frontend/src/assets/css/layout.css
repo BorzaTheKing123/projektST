@@ -1,0 +1,118 @@
+/* === Glavni containerji === */
+.container,
+.napis {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+}
+
+/* === Sidebar === */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 220px;
+  background-color: #2d3748;
+  color: #fff;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  color: #f7fafc;
+}
+
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-links li {
+  margin-bottom: 1rem;
+}
+
+.sidebar-links a {
+  color: #cbd5e0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.sidebar-links a:hover,
+.active {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* === Postavitev za .login, .register, .input === */
+.login,
+.register,
+.input,
+.options {
+  max-width: 300px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+/* === Header sekcije (npr. heatmap) === */
+.heatmap__header {
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin: 0;
+}
+
+.subtitle {
+  color: #9aa3b2;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* === Utility razredi === */
+.text-center {
+  text-align: center;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 2rem;
+}
+.heatmap {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  max-width: 900px;
+  margin: 40px auto;
+}
+

@@ -107,8 +107,8 @@ onMounted(fetchCategoryData)
         <li v-for="(article, idx) in articles" :key="idx" class="article-list__item">
           <a :href="article.url" target="_blank">{{ article.title || 'Neimenovan članek' }}</a>
           <div class="intensity-display">
-            <span 
-              class="intensity-dot" 
+            <span
+              class="intensity-dot"
               :style="{ backgroundColor: getIntensityColor(article.intensity) }"
             ></span>
             {{ article.intensity }}
@@ -119,172 +119,15 @@ onMounted(fetchCategoryData)
   </section>
 </template>
 
-
 <style scoped>
-
-  .highlighted-category {
-   font-weight: bold;
-   color: rgb(54, 11, 171);
-  }
-  .heatmap {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    max-width: 900px;
-    margin: 40px auto;
-  }
-
-  .heatmap__header {
-    margin-bottom: 1rem;
-  }
-
-  .subtitle {
-    color: #9aa3b2;
-    font-size: 0.9rem;
-  }
-
-  .state--loading,
-  .state--error {
-    padding: 1rem;
-    border-radius: 8px;
-    background: #f3f4f6;
-    color: #1f2937;
-  }
-
-  .article-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .article-list__item { /* Dodan nov razred za li elemente */
-    margin-bottom: 1rem;
-    display: flex; /* Uporabimo flexbox */
-    justify-content: space-between; /* Razmaknemo vsebino */
-    align-items: center; /* Poravnamo po sredini navpično */
-    padding: 0.5rem 0; /* Malo prostora zgoraj in spodaj */
-    border-bottom: 1px solid #eee; /* Ločnica med elementi */
-  }
-
-  .article-list__item:last-child {
-    border-bottom: none; /* Brez ločnice pri zadnjem elementu */
-  }
-
-
-  .article-list a {
-    font-weight: 600;
-    color: #1d4ed8;
-    text-decoration: none;
-    flex-grow: 1; /* Povezava lahko zavzame čim več prostora */
-    margin-right: 1rem; /* Presledek med povezavo in intenziteto */
-  }
-
-  /* Stil za prikaz intenzitete in kroga */
-  .intensity-display {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Presledek med krogom in številko */
-    font-weight: 600;
-    color: #333;
-    flex-shrink: 0; /* Preprečimo, da bi se intenziteta skrčila */
-  }
-
-  .intensity-dot {
-    width: 14px; /* Velikost kroga */
-    height: 14px;
-    border-radius: 50%; /* Naredi krog */
-    border: 1px solid rgba(0, 0, 0, 0.1); /* Nežen rob */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Nežna senca */
-  }
-
-
-  .bar {
-    width: 100%;
-    height: 12px;
-    background: #d5d9e6;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 4px;
-  }
-
-  .bar__fill {
-    height: 100%;
-    border-radius: 6px;
-    transition: width 300ms ease, background-color 300ms ease;
-  }
-
-  .legend {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    color: #9aa3b2;
-    font-size: 0.85rem;
-    padding-top: 1rem;
-    margin-top: 1rem; /* Dodaj malo prostora nad legendo */
-    border-top: 1px solid #eee; /* Ločnica nad legendo */
-  }
-
-  .legend__item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    display: inline-block;
-    border: 1px solid #1f2a4d;
-  }
-
-  /* Vsi obstoječi stili ostanejo nespremenjeni, razen spodaj navedenih. */
-
-  /* Stil za glavo seznama */
-  .article-list-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    color: #555;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .article-list-header__title {
-    /* Povezava lahko zavzame večino prostora */
-    flex-grow: 1;
-  }
-
-  .article-list-header__intensity {
-    /* Namesto fiksne širine, poravnajte besedilo desno */
-    text-align: right;
-    /* Dodamo malo prostora levo od besedila, da se ujema s presledkom pri člankih */
-    padding-left: 24px; /* Ujemite to vrednost s presledkom v intensity-display */
-  }
-
-  /* Prilagoditev obstoječega stila za artikel, da bo poravnava popolna */
-  .article-list__item {
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
-  }
-
-  .intensity-display {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    color: #333;
-    justify-content: flex-end; /* Poravnajte elemente na desno */
-  }
-  .summary{
-    color: #4b4e53;
-    font-size: 1.1rem;
-  }
+.subtitle{
+text-align: left;
+}
+.state--loading,
+.state--error {
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #1f2937;
+}
 </style>

@@ -42,9 +42,6 @@ const submitForm = async () => {
 <style scoped>
 .login {
   text-align: center;
-  max-width: 300px;
-  margin: auto;
-  display: flex;
   flex-direction: column;
 }
 .input {
@@ -52,11 +49,7 @@ const submitForm = async () => {
   margin: auto;
   display: flex;
   flex-direction: column;
-}
-.error-message {
-  color: red;
-  text-align: center;
-  margin-top: 10px;
+  text-align: left;
 }
 </style>
 

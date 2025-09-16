@@ -40,14 +40,17 @@ const submitForm = async () => {
 
 <template>
   <div class="register">
-    <h1>Registracija</h1>
-  </div>
-  <div class="input">
-    <InputComponent v-model="name" namen="name" type="name" />
-    <InputComponent v-model="email" namen="email" type="email" />
-    <InputComponent v-model="password" namen="password" type="password" />
-    <ButtonComponent text="Registriraj se" @click="submitForm" />
-    <p v-if="izpis">{{ napaka }}</p>
+    <h1 class="title">Registracija</h1>
+
+    <div class="input">
+      <InputComponent v-model="name" namen="name" type="name" />
+      <InputComponent v-model="email" namen="email" type="email" />
+      <InputComponent v-model="password" namen="password" type="password" />
+    </div>
+
+    <ButtonComponent class="btn" text="Registriraj se" @click="submitForm" />
+
+    <p v-if="izpis" class="error-message">{{ napaka }}</p>
   </div>
 </template>
 
@@ -64,23 +67,8 @@ const submitForm = async () => {
   flex-direction: column;
 }
 .input{
-
-  max-width: 300px;
-  margin: auto;
-  display: flex;
+  text-align: left;
+  max-width: 400px;
   flex-direction: column;
-
-}
-button {
-  padding: 8px;
-  background-color: #4CAF50;
-  border: none;
-  color: rgb(248, 243, 243);
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
 }
 </style>

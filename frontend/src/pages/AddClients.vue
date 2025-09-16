@@ -56,6 +56,7 @@ const addCustomer = async () => {
       <input v-model="phone" type="text" placeholder="Telefonska številka:" />
       <input v-model="dejavnost" type="text" placeholder="Dejavnost:" />
     </div>
+    <br>
 
     <ButtonComponent
       text="Shrani"
@@ -64,75 +65,15 @@ const addCustomer = async () => {
     />
   </div>
 </template>
-
-
 <style scoped>
-/* 5. Vsi spodnji stili so novi ali posodobljeni, da ustrezajo vaši želeni podobi */
-.form-card {
-  background-color: white;
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+.form-card{
+  max-width: 500px;
+}
+.title{
+  text-align: center;
+}
+.submit-btn{
   width: 100%;
-  max-width: 450px; /* Malo širše za daljše vnose */
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin: 2rem auto; /* Dodano za centriranje, če je komponenta na svoji strani */
-}
-
-.title {
-  text-align: center;
-  font-size: 2rem;
-  color: #333;
-  margin: 0; /* Odstranimo privzeto obnašanje */
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem; /* Razmak med vnosnimi polji */
-}
-
-input {
-  padding: 0.85rem; /* Malo večje za boljši izgled */
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-}
-
-input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
-}
-
-.submit-btn {
-  background-color: #13b52e;
-  color: white;
-  border: none;
-  padding: 0.85rem 1rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%; /* Gumb naj se razteza čez celo širino */
-}
-
-.submit-btn:hover {
-  background-color: #069335;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.error-message {
-  color: #e74c3c;
-  background-color: #fbe2e2;
-  border: 1px solid #e74c3c;
-  padding: 0.75rem;
-  border-radius: 6px;
-  text-align: center;
+  height: 50px;
 }
 </style>

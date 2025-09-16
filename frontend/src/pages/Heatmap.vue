@@ -8,19 +8,18 @@ type RiskItem = {
   category: string
   count: number
 }
-
-const runScraper = async () => {
-  try {
-    // TypeScript misli, da runScraper ne vrača nič, zato mu ročno povemo da naj obravnava rezultat kot AxiosResponse
-    const res = await EventServices.runScraper() as Number
-
-    // Tukaj varno dostopamo do podatkov
-    alert(`✅ Scraper zagnan! Obdelanih člankov: ${res}`)
-  } catch (e) {
-    alert('❌ Napaka pri zagonu scraperja')
-    console.error(e)
-  }
-}
+//namenjeno za teestiranje(moras samo dodati gumb v template in v api.php odkomentirat to pot)
+//const runScraper = async () => {
+ // try {
+ //   const res = await EventServices.runScraper() as Number
+//
+ //   // Tukaj varno dostopamo do podatkov
+ //   alert(`✅ Scraper zagnan! Obdelanih člankov: ${res}`)
+ // } catch (e) {
+ //   alert('❌ Napaka pri zagonu scraperja')
+ //   console.error(e)
+ // }
+//}
 
 const props = defineProps<{
   apiUrl?: string

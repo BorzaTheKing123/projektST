@@ -1,0 +1,78 @@
+.btn,
+button,
+.submit-btn,
+.update-btn,
+.delete-btn,
+.ai-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn:hover,
+button:hover {
+  background-color: #45a049;
+}
+
+.submit-btn {
+  background-color: #13b52e;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #069335;
+}
+
+.update-btn {
+  background-color: #249236;
+  color: white;
+}
+
+.update-btn:hover {
+  background-color: #0f6815;
+}
+
+.delete-btn {
+  background-color: #e53e3e;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #b12929;
+}
+
+.ai-btn {
+  background-color: #3f85da;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+}
+
+.ai-btn:hover {
+  background-color: #2c6fc2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.ai-btn:disabled {
+  background-color: #edf2f7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.actions-container:hover {
+  background-color: #267640;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
