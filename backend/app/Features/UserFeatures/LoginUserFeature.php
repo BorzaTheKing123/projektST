@@ -2,16 +2,12 @@
 
 namespace App\Features\UserFeatures;
 use App\Domains\UserJobs\LoginUserJob;
+use App\Domains\UserJobs\RespondWithTokenJob;
 
 class LoginUserFeature
 {
-    public function __construct(private $request)
-    {
-        
-    }
-
     public function handle()
-    {
-        return new LoginUserJob($this->request)->handle();
+    {   
+        return new LoginUserJob()->handle();
     }
 }
