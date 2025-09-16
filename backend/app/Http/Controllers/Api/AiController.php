@@ -33,7 +33,10 @@ Tveganje: "$tveganjeIme"
 Navodila: "$navodila"
 
 ⚠️ Pomembno:
+<<<<<<< HEAD
 - Napiši največ 6 ukrepov.
+=======
+>>>>>>> 9b90062a6ee9dfa581d1d2a88c11cb9682180542
 - Ne dodaj uvoda, razlage ali zaključka.
 - Vsak ukrep naj bo v svoji vrstici.
 - Vsak ukrep naj se konča z vejico.
@@ -48,7 +51,10 @@ Začni zdaj:
 EOT;
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b90062a6ee9dfa581d1d2a88c11cb9682180542
         Log::info('AI prompt:', ['prompt' => $prompt]);
 
         $openaiKey = config('app.openai_api_key');
