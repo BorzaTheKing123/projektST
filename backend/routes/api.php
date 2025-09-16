@@ -8,9 +8,8 @@ use App\Http\Controllers\Api\StrankeController;
 use App\Http\Controllers\Api\TveganjeController;
 use App\Http\Controllers\Api\AiController;
 use App\Http\Controllers\Api\HeatmapController;
-use App\Http\Controllers\Api\AnalyzeController;
-use App\Http\Controllers\Api\ScrapeController;
 use App\Http\Controllers\Api\RiskCategoryController;
+// use App\Http\Controllers\Api\ScrapeController;
 
 
 // 🔐 Uporabnik prek Sanctum
@@ -59,16 +58,11 @@ Route::middleware('api')->group(function () {
 
     Route::post('/ai/predlogi', [AIController::class, 'predlogi']);
 
-    Route::apiResource('heatmap', HeatmapController::class);
+    //Route::apiResource('heatmap', HeatmapController::class);
     
-
     Route::get('/risks/top', [HeatmapController::class, 'top']);
-    Route::post('/risks/sync-register', [HeatmapController::class, 'syncRegister']);
-    Route::post('/articles/analyze', [HeatmapController::class, 'analyze']);
 
-    Route::post('/scrape-articles', [ScrapeController::class, 'scrape']);
-    Route::post('/articles/analyze', [AnalyzeController::class, 'handle']);
-    Route::post('/scrape-run', [ScrapeController::class, 'runScraper']);
+    // Route::post('/scrape-run', [ScrapeController::class, 'runScraper']); Namenjeno za testiranje LLM-ja. V Heatmap.vue samo odkomentiraj gumb
 
     Route::get('/categories/{id}', [RiskCategoryController::class, 'show']);
 

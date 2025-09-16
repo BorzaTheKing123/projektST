@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Features\AIFeatures\AIScrapeAnalyzeFeature;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -78,7 +79,7 @@ class ScrapeController extends Controller
             if (count($data) !== 0) {
                 foreach ($data as $article) {
                     $output_count += 1;
-                    new ScrapeToAiController()->article($article);
+                    new AIScrapeAnalyzeFeature($article)->handle();
                 }
             }
         }

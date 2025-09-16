@@ -1,23 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Domains\AIJobs;
 
-use App\Http\Controllers\Controller;
-use App\Models\HeatmapModels\RiskMention;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use App\Models\HeatmapModels\Risk;
-
-
-class ScrapeToAiController extends Controller
+class AIScrapePromptJob
 {
-    public function article($data)
+    /**
+     * Konstruktor za injektiranje odvisnosti ali prejem podatkov.
+     */
+    public function __construct(private $data)
     {
-        set_time_limit(600);
+        //
+    }
 
-        $link = $data["link"];
-        $summary = $data['summary'];
-        $text = $data['text'];
+    /**
+     * Izvede glavno logiko.
+     *
+     * @param  mixed  ...$parameters
+     * @return mixed
+     */
+    public function handle()
+    {
+        $link = $this->data["link"];
+        $summary = $this->data['summary'];
+        $text = $this->data['text'];
 
 
         $prompt = <<<EOT
@@ -106,55 +111,6 @@ class ScrapeToAiController extends Controller
         ]
         EOT;
 
-
-        // Log::info('AI prompt:', ['prompt' => $prompt]);
-
-        $openaiKey = config('app.openai_api_key');
-
-        $aiResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $openaiKey,
-            'Content-Type' => 'application/json',
-        ])->timeout(600)
-        ->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4',
-            'messages' => [
-                ['role' => 'system', 'content' => 'Si strokovnjak za varnost in tveganja.'],
-                ['role' => 'user', 'content' => $prompt],
-            ],
-            'temperature' => 0.5,
-        ]);
-
-        $content = data_get($aiResponse->json(), 'choices.0.message.content');
-
-        if (!$content || trim($content) === '') {
-            Log::warning('AI vrnil prazen odgovor.');
-            return response()->json(['error' => 'Ni predlogov.']);
-        }
-
-        // Normaliziramo JSON (če AI vrne enojne narekovaje)
-        $normalized = str_replace("'", '"', $content);
-        $parsed = json_decode($normalized, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            Log::error('AI odgovor ni veljaven JSON', ['content' => $content]);
-            return response()->json(['error' => 'Neveljaven AI JSON odgovor.']);
-        }
-
-        Log::info($parsed);
-
-        foreach ($parsed as $pars) {
-            $risk = Risk::where('category', $pars['category'])->first();
-
-            RiskMention::create([
-            'risk_id'    => $risk->id,
-            'confidence' => $pars['confidence'] ?? null,
-            'link' => $link,
-            'summary' => $pars['summary'] ?? null,
-        ]);
-        }
-
-        return response()->json([
-            'status' => 'success'
-        ]);
+        return $prompt;
     }
 }
