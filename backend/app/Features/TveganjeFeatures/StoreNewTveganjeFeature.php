@@ -14,7 +14,7 @@ class StoreNewTveganjeFeature
 
     public function handle()
     {
-        $input = new ValidateTveganjeJob($this->request)->handle();
-        return new StoreNewTveganjeJob($this->request, $input)->handle();
+        $validated = new ValidateTveganjeJob($this->request)->handle();
+        return new StoreNewTveganjeJob($validated)->handle();
     }
 }

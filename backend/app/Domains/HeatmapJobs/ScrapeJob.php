@@ -4,7 +4,6 @@ namespace App\Domains\HeatmapJobs;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
-
 use App\Features\AIFeatures\AIScrapeAnalyzeFeature;
 
 class ScrapeJob

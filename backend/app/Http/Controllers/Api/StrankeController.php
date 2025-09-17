@@ -15,9 +15,9 @@ class StrankeController extends Controller
 {
     public function index(Request $request)
     {
-        \Log::info('Authorization header: ' . $request->header('Authorization'));
-
-        return response()->json((new ShowStrankeFeature())->handle())->header('Authorization', $request->header('Authorization'));
+        return response()->json(
+            (new ShowStrankeFeature())->handle())->header('Authorization', $request->header('Authorization')
+        );
     }
 
     public function create()
@@ -29,7 +29,6 @@ class StrankeController extends Controller
     {
         return (new StoreNewStrankaFeature($request))->handle();
     }
-
 
     public function edit(Stranka $stranka)
     {
@@ -46,19 +45,14 @@ class StrankeController extends Controller
         return (new DeleteStrankaFeature($stranka))->handle();
     }
 
-
     public function show($id)
     {
-        $stranka = Stranka::findOrFail($id);
-        return response()->json($stranka);
+        return response()->json(Stranka::findOrFail($id));
     }
+
     public function mojeStranke(Request $request)
-{
-    $user = $request->user();
-
-    $stranke = \App\Models\Stranka::where('user_id', $user->id)->get();
-
-    return response()->json($stranke);
-}
+    {
+        return response()->json(Stranka::where('user_id', $request->user()->id)->get());
+    }
 }
 

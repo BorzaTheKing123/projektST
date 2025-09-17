@@ -2,21 +2,21 @@
 
 namespace App\Features\TveganjeFeatures;
 
+use App\Domains\TveganjeJobs\GetStrankaJob;
 use App\Domains\TveganjeJobs\UpdateTveganjeJob;
 use App\Domains\TveganjeJobs\ValidateTveganjeJob;
 
 class UpdateTveganjeFeature
 {
-    public function __construct(private $tveganja, private $request)
+    public function __construct(private $request, private $tveganja)
     {
     }
 
     public function handle()
     {
         // Validacija z dostopom do stranke (zaradi email izjeme)
-        $info = (new ValidateTveganjeJob($this->request, $this->tveganja))->handle();
-
-        // Posodobitev stranke
-        return (new UpdateTveganjeJob($this->tveganja, $this->request, $info))->handle();
+        $validated = new ValidateTveganjeJob($this->request)->handle();
+        new GetStrankaJob($this->request, $validated)->handle();
+        return new UpdateTveganjeJob($this->tveganja, $this->request, $validated)->handle();
     }
 }

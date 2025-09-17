@@ -6,17 +6,20 @@ use App\Models\User;
 
 class StoreNewUserJob
 {
-    public function __construct(private $credentials, private $request)
+    public function __construct(private $credentials)
     {
         
     }
 
     public function handle()
     {
-        User::create($this->credentials);
-        $this->request->session()->regenerate();
+        // $user = User::create([
+        //             'name' => $this->credentials['name'],
+        //             'email' => $this->credentials['email'],
+        //             'password' => Hash::make($this->credentials['password']),
+        //         ]);
 
-        // Token za uporabnika iz njegovega uporabniškega imena itd
-        return true;
+        $user = User::create($this->credentials);
+        return response()->json($user);
     }
 }
