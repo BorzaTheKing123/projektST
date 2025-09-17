@@ -58,15 +58,16 @@ const addTveganje = async () => {
     </div>
 
     <div class="form-group">
+      <h5>Tveganje:</h5>
       <input v-model="ime" type="text" placeholder="Ime tveganja:" />
-
-      <select v-model="selectedStrankaId">
-        <option v-for="stranka in stranke" :key="stranka.id" :value="stranka.id">
+      <h5>Stranka:</h5>
+      <select v-model="selectedStrankaId" placeholder="Ime stranke:">
+        <option v-for="stranka in stranke" :key="stranka.id" :value="stranka.id" >
           {{ stranka.name }}
         </option>
       </select>
-
-      <textarea v-model="ukrepi" placeholder="Ukrepi:" rows="4" />
+      <h5>Ukrepi:</h5>
+<textarea v-model="ukrepi" placeholder="Ukrepi:" rows="4" />
     </div>
     <br>
 

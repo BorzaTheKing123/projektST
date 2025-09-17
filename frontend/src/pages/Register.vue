@@ -66,9 +66,12 @@ const submitForm = async () => {
   display: flex;
   flex-direction: column;
 }
-.input{
-  text-align: left;
-  max-width: 400px;
+.input {
+  max-width: 500px;
+  min-width: 300px;
+  margin: auto;
+  display: flex;
   flex-direction: column;
+  text-align: left;
 }
 </style>

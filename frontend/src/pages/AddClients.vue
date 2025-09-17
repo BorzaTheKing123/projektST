@@ -51,9 +51,13 @@ const addCustomer = async () => {
     </div>
 
     <div class="form-group">
+      <h5>Ime:</h5>
       <input v-model="name" type="text" placeholder="Ime:" />
+      <h5>Email:</h5>
       <input v-model="email" type="email" placeholder="Email:" />
+      <h5>Telefonska številka:</h5>
       <input v-model="phone" type="text" placeholder="Telefonska številka:" />
+      <h5>Dejavnost:</h5>
       <input v-model="dejavnost" type="text" placeholder="Dejavnost:" />
     </div>
     <br>

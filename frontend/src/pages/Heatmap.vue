@@ -156,26 +156,7 @@ function hexToRgb(hex: string) {
 
 
 <style scoped>
-.heatmap {
-  background: #0b1020;
-  color: #e6e6f0;
-  border: 1px solid #1b2340;
-  border-radius: 12px;
-  padding: 16px 16px 8px;
-max-width: 900px;
-  margin: 40px auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
 
-.heatmap__header {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 12px;
-}
 
 h2 {
   font-size: 1.1rem;
@@ -189,123 +170,14 @@ h2 {
   font-size: 0.9rem;
 }
 
-.state {
-  padding: 16px;
-  border-radius: 8px;
-  background: #0f172a;
-}
 .state--error {
   background: #2a0f10;
   color: #ffb4b4;
 }
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
 .table th,
 .table td {
   padding: 10px 8px;
   border-bottom: 1px solid #1b2340;
-}
-
-.table th {
-  color: #aab2c8;
-  text-align: left;
-  font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-}
-
-.table .risk-name {
-  font-weight: 600;
-  color: #878992;
-}
-
-.table .count {
-  font-variant-numeric: tabular-nums;
-  color: #d5d9e6;
-}
-
-.col-heat {
-  width: 40%;
-}
-
-.heat .bar {
-  width: 100%;
-  height: 12px;
-  background: #d5d9e6; 
-  border-radius: 6px;
-  overflow: hidden;
-}
-.heat .bar__fill {
-  height: 100%;
-  border-radius: 6px;
-  transition: width 300ms ease, background-color 300ms ease;
-}
-
-.legend {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  color: #9aa3b2;
-  font-size: 0.85rem;
-  padding: 10px 2px 2px;
-}
-.legend__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  display: inline-block;
-  border: 1px solid #1f2a4d;
-}
-.dot--cool { background: #4F46E5; }
-.dot--warm { background: #F59E0B; }
-.dot--hot  { background: #EF4444; }
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 220px;
-  background-color: #2d3748;
-  color: #fff;
-  padding: 2rem 1rem;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar-title {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-  font-weight: bold;
-  color: #f7fafc;
-}
-
-.sidebar-links {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar-links li {
-  margin-bottom: 1rem;
-}
-
-.sidebar-links a {
-  color: #cbd5e0;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.sidebar-links a:hover {
-  color: #ffffff;
 }
 
 .active {
