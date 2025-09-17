@@ -13,6 +13,12 @@ class UpdateTveganjeJob
 
     public function handle()
     {
+        if ($this->tveganja->stranka->user_id !== Auth::guard('api')->id()) {
+            return response()->json([
+                'message' => 'Nimaš dovoljenja za brisanje tega tveganja.'
+            ], 403);
+        }
+
         $this->tveganja->update($this->validated);
         $this->tveganja->refresh();
 
