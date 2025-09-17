@@ -10,7 +10,9 @@ const password = ref('')
 const napaka = ref('')
 const izpis = ref(false)
 const router = useRouter()
-
+const goHome = () => {
+  router.push('/')
+}
 const submitForm = async () => {
   try {
     const response = await EventServices.login(email.value, password.value)
@@ -35,6 +37,7 @@ const submitForm = async () => {
     <InputComponent v-model="email" namen="email" type="email" />
     <InputComponent v-model="password" namen="password" type="password" />
     <ButtonComponent text="Logiraj se" @click="submitForm" />
+    <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
     <p v-if="izpis" class="error-message">{{ napaka }}</p>
   </div>
 </template>
@@ -50,6 +53,14 @@ const submitForm = async () => {
   display: flex;
   flex-direction: column;
   text-align: left;
+}
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
 }
 </style>
 

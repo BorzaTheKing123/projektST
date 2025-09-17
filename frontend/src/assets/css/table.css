@@ -4,6 +4,24 @@ table {
   text-align: left;
 }
 
+.table th {
+  color: #aab2c8;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.table .risk-name {
+  font-weight: 600;
+  color: #878992;
+}
+
+.table .count {
+  font-variant-numeric: tabular-nums;
+  color: #d5d9e6;
+}
+
 thead {
   background-color: #f7fafc;
   border-bottom: 2px solid #e2e8f0;
@@ -39,6 +57,16 @@ tbody tr:hover {
 
 .clickable-row {
   cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: #edf2f7;
+}
+
+.clickable-row td {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
 }
 
 .clickable-row:hover td {

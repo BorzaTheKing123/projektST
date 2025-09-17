@@ -13,13 +13,17 @@ const izpis = ref(false)
 const user = ref(null)
 
 const router = useRouter()
-
+const goHome = () => {
+  router.push('/')
+}
 const submitForm = async () => {
   if (!name.value || !email.value || !password.value) {
     napaka.value = 'Prosimo, izpolnite vsa polja.'
     izpis.value = true
     return
   }
+  
+
 
   try {
     const response = await EventServices.register(name.value, email.value, password.value)
@@ -49,6 +53,8 @@ const submitForm = async () => {
     </div>
 
     <ButtonComponent class="btn" text="Registriraj se" @click="submitForm" />
+    <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
+
 
     <p v-if="izpis" class="error-message">{{ napaka }}</p>
   </div>
@@ -66,9 +72,21 @@ const submitForm = async () => {
   display: flex;
   flex-direction: column;
 }
-.input{
-  text-align: left;
-  max-width: 400px;
+.input {
+  max-width: 500px;
+  min-width: 300px;
+  margin: auto;
+  display: flex;
   flex-direction: column;
+  text-align: left;
 }
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
+}
+
 </style>

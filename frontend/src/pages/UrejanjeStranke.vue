@@ -27,7 +27,9 @@ const isLoading = ref(true)
 const isDeleting = ref(false)
 const isOwner = ref(false)
 const authUserId = ref<number | null>(null)
-
+const goHome = () => {
+  router.push('/stranke')
+}
 
 onMounted(async () => {
   try {
@@ -113,15 +115,21 @@ const deleteCustomer = async () => {
       <div v-if="error" class="error-message">{{ error }}</div><br>
 
       <div class="form-group">
+        <h5>Stranka:</h5>
         <input v-model="name" type="text" placeholder="Ime" :disabled="!isOwner" />
+        <h5>Email:</h5>
         <input v-model="email" type="email" placeholder="Email" :disabled="!isOwner" />
+        <h5>Telefon:</h5>
         <input v-model="phone" type="text" placeholder="Telefon" :disabled="!isOwner" />
+        <h5>Dejavnost:</h5>
         <input v-model="dejavnost" type="text" placeholder="Dejavnost" :disabled="!isOwner" />
       </div>
+      <br>
 
       <div class="actions" v-if="isOwner">
         <ButtonComponent text="Shrani spremembe" @click="updateCustomer" class="update-btn" />
         <ButtonComponent text="Izbriši" @click="deleteCustomer" class="delete-btn" />
+        <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
       </div>
       <div class="tveganja-section">
   <h2>Tveganja za to stranko</h2>
@@ -143,97 +151,52 @@ const deleteCustomer = async () => {
 </ul>
 
 </div>
-    </div>
-  </div>
+</div>
+</div>
 </template>
 
 <style scoped>
-input:disabled {
-  background-color: #edf2f7;
-  color: #718096;
-  cursor: not-allowed;
+.input{
+  margin-top: 0px;
 }
 
-.error-message {
-  color: #e53e3e;
-  background-color: #fff5f5;
-  border: 1px solid #feb2b2;
-  padding: 0.75rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  font-weight: 500;
-}
-
-.form-card {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
-}
-.title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #192f5c;
-}
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-input {
-  padding: 0.75rem;
-  border: 1px solid #cbd5e0;
-  border-radius: 8px;
-}
-.actions {
-  margin-top: 2rem;
-  display: flex;
-  gap: 1rem;
-}
-.update-btn {
-  background: #249236;
-  color: white;
-}
 .update-btn:not(:disabled):hover {
   background-color: #0f6815;
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
-.delete-btn {
-  background: #e53e3e;
-  color: white;
+
+.delete-btn:not(:disabled){
+  background-color: #d32424;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 .delete-btn:not(:disabled):hover {
   background-color: #b12929;
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
-.tveganje-card {
-  padding: 10px;
-  margin-bottom: 10px;
-  border-left: 4px solid #3498db;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: background-color 0.2s ease;
-}
 
-.tveganje-card.clickable {
-  cursor: pointer;
-}
 
-.tveganje-card.clickable:hover {
-  background-color: #eef6ff;
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
 }
-
-.locked-note {
-  display: block;
-  margin-top: 5px;
-  font-size: 12px;
-  color: #999;
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
 }
 
 
 </style>
+const goHome = () => {
+  router.push('/stranke')
+}
+<ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
+}

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import EventServices from '@/router/services/EventServices'
 import ButtonComponent from '../components/buttonComponent.vue'
+import { useRouter } from 'vue-router'
 
 const name = ref('')
 const email = ref('')
@@ -10,7 +11,10 @@ const dejavnost = ref('')
 const error = ref<string | null>(null)
 const izpis = ref(false)
 const napaka = ref('')
-
+const router = useRouter()
+const goHome = () => {
+  router.push('/stranke')
+}
 const addCustomer = async () => {
   error.value = null
 
@@ -51,9 +55,13 @@ const addCustomer = async () => {
     </div>
 
     <div class="form-group">
+      <h5>Ime:</h5>
       <input v-model="name" type="text" placeholder="Ime:" />
+      <h5>Email:</h5>
       <input v-model="email" type="email" placeholder="Email:" />
+      <h5>Telefonska številka:</h5>
       <input v-model="phone" type="text" placeholder="Telefonska številka:" />
+      <h5>Dejavnost:</h5>
       <input v-model="dejavnost" type="text" placeholder="Dejavnost:" />
     </div>
     <br>
@@ -62,7 +70,8 @@ const addCustomer = async () => {
       text="Shrani"
       @click.stop.prevent="addCustomer"
       class="submit-btn"
-    />
+    /><br>
+    <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
   </div>
 </template>
 <style scoped>
@@ -75,5 +84,17 @@ const addCustomer = async () => {
 .submit-btn{
   width: 100%;
   height: 50px;
+}
+
+
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+  margin-top: 3px;
+  
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
 }
 </style>

@@ -1,8 +1,6 @@
 .btn,
 button,
 .submit-btn,
-.update-btn,
-.delete-btn,
 .ai-btn {
   padding: 10px 20px;
   border: none;
@@ -10,6 +8,42 @@ button,
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.update-btn {
+  background: #1e9e33;
+  color: white;
+}
+
+.update-btn:hover {
+  background-color: #054f09;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn  {
+  background: #e53e3e !important;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  transition: background-color 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #b70e27 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+button.delete-btn:hover {
+  background: #ab0b23 !important;
+}
+button.update-btn:hover {
+  background: #176d0c;
 }
 
 .btn {
@@ -31,24 +65,6 @@ button:hover {
   background-color: #069335;
 }
 
-.update-btn {
-  background-color: #249236;
-  color: white;
-}
-
-.update-btn:hover {
-  background-color: #0f6815;
-}
-
-.delete-btn {
-  background-color: #e53e3e;
-  color: white;
-}
-
-.delete-btn:hover {
-  background-color: #b12929;
-}
-
 .ai-btn {
   background-color: #3f85da;
   border: 1px solid #ccc;
@@ -60,10 +76,11 @@ button:hover {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.ai-btn:disabled {
-  background-color: #edf2f7;
-  cursor: not-allowed;
-  box-shadow: none;
+.ai-btn:disabled,
+.ai-btn:disabled:hover {
+  background-color: #edf2f7;      /* Svetlejša barva besedila */
+  cursor: not-allowed;      /* Kazalec, ki označuje, da akcija ni dovoljena */
+  box-shadow: none;         /* Odstrani senco ob hoverju */
 }
 .actions-container {
   display: flex;
@@ -76,3 +93,42 @@ button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.update-btn {
+  background: #1e9e33;
+  color: white;
+}
+
+.update-btn:hover {
+  background-color: #054f09;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  transition: background-color 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #b70e27;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+button.delete-btn:hover {
+  background: #ab0b23;
+}
+button.update-btn:hover {
+  background: #176d0c;
+}
+
+
+

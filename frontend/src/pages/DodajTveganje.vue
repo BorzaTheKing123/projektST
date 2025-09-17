@@ -2,6 +2,7 @@
 import { ref , onMounted } from 'vue'
 import EventServices, { loadAuthToken } from '@/router/services/EventServices'
 import ButtonComponent from '../components/buttonComponent.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const ime = ref('')
 const ukrepi = ref('')
@@ -10,6 +11,10 @@ const izpis = ref(false)
 const napaka = ref('')
 const stranke = ref<any[]>([])
 const selectedStrankaId = ref<number | null>(null)
+const router = useRouter()
+const goHome = () => {
+  router.push('/tveganja')
+}
 
 onMounted(async () => {
     loadAuthToken()
@@ -58,15 +63,16 @@ const addTveganje = async () => {
     </div>
 
     <div class="form-group">
+      <h5>Tveganje:</h5>
       <input v-model="ime" type="text" placeholder="Ime tveganja:" />
-
-      <select v-model="selectedStrankaId">
-        <option v-for="stranka in stranke" :key="stranka.id" :value="stranka.id">
+      <h5>Stranka:</h5>
+      <select v-model="selectedStrankaId" placeholder="Ime stranke:">
+        <option v-for="stranka in stranke" :key="stranka.id" :value="stranka.id" >
           {{ stranka.name }}
         </option>
       </select>
-
-      <textarea v-model="ukrepi" placeholder="Ukrepi:" rows="4" />
+      <h5>Ukrepi:</h5>
+<textarea v-model="ukrepi" placeholder="Ukrepi:" rows="4" />
     </div>
     <br>
 
@@ -75,6 +81,7 @@ const addTveganje = async () => {
       @click.stop.prevent="addTveganje"
       class="submit-btn"
     />
+    <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
   </div>
 </template>
 <style scoped>
@@ -87,6 +94,16 @@ const addTveganje = async () => {
 .submit-btn{
   width: 100%;
   height: 50px;
+}
+
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+  margin-top: 3px;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
 }
 </style>
 

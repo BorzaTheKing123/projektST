@@ -28,6 +28,9 @@ const isLoading = ref(true)
 const isDeleting = ref(false)
 const isOwner = ref(false)
 const authUserId = ref<number | null>(null)
+const goHome = () => {
+  router.push('/tveganja')
+}
 
 onMounted(async () => {
   try {
@@ -100,8 +103,11 @@ const deleteTveganje = async () => {
       <div v-if="error" class="error-message">{{ error }}</div><br>
 
       <div class="form-group">
+        <h5>Tveganje:</h5>
         <input v-model="ime" type="text" placeholder="Ime tveganja" :disabled="!isOwner" />
+        <h5>Stranka:</h5>
         <input v-model="strankaName" type="text" placeholder="Ime stranke" disabled />
+        <h5>Ukrepi:</h5>
         <textarea v-model="ukrepi" placeholder="Ukrepi" rows="4" :disabled="!isOwner":class="{ blurred: !isOwner }"
  ></textarea>
       </div>
@@ -109,99 +115,13 @@ const deleteTveganje = async () => {
       <div class="actions" v-if="isOwner">
         <ButtonComponent text="Shrani spremembe" @click="updateTveganje" class="update-btn" />
         <ButtonComponent text="Izbriši" @click="deleteTveganje" class="delete-btn" />
+        <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-input:disabled {
-  background-color: #edf2f7;
-  color: #718096;
-  cursor: not-allowed;
-}
-
-textarea {
-  padding: 0.75rem;
-  border: 1px solid #cbd5e0;
-  border-radius: 8px;
-  resize: vertical;
-}
-
-.error-message {
-  color: #e53e3e;
-  background-color: #fff5f5;
-  border: 1px solid #feb2b2;
-  padding: 0.75rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  font-weight: 500;
-}
-
-.form-card {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
-}
-
-.title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #192f5c;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-input {
-  padding: 0.75rem;
-  border: 1px solid #cbd5e0;
-  border-radius: 8px;
-}
-
-.actions {
-  margin-top: 2rem;
-  display: flex;
-  gap: 1rem;
-}
-
-.update-btn {
-  background: #1e9e33;
-  color: white;
-}
-
-.update-btn:hover {
-  background-color: #054f09;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.delete-btn {
-  background: #e53e3e;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  transition: background-color 0.2s ease;
-}
-
-.delete-btn:hover {
-  background-color: #b70e27;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-button.delete-btn:hover {
-  background: #ab0b23;
-}
-button.update-btn:hover {
-  background: #176d0c;
-}
 .blurred {
   opacity: 0.6;
   cursor: not-allowed;
@@ -212,6 +132,15 @@ button.update-btn:hover {
   border-radius: 8px;
 }
 
+
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
+}
 
 
 </style>
