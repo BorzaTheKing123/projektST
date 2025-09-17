@@ -76,12 +76,6 @@ button:hover {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.ai-btn:disabled,
-.ai-btn:disabled:hover {
-  background-color: #edf2f7;      /* Svetlejša barva besedila */
-  cursor: not-allowed;      /* Kazalec, ki označuje, da akcija ni dovoljena */
-  box-shadow: none;         /* Odstrani senco ob hoverju */
-}
 .actions-container {
   display: flex;
   justify-content: flex-end;

@@ -154,7 +154,7 @@ onMounted(async () => {
               </td>
               <td>
                 <div class="ai-cell">
-                  <button class="ai-btn" @click.stop="odpriAiModal(tveganje)" :disabled="tveganje.stranka.user_id !== authUserId">AI</button>
+                  <button class="ai-btn" @click.stop="odpriAiModal(tveganje)" v-if="tveganje.stranka.user_id === authUserId">AI</button>
                 </div>
               </td>
             </tr>
