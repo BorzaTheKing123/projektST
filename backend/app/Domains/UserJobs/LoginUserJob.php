@@ -2,44 +2,22 @@
 
 namespace App\Domains\UserJobs;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 class LoginUserJob
 {
-
-    protected $userData;
-
-    public function __construct(private $request)
-    {
-
-    }
-
     public function handle()
     {   
-        $credentials = Validator::make($this->request->all(), [
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-//            'device_name' => 'required',
+        $credentials = request(['email', 'password']);
+
+        if (! $token = Auth::attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => Auth::factory()->getTTL() * 60
         ]);
-
-        if ($credentials->fails()) {
-            return response()->json([
-                'message' => 'Neveljaven vnos!',
-                'errors' => $credentials->errors()
-            ], 422);
-        }
-
-        $user = User::where('email', $this->request->email)->first();
-
-        if (! $user || ! Hash::check($this->request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
-        }
-
-        return $user->createToken('default')->plainTextToken;
     }
 }
