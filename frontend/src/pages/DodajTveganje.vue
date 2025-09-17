@@ -2,6 +2,7 @@
 import { ref , onMounted } from 'vue'
 import EventServices, { loadAuthToken } from '@/router/services/EventServices'
 import ButtonComponent from '../components/buttonComponent.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const ime = ref('')
 const ukrepi = ref('')
@@ -10,6 +11,10 @@ const izpis = ref(false)
 const napaka = ref('')
 const stranke = ref<any[]>([])
 const selectedStrankaId = ref<number | null>(null)
+const router = useRouter()
+const goHome = () => {
+  router.push('/tveganja')
+}
 
 onMounted(async () => {
     loadAuthToken()
@@ -76,6 +81,7 @@ const addTveganje = async () => {
       @click.stop.prevent="addTveganje"
       class="submit-btn"
     />
+    <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
   </div>
 </template>
 <style scoped>
@@ -88,6 +94,16 @@ const addTveganje = async () => {
 .submit-btn{
   width: 100%;
   height: 50px;
+}
+
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+  margin-top: 3px;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
 }
 </style>
 

@@ -28,6 +28,9 @@ const isLoading = ref(true)
 const isDeleting = ref(false)
 const isOwner = ref(false)
 const authUserId = ref<number | null>(null)
+const goHome = () => {
+  router.push('/tveganja')
+}
 
 onMounted(async () => {
   try {
@@ -112,6 +115,7 @@ const deleteTveganje = async () => {
       <div class="actions" v-if="isOwner">
         <ButtonComponent text="Shrani spremembe" @click="updateTveganje" class="update-btn" />
         <ButtonComponent text="Izbriši" @click="deleteTveganje" class="delete-btn" />
+        <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
       </div>
     </div>
   </div>
@@ -128,6 +132,15 @@ const deleteTveganje = async () => {
   border-radius: 8px;
 }
 
+
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
+}
 
 
 </style>

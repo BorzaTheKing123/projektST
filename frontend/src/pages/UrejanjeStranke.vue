@@ -27,7 +27,9 @@ const isLoading = ref(true)
 const isDeleting = ref(false)
 const isOwner = ref(false)
 const authUserId = ref<number | null>(null)
-
+const goHome = () => {
+  router.push('/stranke')
+}
 
 onMounted(async () => {
   try {
@@ -127,6 +129,7 @@ const deleteCustomer = async () => {
       <div class="actions" v-if="isOwner">
         <ButtonComponent text="Shrani spremembe" @click="updateCustomer" class="update-btn" />
         <ButtonComponent text="Izbriši" @click="deleteCustomer" class="delete-btn" />
+        <ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
       </div>
       <div class="tveganja-section">
   <h2>Tveganja za to stranko</h2>
@@ -174,4 +177,26 @@ const deleteCustomer = async () => {
 }
 
 
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
+}
+
+
 </style>
+const goHome = () => {
+  router.push('/stranke')
+}
+<ButtonComponent class="home-btn" text="Nazaj na domačo stran" @click="goHome" />
+.home-btn {
+  background-color: rgb(140, 142, 140);
+  border-color: gray;
+}
+.home-btn:hover{
+  background-color: rgb(64, 67, 64) !important;
+  border-color: gray !important;
+}
